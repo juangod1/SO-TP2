@@ -56,5 +56,10 @@ int strleng(const char *str){
 }
 
 void newLine(){
+	if ((currentVideo-video)/((uint8_t)160) == (uint8_t)(ROW_LIMIT-1)){
+		currentVideo = video;
+		return;
+	}
+
 	currentVideo = ((currentVideo-video)/160+1)*160 + video;
 }

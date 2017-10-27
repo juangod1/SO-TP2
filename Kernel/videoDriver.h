@@ -6,6 +6,7 @@
 #define SCREEN_WIDTH 80
 #define SCREEN_HEIGHT 25
 #define MAX_DIGITS 20
+#define ROW_LIMIT 25
 
 void clearScreen();
 void printString(uint8_t color, const char* string);
