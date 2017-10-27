@@ -83,9 +83,14 @@ void * initializeKernelBinary()
 int main()
 {
 	ncPrint("[Kernel Main]");
-	
+
 	load_idt();
 
 	ncPrint("[Finished]");
+
+	printString(2,"does newline work?");
+	newLine();
+	printString(2,"yes it does");
+	
 	return 0;
 }

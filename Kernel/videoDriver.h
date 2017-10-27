@@ -13,5 +13,6 @@ int strleng(const char *str);
 int countDigits(int num);
 void printInt(uint8_t color, int num);
 void printChar(uint8_t color, char ch);
+void newLine();
 
 #endif

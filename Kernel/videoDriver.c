@@ -54,3 +54,7 @@ int strleng(const char *str){
 	while(*(str+i)) i++;
 	return i;
 }
+
+void newLine(){
+	currentVideo = ((currentVideo-video)/160+1)*160 + video;
+}
