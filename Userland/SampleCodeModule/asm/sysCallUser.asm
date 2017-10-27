@@ -1,11 +1,16 @@
-GLOBAL sysCall
-
 section .text
+
+GLOBAL sysCall
 
 sysCall:
   push rbp
   mov rbp,rsp
-  ; SWITCH CON TODAS LAS FUNCIONES DE sysCall
+  
+  int 80h
+
   mov rsp,rbp
   pop rbp
-  iret
+  ret
+
+section .data
+stra db 'c'

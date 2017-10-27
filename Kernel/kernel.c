@@ -3,6 +3,9 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
+#include "interrupts.h"
+#include "videoDriver.h"
+#include "idtLoader.h"
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -91,6 +94,11 @@ int main()
 	printString(2,"does newline work?");
 	newLine();
 	printString(2,"yes it does");
+
+	void (*module)();
+	module = sampleCodeModuleAddress;
+
+	module();
 	
 	return 0;
 }
