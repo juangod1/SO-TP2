@@ -1,8 +1,8 @@
 section .text
 
-GLOBAL getHoursRTC
+GLOBAL getTimeRTC
 
-getHoursRTC:
+getTimeRTC:
   push rbp
   mov rbp, rsp
 
@@ -12,7 +12,7 @@ getHoursRTC:
   or al, 0x04 ; Second bit = 1
   out 71h, al ; Overwrite config
 
-  mov al,4
+  mov rax, rdi
   out 70h,al
 
   in al,71h

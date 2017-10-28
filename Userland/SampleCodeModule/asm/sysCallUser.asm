@@ -5,12 +5,9 @@ GLOBAL sysCall
 sysCall:
   push rbp
   mov rbp,rsp
-  
+
   int 80h
 
   mov rsp,rbp
   pop rbp
   ret
-
-section .data
-stra db 'c'
