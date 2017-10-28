@@ -8,10 +8,17 @@ const char keyMap[] ={0,0, '1', '2', '3', '4', '5',\
  'c', 'v', 'b', 'n', 'm', ',', '.', '-', 0, 0,\
  0, ' ' };
 
+char buffer[100] = {};
+int bufferPos=0;
+
 char getChar(){
   int pressed = 0;
   while(!pressed)
     pressed = key_pressed();
 
   return keyMap[get_key()];
+}
+
+void keyboard_handler(){
+  printString(3,"WORKS");
 }

@@ -63,3 +63,18 @@ void newLine(){
 
 	currentVideo = ((currentVideo-video)/160+1)*160 + video;
 }
+
+uint8_t * currentline(){
+	uint8_t * currentline = (currentVideo-video)/((uint8_t)160)*160 + video;
+	return currentline;
+}
+
+void readInput(char * buffer){
+	uint8_t * from = currentline();
+	uint8_t * to = currentVideo;
+	for (from;from<to;){
+		*buffer=*from;
+		from=from+2;
+		buffer++;
+	}
+}

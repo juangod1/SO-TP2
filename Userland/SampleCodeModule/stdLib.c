@@ -10,6 +10,12 @@ void sysPrintString(uint8_t color, char * string){
 void sysPrintInt(uint8_t color, int num){
   sysCall(2,color,num,0);
 }
+void sysNewLine(){
+  sysCall(4,0,0,0);
+}
+void sysReadInput(char * buffer){
+  sysCall(5,buffer,0,0);
+}
 
 void sysGetTime(int * buffer){
 	buffer[0] = sysCall(3,0,0,0); // Seconds

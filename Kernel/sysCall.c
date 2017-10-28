@@ -13,5 +13,11 @@ void sysCallHandler(int edi, int esi, int edx, int ecx){
     case 3:
       getTimeRTC(esi);
       break;
+    case 4:
+      newLine();
+      break;
+    case 5:
+      readInput(esi);
+      break;
   }
 }

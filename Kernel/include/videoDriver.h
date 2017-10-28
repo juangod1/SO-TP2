@@ -15,5 +15,7 @@ int countDigits(int num);
 void printInt(uint8_t color, int num);
 void printChar(uint8_t color, char ch);
 void newLine();
+void readInput(char * buffer);
+uint8_t * currentline();
 
 #endif
