@@ -5,17 +5,11 @@ extern void sysCall(int edi, int esi, int edx, int ecx);
 
 int main() {
 
-	int array[6];
+	char array[80];
 
-	sysGetTime(array);
+	sysReadInput(array);
 
-	sysPrintInt(12,array[2]-3);
-	sysPrintString(12,':');
-	sysPrintInt(12,array[1]);
-	char buffer[80];
-	sysNewLine();
-	sysPrintString(2,"string");
-	sysReadInput(buffer);
-	sysPrintString(4,buffer);
+	sysPrintString(12,array[2]);
+
 	return 1;
 }

@@ -91,14 +91,10 @@ int main()
 
 	ncPrint("[Finished]");
 
-	printString(2,"does newline work?");
-	newLine();
-	printString(2,"yes it does");
-
 	void (*module)();
 	module = sampleCodeModuleAddress;
 
 	module();
-	
+
 	return 0;
 }

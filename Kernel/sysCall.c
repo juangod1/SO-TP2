@@ -2,22 +2,34 @@
 #include "videoDriver.h"
 #include "time.h"
 
-void sysCallHandler(int edi, int esi, int edx, int ecx){
-  switch(edi){
+
+
+void sysCallHandler(int rdi, int rsi, int rdx, int rcx){
+
+  printInt(2,rdi);
+  printString(2,"-");
+  printInt(2,rsi);
+  printString(2,"-");
+  printInt(2,rdx);
+  printString(2,"-");
+  printInt(2,rcx);
+  printString(2,"-");
+  newLine();
+  switch(rdi){
     case 1:
-      printString(esi,edx);
+      printString(rsi,rdx);
       break;
     case 2:
-      printInt(esi,edx);
+      printInt(rsi,rdx);
       break;
     case 3:
-      getTimeRTC(esi);
+      getTimeRTC(rsi);
       break;
     case 4:
       newLine();
       break;
     case 5:
-      readInput(esi);
+      readInput(rsi);
       break;
   }
 }
