@@ -1,7 +1,7 @@
 /* sampleCodeModule.c */
 #include "stdLib.h"
 
-extern void sysCall(int edi, int esi, int edx, int ecx);
+extern void sysCall(uint64_t edi, uint64_t esi, uint64_t edx, uint64_t ecx);
 
 int main() {
 

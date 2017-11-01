@@ -4,8 +4,8 @@
 
 
 
-void sysCallHandler(int rdi, int rsi, int rdx, int rcx){
-
+void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx){
+  printString(2,"syscall params received: ");
   printInt(2,rdi);
   printString(2,"-");
   printInt(2,rsi);
@@ -13,7 +13,6 @@ void sysCallHandler(int rdi, int rsi, int rdx, int rcx){
   printInt(2,rdx);
   printString(2,"-");
   printInt(2,rcx);
-  printString(2,"-");
   newLine();
   switch(rdi){
     case 1:

@@ -29,7 +29,7 @@ void picMasterMask(uint8_t mask);
 
 void picSlaveMask(uint8_t mask);
 
-void sysCallHandler(int rdi, int rsi, int rdx, int rcx);
+void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx);
 
 //Termina la ejecución de la cpu.
 void haltcpu(void);

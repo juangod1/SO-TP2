@@ -1,7 +1,7 @@
 #include "stdLib.h"
 #include <stdint.h>
 
-extern int sysCall(int edi, int esi, int edx, int ecx);
+extern int sysCall(uint64_t edi, uint64_t esi, uint64_t edx, uint64_t ecx);
 
 void sysPrintString(uint8_t color, char * string){
   sysCall(1,color,string,0);
