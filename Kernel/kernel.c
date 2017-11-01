@@ -85,16 +85,15 @@ void * initializeKernelBinary()
 
 int main()
 {
-	while(1);
 	ncPrint("[Kernel Main]");
 
-	//load_idt();
+	load_idt();
 	ncPrint("[Finished]");
-	//clearScreen();
+	clearScreen();
 
 	void (*module)();
 	module = sampleCodeModuleAddress;
-
+	while(1);
 	module();
 	return 0;
 }

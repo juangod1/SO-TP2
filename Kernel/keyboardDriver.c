@@ -1,4 +1,5 @@
 #include "keyboardDriver.h"
+#include "videoDriver.h"
 
 const char keyMap[128] =
 {
@@ -38,7 +39,7 @@ const char keyMap[128] =
     0,	/* F11 Key */
     0,	/* F12 Key */
     0,	/* All other keys are undefined */
-};	
+};
 
 char buffer[100] = {};
 int bufferPos=0;
@@ -80,7 +81,7 @@ void keyboard_handler(struct regs *r)
         *  to the above layout to correspond to 'shift' being
         *  held. If shift is held using the larger lookup table,
         *  you would add 128 to the scancode when you look for it */
-        printString("AAAAAAAA");
-        printChar(1,keyMap[scancode]);
+
+        printChar(2,keyMap[scancode]);
     }
 }
