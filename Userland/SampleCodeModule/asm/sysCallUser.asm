@@ -1,6 +1,6 @@
-section .text
 
 GLOBAL sysCall
+section .text
 
 sysCall:
   push rbp

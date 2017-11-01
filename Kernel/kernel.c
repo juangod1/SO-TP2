@@ -6,7 +6,7 @@
 #include "interrupts.h"
 #include "videoDriver.h"
 #include "idtLoader.h"
-
+#include "stdio.h"
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
@@ -94,8 +94,9 @@ int main()
 
 	void (*module)();
 	module = sampleCodeModuleAddress;
-
+	
 	module();
 
 	return 0;
 }
+
