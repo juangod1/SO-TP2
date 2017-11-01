@@ -90,6 +90,7 @@ int main()
 	load_idt();
 
 	ncPrint("[Finished]");
+	clearScreen();
 
 	void (*module)();
 	module = sampleCodeModuleAddress;

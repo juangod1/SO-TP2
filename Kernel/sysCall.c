@@ -17,7 +17,7 @@ void sysCallHandler(int rdi, int rsi, int rdx, int rcx){
   newLine();
   switch(rdi){
     case 1:
-      printString(rsi,rdx);
+      printString(rsi,(char *)rdx);
       break;
     case 2:
       printInt(rsi,rdx);
@@ -29,7 +29,7 @@ void sysCallHandler(int rdi, int rsi, int rdx, int rcx){
       newLine();
       break;
     case 5:
-      readInput(rsi);
+      readInput((char *)rsi);
       break;
   }
 }

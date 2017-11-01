@@ -37,7 +37,7 @@ void printInt(uint8_t color, int num){
 		numbers[dig]='\0';
 
 		if (num<0)
-			printChar(color,"-");
+			printChar(color,'-');
 
 		printString(color,numbers);
 }
@@ -72,7 +72,7 @@ uint8_t * currentline(){
 void readInput(char * buffer){
 	uint8_t * from = currentline();
 	uint8_t * to = currentVideo;
-	for (from;from<to;){
+	for (;from<to;){
 		*buffer=*from;
 		from=from+2;
 		buffer++;
