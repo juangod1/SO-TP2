@@ -87,10 +87,10 @@ int main()
 {
 	ncPrint("[Kernel Main]");
 
-	load_idt();
+	//load_idt();
 
 	ncPrint("[Finished]");
-	clearScreen();
+	//clearScreen();
 
 	void (*module)();
 	module = sampleCodeModuleAddress;
