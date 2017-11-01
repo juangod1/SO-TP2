@@ -1,5 +1,7 @@
 #include "keyboardDriver.h"
 #include "videoDriver.h"
+#define BUFFERSIZE 20
+#define EOF 0
 
 const char keyMap[128] =
 {
@@ -13,12 +15,12 @@ const char keyMap[128] =
   ' ',	/* Space bar -57*/
     0,	/* Caps lock -58*/
     /*- F1 key ... > */  0,  0,   0,   0,   0,   0,   0,   0,   0,   0,	/* < ... F10 */
-    0,	/* Num lock*/
-    0,	/* Scroll Lock */
-    0,	/* Home key */
-    0,	/* Up Arrow */
-    0,	/* Page Up */
-  '-',
+    0,	/* Num lock -68*/
+    0,	/* Scroll Lock -69*/
+    0,	/* Home key -70*/
+    0,	/* Up Arrow -71*/
+    0,	/* Page Up -72*/
+  '-',  /* minus -73*/
     0,	/* Left Arrow */
     0,
     0,	/* Right Arrow */
@@ -34,8 +36,6 @@ const char keyMap[128] =
     0,	/* All other keys are undefined */
 };
 
-char buffer[100] = {};
-int bufferPos=0;
 
 char getChar(){
   int pressed = 0;
@@ -49,6 +49,10 @@ char getChar(){
 
 
 
+static char circularBuffer[BUFFERSIZE]={0};
+static int readindex=0;
+static int writeindex=0;
+static int elements=0;
 
 static int shift = 0;
 static int alt = 0;
@@ -116,8 +120,46 @@ void keyboard_handler(struct regs *r)
 			c-=('a'-'A');
 		}
 		if(print==1){
-        	printChar(2,c);
+        	putChar(c);
+		}
+		if(control && alt && shift){ //print BUFFER
+			char buff[BUFFERSIZE];	//	SE VA A TENER
+			readAllBuffer(buff);	//	QUE BORRAR EN
+			printString(2,buff);	//	UN FUTURO
+			reset(buff,BUFFERSIZE);	//	ES PARA TESTING
 		}
 		print=1;
     }
 }
+void reset(char * string, int size){
+	for (int i=0; i<size; i++){
+		*(string+i)=0;
+	}
+}
+
+void putChar(char c){
+	circularBuffer[writeindex]=c;
+	writeindex=(writeindex+1)%BUFFERSIZE;
+	if(elements==BUFFERSIZE){
+		readindex=(readindex+1)%BUFFERSIZE;
+	}
+	else{
+		elements++;
+	}
+}
+void readAllBuffer(char* buff){
+	if(elements==0){
+		*buff=EOF;
+	}
+	else{
+		int counter=0;
+		while(elements!=0){
+			*(buff+counter)=circularBuffer[readindex];
+			counter++;
+			readindex=(readindex+1)%20;
+			elements--;
+		}
+	}
+}
+
+char getBuffer(){}
