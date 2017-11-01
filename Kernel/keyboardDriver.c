@@ -4,23 +4,16 @@
 const char keyMap[128] =
 {
     0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
-  '9', '0', '-', '=', '\b',	/* Backspace */
-  '\t',			/* Tab */
-  'q', 'w', 'e', 'r',	/* 19 */
-  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
-    0,			/* 29   - Control */
+  '9', '0', '-', '=', '\b','\t',  'q', 'w', 'e', 'r',	/* 19 */
+  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',  0,	/* 29   - Control */
   'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',	/* 39 */
- '\'', '`',   0,		/* Left shift */
- '\\', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
-  'm', ',', '.', '/',   0,				/* Right shift */
-  '*',
-    0,	/* Alt */
-  ' ',	/* Space bar */
-    0,	/* Caps lock */
-    0,	/* 59 - F1 key ... > */
-    0,   0,   0,   0,   0,   0,   0,   0,
-    0,	/* < ... F10 */
-    0,	/* 69 - Num lock*/
+ '\'', '`',   0,/*leftshift*/'\\', 'z', 'x', 'c', 'v', 'b', 'n',/* 49 */
+  'm', ',', '.', '/', 0,/*rightshift*/'*', /*55*/
+    0,	/* Alt -56*/
+  ' ',	/* Space bar -57*/
+    0,	/* Caps lock -58*/
+    /*- F1 key ... > */  0,  0,   0,   0,   0,   0,   0,   0,   0,   0,	/* < ... F10 */
+    0,	/* Num lock*/
     0,	/* Scroll Lock */
     0,	/* Home key */
     0,	/* Up Arrow */
@@ -51,12 +44,21 @@ char getChar(){
 
   return keyMap[get_key()];
 }
-
+/** ACORDARSE DE AVISAR QUE ROBAMOS TODO ESTE CODIGO DE http://www.osdever.net/bkerndev/Docs/keyboard.htm **/
 /* Handles the keyboard interrupt */
+
+
+
+
+static int shift = 0;
+static int alt = 0;
+static int control = 0;
+static int print=1;
+
+
 void keyboard_handler(struct regs *r)
 {
     unsigned char scancode;
-
     /* Read from the keyboard's data buffer */
     scancode = get_key();
 
@@ -64,12 +66,20 @@ void keyboard_handler(struct regs *r)
     *  set, that means that a key has just been released */
     if (scancode & 0x80)
     {
-        /* You can use this one to see if the user released the
-        *  shift, alt, or control keys... */
+
+		if(scancode==182 || scancode==170){
+			shift=0;
+		}
+		if(scancode==157){
+			control=0;
+		}
+		if(scancode==184){
+			alt=0;
+		}
     }
     else
-    {
-        /* Here, a key was just pressed. Please note that if you
+    {        
+    	/* Here, a key was just pressed. Please note that if you
         *  hold a key down, you will get repeated key press
         *  interrupts. */
 
@@ -81,7 +91,33 @@ void keyboard_handler(struct regs *r)
         *  to the above layout to correspond to 'shift' being
         *  held. If shift is held using the larger lookup table,
         *  you would add 128 to the scancode when you look for it */
-
-        printChar(2,keyMap[scancode]);
+		if(scancode==54 || scancode==42){ //shift
+			shift=1;
+			print=0;
+		}
+		if(scancode==29){//control
+			control=1;
+			print=0;
+		}
+		if(scancode==56){//alt
+			alt=1;
+			print=0;
+		}
+		if(scancode==28){//enter
+			newLine();
+			print=0;
+		}
+		if(scancode==14){//backspace
+			backSpace();
+			print=0;
+		}
+		char c=keyMap[scancode];
+		if('a'<=c && c<='z' && shift==1){
+			c-=('a'-'A');
+		}
+		if(print==1){
+        	printChar(2,c);
+		}
+		print=1;
     }
 }
