@@ -88,7 +88,6 @@ int main()
 	ncPrint("[Kernel Main]");
 
 	load_idt();
-
 	ncPrint("[Finished]");
 	clearScreen();
 
@@ -96,7 +95,6 @@ int main()
 	module = sampleCodeModuleAddress;
 	
 	module();
-
 	return 0;
 }
 
