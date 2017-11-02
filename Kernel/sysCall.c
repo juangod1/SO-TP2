@@ -1,7 +1,7 @@
 #include "interrupts.h"
 #include "videoDriver.h"
 #include "time.h"
-
+#include "naiveConsole.h"
 
 
 void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx){
@@ -30,5 +30,7 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx){
     case 5:
       readInput((char *)rsi);
       break;
+    case 6:
+      ncClear();
   }
 }

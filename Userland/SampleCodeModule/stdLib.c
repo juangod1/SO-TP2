@@ -25,3 +25,7 @@ void sysGetTime(int * buffer){
 	buffer[4] = sysCall(3,8,0,0); // Month
 	buffer[5] = sysCall(3,9,0,0); // Year
 }
+
+void sysClear(){
+	sysCall(6,2,0,0);
+}
