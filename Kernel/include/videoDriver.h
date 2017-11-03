@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#define SCREEN_WIDTH 80
-#define SCREEN_HEIGHT 25
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
 #define MAX_DIGITS 20
 #define ROW_LIMIT 25
 

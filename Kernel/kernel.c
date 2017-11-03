@@ -93,8 +93,12 @@ int main()
 
 	void (*module)();
 	module = sampleCodeModuleAddress;
-	
-	module();
+	int i,j;
+	for(i=10;i<500;i++){
+		for(j=10;j<500;j++)
+			paintPixel(i,j,100,100,100);
+	}
+
+	//module();
 	return 0;
 }
-
