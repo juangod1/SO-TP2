@@ -8,8 +8,8 @@ int main() {
 
 	int array[30];
 	sysGetTime(array);
-	sysPrintInt(2,array[2]);
-	sysPrintInt(2,array[1]);
+	sysPrintInt(array[2],255,255,255);
+	sysPrintInt(array[1],255,255,255);
 
 	startShell();
 

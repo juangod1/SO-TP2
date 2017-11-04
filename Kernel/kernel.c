@@ -82,19 +82,13 @@ void * initializeKernelBinary()
 	ncNewline();
 	return getStackBase();
 }
-
+#include "videoDriver.h"
 int main()
 {
-	ncPrint("[Kernel Main]");
-
 	load_idt();
-	ncPrint("[Finished]");
-	clearScreen();
 
 	void (*module)();
 	module = sampleCodeModuleAddress;
-	
-	module();
-	return 0;
-}
 
+	module();
+}

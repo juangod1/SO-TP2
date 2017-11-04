@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-void sysPrintString(uint8_t color, char * string);
-void sysPrintInt(uint8_t color, int num);
+void sysPrintString(char * string, int R, int G, int B);
+void sysPrintInt(int num, int R, int G, int B);
 void sysGetTime(int * buffer);
 void sysNewLine();
 void sysReadInput(char * buffer);

@@ -1,21 +1,60 @@
 #include <stdint.h>
 #include "videoDriver.h"
+#include "font.h"
 
 static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
+static unsigned char ** video_start = (unsigned char**)0x0005C28;
+static unsigned int current_x = 0;
+static unsigned int current_y = 0;
 
-void printString(uint8_t color, const char* string){
+unsigned char * getVideoPix(){
+	return *video_start;
+}
+
+void printString( const char* string, int R, int G, int B){
 	int len = strleng(string);
 	int i;
 	for(i=0;i<len;i++){
-		printChar(color,string[i]);
+		writeChar(string[i],R,G,B);
 	}
 }
 
-void printChar(uint8_t color, char ch){
-	*currentVideo = ch;
-	*(currentVideo+1) = color;
-	currentVideo=currentVideo+2;
+int boundedPixel(int x, int y) {
+	return (x >= 0) && (x <= SCREEN_WIDTH) && (y >= 0) && (y <= SCREEN_HEIGHT);
+}
+
+void paintPixel(int x, int y, char R, char G, char B) {
+	if (!boundedPixel(x, y))
+		return;
+
+	unsigned char * pixel_address;
+	pixel_address = getVideoPix() + 3*(x + y*SCREEN_WIDTH);
+	*pixel_address = B;
+	*(pixel_address+1) = G;
+	*(pixel_address+2) = R;
+}
+
+void writeChar(char c, int R, int G, int B){
+	if (c < 31)
+		;//DO UNPRINTABLE CHARS
+
+	unsigned char * bitmap = pixel_map(c);
+	unsigned char bitmap_aux;
+	int x_counter;
+	int y_counter;
+
+	for(y_counter = 0;y_counter<16;y_counter++){
+		for(x_counter = 0;x_counter<8;x_counter++){
+
+			bitmap_aux = bitmap[y_counter];
+			bitmap_aux >>= 8-x_counter;
+
+			if(bitmap_aux%2 == 1)
+				paintPixel(current_x+x_counter,current_y+y_counter,R,G,B);
+		}
+	}
+	current_x += 8;
 }
 
 int countDigits(int num){
@@ -24,7 +63,7 @@ int countDigits(int num){
 	return dig;
 }
 
-void printInt(uint8_t color, int num){
+void printInt(int num, int R, int G, int B){
 		int dig = countDigits(num);
 		char numbers[MAX_DIGITS] = {};
 		int count=0;
@@ -37,9 +76,9 @@ void printInt(uint8_t color, int num){
 		numbers[dig]='\0';
 
 		if (num<0)
-			printChar(color,'-');
+			writeChar('-',R,G,B);
 
-		printString(color,numbers);
+		printString(numbers,R,G,B);
 }
 
 void clearScreen(){
