@@ -6,5 +6,5 @@
 extern int key_pressed();
 extern int get_key();
 char getChar();
-
+void readAllBuffer(char *);
 #endif

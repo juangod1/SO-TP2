@@ -20,18 +20,14 @@ void printString(uint8_t color, const char* string){
 	}
 }
 
-int boundedPixel(int x, int y);
-void paintPixel(int x, int y, char R, char G, char B);
-unsigned char * getVideoPix();
-
 int boundedPixel(int x, int y) {
-	return (x > 0) && (x <= SCREEN_WIDTH) && (y > 0) && (y <= SCREEN_HEIGHT);
+	return (x >= 0) && (x <= SCREEN_WIDTH) && (y >= 0) && (y <= SCREEN_HEIGHT);
 }
 
 void paintPixel(int x, int y, char R, char G, char B) {
-	if (!boundedPixel(x, y))
-		return;
-		
+	//if (!boundedPixel(x, y))
+	//	return;
+
 	unsigned char * pixel_address;
 	pixel_address = getVideoPix() + 3*(x + y*SCREEN_WIDTH);
 	*pixel_address = B;
@@ -39,30 +35,30 @@ void paintPixel(int x, int y, char R, char G, char B) {
 	*(pixel_address+2) = R;
 }
 
-void writeChar(char c, int x, int y, int R, int G, int B){
-	if(!boundedPixel(x,y))
-		return;
-
+void writeChar(char c, int R, int G, int B){
 	if (c < 31)
 		;//DO UNPRINTABLE CHARS
 
 	unsigned char * bitmap = pixel_map(c);
 	unsigned char bitmap_aux;
-	int x_aux = x;
-	int y_aux = y;
-	int x_counter=0;
+	int x_aux = current_x;
+	int y_aux = current_y;
+	int x_counter;
 	int y_counter=0;
 
-	for(;y<y_aux+16;y++,y_counter++){
-		for(;x<x_aux+8;x++,x_counter++){
+	for(;y_aux<current_y+16;y_aux++,y_counter++){
+		x_counter = 0;
+		for(;x_aux<current_x+8;x_aux++,x_counter++){
 
 			bitmap_aux = bitmap[y_counter];
 			bitmap_aux >>= x_counter;
 
 			if(bitmap_aux%2 == 1)
-				paintPixel(x,y,R,G,B);
+				paintPixel(x_aux,y_aux,R,G,B);
 		}
 	}
+	current_x += 3;
+	current_y += 3;
 }
 
 int countDigits(int num){
@@ -76,7 +72,7 @@ void printChar(uint8_t color, char ch){
 	*(currentVideo+1) = color;
 	currentVideo=currentVideo+2;*/
 
-	writeChar('A',100,100,255,255,255);
+	writeChar(ch,255,255,255);
 
 }
 

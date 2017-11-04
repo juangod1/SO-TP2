@@ -17,5 +17,8 @@ void printChar(uint8_t color, char ch);
 void newLine();
 void readInput(char * buffer);
 uint8_t * currentline();
+int boundedPixel(int x, int y);
+void paintPixel(int x, int y, char R, char G, char B);
+unsigned char * getVideoPix();
 
 #endif

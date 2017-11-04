@@ -82,7 +82,7 @@ void keyboard_handler(struct regs *r)
 		}
     }
     else
-    {        
+    {
     	/* Here, a key was just pressed. Please note that if you
         *  hold a key down, you will get repeated key press
         *  interrupts. */
@@ -147,6 +147,7 @@ void putChar(char c){
 		elements++;
 	}
 }
+
 void readAllBuffer(char* buff){
 	if(elements==0){
 		*buff=EOF;

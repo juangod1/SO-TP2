@@ -82,7 +82,7 @@ void * initializeKernelBinary()
 	ncNewline();
 	return getStackBase();
 }
-
+#include "videoDriver.h"
 int main()
 {
 	ncPrint("[Kernel Main]");
@@ -93,12 +93,10 @@ int main()
 
 	void (*module)();
 	module = sampleCodeModuleAddress;
-	int i,j;
-	for(i=10;i<500;i++){
-		for(j=10;j<500;j++)
-			paintPixel(i,j,100,100,100);
-	}
 
-	//module();
-	return 0;
+	writeChar('B');
+	writeChar('B');
+	writeChar('A');
+	writeChar('c');
+	writeChar('B');
 }
