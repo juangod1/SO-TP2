@@ -11,8 +11,6 @@ void exceptionDispatcher(int exception) {
 
 	else if (exception == INVALID_OPCODE_EXCEPTION_ID)
 		op_code();
-
-	else if (exception == OVERFLOW_EXCEPTION_ID)
 }
 
 static void zero_division() {
