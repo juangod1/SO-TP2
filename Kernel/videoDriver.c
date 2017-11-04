@@ -42,14 +42,13 @@ void writeChar(char c, int R, int G, int B){
 	unsigned char * bitmap = pixel_map(c);
 	unsigned char bitmap_aux;
 	int x_counter;
-	int y_counter=0;
+	int y_counter;
 
-	for(;y_counter<16;y_counter++){
-		x_counter = 0;
-		for(;x_counter<8;x_counter++){
+	for(y_counter = 0;y_counter<16;y_counter++){
+		for(x_counter = 0;x_counter<8;x_counter++){
 
 			bitmap_aux = bitmap[y_counter];
-			bitmap_aux >>= x_counter;
+			bitmap_aux >>= 8-x_counter;
 
 			if(bitmap_aux%2 == 1)
 				paintPixel(current_x+x_counter,current_y+y_counter,R,G,B);
