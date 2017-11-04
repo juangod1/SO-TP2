@@ -125,7 +125,7 @@ void keyboard_handler(struct regs *r)
 		if(control && alt && shift){ //print BUFFER
 			char buff[BUFFERSIZE];	//	SE VA A TENER
 			readAllBuffer(buff);	//	QUE BORRAR EN
-			printString(2,buff);	//	UN FUTURO
+			printString(buff,255,255,255);	//	UN FUTURO
 			reset(buff,BUFFERSIZE);	//	ES PARA TESTING
 		}
 		print=1;

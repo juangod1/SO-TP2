@@ -12,11 +12,11 @@ unsigned char * getVideoPix(){
 	return *video_start;
 }
 
-void printString(uint8_t color, const char* string){
+void printString( const char* string, int R, int G, int B){
 	int len = strleng(string);
 	int i;
 	for(i=0;i<len;i++){
-		printChar(color,string[i]);
+		writeChar(string[i],R,G,B);
 	}
 }
 
@@ -25,8 +25,8 @@ int boundedPixel(int x, int y) {
 }
 
 void paintPixel(int x, int y, char R, char G, char B) {
-	//if (!boundedPixel(x, y))
-	//	return;
+	if (!boundedPixel(x, y))
+		return;
 
 	unsigned char * pixel_address;
 	pixel_address = getVideoPix() + 3*(x + y*SCREEN_WIDTH);
@@ -63,16 +63,7 @@ int countDigits(int num){
 	return dig;
 }
 
-void printChar(uint8_t color, char ch){
-	/**currentVideo = ch;
-	*(currentVideo+1) = color;
-	currentVideo=currentVideo+2;*/
-
-	writeChar(ch,255,255,255);
-
-}
-
-void printInt(uint8_t color, int num){
+void printInt(int num, int R, int G, int B){
 		int dig = countDigits(num);
 		char numbers[MAX_DIGITS] = {};
 		int count=0;
@@ -85,9 +76,9 @@ void printInt(uint8_t color, int num){
 		numbers[dig]='\0';
 
 		if (num<0)
-			printChar(color,'-');
+			writeChar('-',R,G,B);
 
-		printString(color,numbers);
+		printString(numbers,R,G,B);
 }
 
 void clearScreen(){

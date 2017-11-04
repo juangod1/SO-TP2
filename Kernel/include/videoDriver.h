@@ -9,11 +9,10 @@
 #define ROW_LIMIT 25
 
 void clearScreen();
-void printString(uint8_t color, const char* string);
+void printString(const char* string, int R, int G, int B);
 int strleng(const char *str);
 int countDigits(int num);
-void printInt(uint8_t color, int num);
-void printChar(uint8_t color, char ch);
+void printInt(int num, int R, int G, int B);
 void newLine();
 void readInput(char * buffer);
 uint8_t * currentline();

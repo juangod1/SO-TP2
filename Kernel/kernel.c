@@ -90,16 +90,5 @@ int main()
 	void (*module)();
 	module = sampleCodeModuleAddress;
 
-	int i,j;
-	for(i=0;i<500;i++){
-		for(j=0;j<500;j++){
-			paintPixel(i,j,0,255,255);
-		}
-	}
-	writeChar('b',255,255,255);
-	writeChar('b',255,255,255);
-	writeChar('b',255,255,255);
-	writeChar('b',255,255,255);
-	writeChar('b',255,255,255);
-	writeChar('b',255,255,255);
+	module();
 }
