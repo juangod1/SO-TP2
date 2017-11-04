@@ -103,12 +103,6 @@ void newLine(){
 	currentVideo = ((currentVideo-video)/160+1)*160 + video;
 }
 
-void backSpace(){
-	*currentVideo=0;
-	*(currentVideo-1)=0;
-	currentVideo-=2;
-}
-
 uint8_t * currentline(){
 	uint8_t * currentline = (currentVideo-video)/((uint8_t)160)*160 + video;
 	return currentline;

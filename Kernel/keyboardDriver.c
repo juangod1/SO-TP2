@@ -36,14 +36,6 @@ const char keyMap[128] =
     0,	/* All other keys are undefined */
 };
 
-
-char getChar(){
-  int pressed = 0;
-  while(!pressed)
-    pressed = key_pressed();
-
-  return keyMap[get_key()];
-}
 /** ACORDARSE DE AVISAR QUE ROBAMOS TODO ESTE CODIGO DE http://www.osdever.net/bkerndev/Docs/keyboard.htm **/
 /* Handles the keyboard interrupt */
 
@@ -107,14 +99,6 @@ void keyboard_handler(struct regs *r)
 			alt=1;
 			print=0;
 		}
-		if(scancode==28){//enter
-			newLine();
-			print=0;
-		}
-		if(scancode==14){//backspace
-			backSpace();
-			print=0;
-		}
 		char c=keyMap[scancode];
 		if('a'<=c && c<='z' && shift==1){
 			c-=('a'-'A');
@@ -131,20 +115,33 @@ void keyboard_handler(struct regs *r)
 		print=1;
     }
 }
+
 void reset(char * string, int size){
 	for (int i=0; i<size; i++){
 		*(string+i)=0;
 	}
 }
+int isEmpty(){
+  return elements==0;
+}
+char getChar(){
+  if(elements==0){
+    return EOF;
+  }
+  char ret=circularBuffer[readindex];
+  readindex++;
+  elements--;
+  return ret;
+}
 
 void putChar(char c){
 	circularBuffer[writeindex]=c;
 	writeindex=(writeindex+1)%BUFFERSIZE;
-	if(elements==BUFFERSIZE){
-		readindex=(readindex+1)%BUFFERSIZE;
+	if(elements<BUFFERSIZE){
+    elements++;
 	}
 	else{
-		elements++;
+    readindex=(readindex+1)%BUFFERSIZE;
 	}
 }
 
@@ -154,13 +151,15 @@ void readAllBuffer(char* buff){
 	}
 	else{
 		int counter=0;
-		while(elements!=0){
+		while(elements>0){
 			*(buff+counter)=circularBuffer[readindex];
 			counter++;
 			readindex=(readindex+1)%20;
 			elements--;
 		}
+    *(buff+counter)=0;
 	}
+
 }
 
 char getBuffer(){}
