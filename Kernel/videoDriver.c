@@ -57,8 +57,7 @@ void writeChar(char c, int R, int G, int B){
 				paintPixel(x_aux,y_aux,R,G,B);
 		}
 	}
-	current_x += 3;
-	current_y += 3;
+	current_x += 8;
 }
 
 int countDigits(int num){
