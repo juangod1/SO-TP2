@@ -85,18 +85,21 @@ void * initializeKernelBinary()
 #include "videoDriver.h"
 int main()
 {
-	ncPrint("[Kernel Main]");
-
 	load_idt();
-	ncPrint("[Finished]");
-	clearScreen();
 
 	void (*module)();
 	module = sampleCodeModuleAddress;
 
-	writeChar('B');
-	writeChar('B');
-	writeChar('A');
-	writeChar('c');
-	writeChar('B');
+	int i,j;
+	for(i=0;i<500;i++){
+		for(j=0;j<500;j++){
+			paintPixel(i,j,0,255,255);
+		}
+	}
+	writeChar('b',255,255,255);
+	writeChar('b',255,255,255);
+	writeChar('b',255,255,255);
+	writeChar('b',255,255,255);
+	writeChar('b',255,255,255);
+	writeChar('b',255,255,255);
 }
