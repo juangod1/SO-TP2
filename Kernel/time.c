@@ -1,8 +1,9 @@
 #include "time.h"
-
+#include "naiveConsole.h"
 static unsigned long ticks = 0;
 
 void timer_handler() {
+	ncPrintDec(ticks);
 	ticks++;
 }
 
