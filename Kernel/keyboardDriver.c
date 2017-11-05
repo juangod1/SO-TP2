@@ -64,59 +64,104 @@ void keyboard_handler(struct regs *r)
     if (scancode & 0x80)
     {
 
-		if(scancode==182 || scancode==170){
-			shift=0;
-		}
-		if(scancode==157){
-			control=0;
-		}
-		if(scancode==184){
-			alt=0;
-		}
+  		if(scancode==182 || scancode==170){
+  			shift=0;
+  		}
+  		if(scancode==157){
+  			control=0;
+  		}
+  		if(scancode==184){
+  			alt=0;
+  		}
     }
     else
     {
-    	/* Here, a key was just pressed. Please note that if you
-        *  hold a key down, you will get repeated key press
-        *  interrupts. */
+      	/* Here, a key was just pressed. Please note that if you
+          *  hold a key down, you will get repeated key press
+          *  interrupts. */
 
-        /* Just to show you how this works, we simply translate
-        *  the keyboard scancode into an ASCII value, and then
-        *  display it to the screen. You can get creative and
-        *  use some flags to see if a shift is pressed and use a
-        *  different layout, or you can add another 128 entries
-        *  to the above layout to correspond to 'shift' being
-        *  held. If shift is held using the larger lookup table,
-        *  you would add 128 to the scancode when you look for it */
-    if(scancode==58){ //CAPSLOCK
-      caps=!caps;
-    }
-		if(scancode==54 || scancode==42){ //shift
-			shift=1;
-			print=0;
-		}
-		if(scancode==29){//control
-			control=1;
-			print=0;
-		}
-		if(scancode==56){//alt
-			alt=1;
-			print=0;
-		}
-		char c=keyMap[scancode];
-		if('a'<=c && c<='z' && ((shift==1 && caps==0)||(shift==0 && caps==1))){
-			c-=('a'-'A');
-		}
-		if(print==1){
-        	putChar(c);
-		}
-		/*if(control && alt && shift){          //readAllBuffer
-			char buff[BUFFERSIZE];	            //	SE VA A TENER
-			readAllBuffer(buff);	              //	QUE BORRAR EN
-			printString(buff,255,255,255);	  //	UN FUTURO
-			reset(buff,BUFFERSIZE);	         //	ES PARA TESTING
-		}*/
-		print=1;
+          /* Just to show you how this works, we simply translate
+          *  the keyboard scancode into an ASCII value, and then
+          *  display it to the screen. You can get creative and
+          *  use some flags to see if a shift is pressed and use a
+          *  different layout, or you can add another 128 entries
+          *  to the above layout to correspond to 'shift' being
+          *  held. If shift is held using the larger lookup table,
+          *  you would add 128 to the scancode when you look for it */
+      if(scancode==58){ //CAPSLOCK
+        caps=!caps;
+      }
+  		if(scancode==54 || scancode==42){ //shift
+  			shift=1;
+  			print=0;
+  		}
+  		if(scancode==29){//control
+  			control=1;
+  			print=0;
+  		}
+  		if(scancode==56){//alt
+  			alt=1;
+  			print=0;
+  		}
+  		char c=keyMap[scancode];
+  		if('a'<=c && c<='z' && ((shift==1 && caps==0)||(shift==0 && caps==1))){
+  			c-=('a'-'A');
+  		}
+      else{
+        if(shift==1){
+          switch(c){
+            case '1':
+              c='!';
+              break;
+            case '2':
+              c='@';
+              break;
+            case '3':
+              c='#';
+              break;
+            case '4':
+              c='$';
+              break;
+            case '5':
+              c='%';
+              break;
+            case '6':
+              c='^';
+              break;
+            case '7':
+              c='&';
+              break;
+            case '8':
+              c='*';
+              break;
+            case '9':
+              c='(';
+              break;
+            case '0':
+              c=')';
+              break;
+            case '-':
+              c='_';
+              break;
+            case '+':
+              c='=';
+              break;
+            case '{':
+              c='[';
+              break;
+            case '}':
+              c=']';
+              break;
+            case '|':
+              c='\\';
+              break;
+            }
+        }
+      }
+  		if(print==1){
+          	putChar(c);
+  		}
+  		print=1;
     }
 }
 
