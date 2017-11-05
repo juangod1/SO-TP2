@@ -21,7 +21,7 @@ void startShell(){
 	char* ch;
 	int* ptr;
 	sysPrintString(";) Mamita que pedazo de animacion ;)\n",color_red,color_green,color_blue);
-	sysPrintString("$> ",0,0,0);
+	sysPrintString("$> ",0,155,255);
 	while(1){
 		sysGetChar(ch);
 		sysWriteChar(*ch);
@@ -29,7 +29,7 @@ void startShell(){
 		(*ch!=0)?counter++:counter;
 		if(*ch=='\n'){
 			callFunction(string);
-			sysPrintString("$> ",0,0,0);
+			sysPrintString("$> ",0,155,255);
 			reset(string);
 			counter=0;
 		}
