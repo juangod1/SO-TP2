@@ -26,5 +26,7 @@ int boundedPixel(int x, int y);
 void paintPixel(int x, int y, char R, char G, char B);
 unsigned char * getVideoPix();
 void writeChar(char c, int R, int G, int B);
+void plotAxis();
+void plotFunction(float a, float b, float c);
 
 #endif
