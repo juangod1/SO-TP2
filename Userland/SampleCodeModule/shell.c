@@ -16,11 +16,17 @@ static int color_blue=0;
 void startShell(){
 	sysPrintString("Shell initialized",color_red,color_green,color_blue);
 	callFunction("help");
-	sysNewLine();
-	sysPrintString(";) Mamita que pedazo de animacion ;)",color_red,color_green,color_blue);
-	//while(1){
-
-	//}
+	char* ch;
+	int* ptr;
+	sysPrintString(";) Mamita que pedazo de animacion ;)\n",color_red,color_green,color_blue);
+	sysPrintString("$> ",0,0,0);
+	while(1){
+		sysGetChar(ch);
+		sysWriteChar(ch);
+		if(*ch=='\n'){
+			sysPrintString("$> ",0,0,0);
+		}
+	}
 
 }
 int callFunction(char* buffer){
@@ -57,7 +63,7 @@ int callFunction(char* buffer){
 			sysPrintString(input[i],color_red,color_green,color_blue);
 			sysPrintString(" ",color_red,color_green,color_blue);
 		}
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
 	else if(strcmp(input[0],"displayTime")==0){
@@ -67,7 +73,7 @@ int callFunction(char* buffer){
 		}
 		sysPrintString("Displaying time",color_red,color_green,color_blue);
 		//sysGetTime(buffer);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
 	else if(strcmp(input[0],"setFontColor")==0){
@@ -77,7 +83,7 @@ int callFunction(char* buffer){
 		}
 		//color = input[1][0]-'0'; HAS TO FIX
 		sysPrintString("Set font color",color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
 	else if(strcmp(input[0],"clear")==0){
@@ -97,7 +103,7 @@ int callFunction(char* buffer){
 		int rta = calculate(input[1],input[2][0]-'0',input[3][0]-'0');
 		sysPrintString("Calculating: ",color_red,color_green,color_blue);
 		sysPrintInt(rta,color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
 	else if(strcmp(input[0],"help")==0){
@@ -106,7 +112,7 @@ int callFunction(char* buffer){
 			return 2;
 		}
 		sysPrintString(helpIns,color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
 	else if(strcmp(input[0],"exit")==0){
@@ -115,7 +121,7 @@ int callFunction(char* buffer){
 			return 2;
 		}
 		sysPrintString("See you soon",color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
 	else if(strcmp(input[0],"graph")==0){
@@ -129,7 +135,7 @@ int callFunction(char* buffer){
 	else{
 		sysPrintString("Wrong input",color_red,color_green,color_blue);
 		sysPrintString(input[0],color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 2;
 	}
 	return 1;

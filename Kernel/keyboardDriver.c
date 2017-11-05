@@ -124,14 +124,14 @@ void reset(char * string, int size){
 int isEmpty(){
   return elements==0;
 }
-char getChar(){
-  if(elements==0){
-    return EOF;
+char getChar(char * ch){
+  if(isEmpty()){
+    *ch= EOF;
+    return;
   }
-  char ret=circularBuffer[readindex];
-  readindex++;
+  *ch=circularBuffer[readindex];
+  readindex=(readindex+1)%BUFFERSIZE;
   elements--;
-  return ret;
 }
 
 void putChar(char c){
