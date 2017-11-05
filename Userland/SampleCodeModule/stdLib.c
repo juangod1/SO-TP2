@@ -4,11 +4,11 @@
 
 extern int sysCall(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
-void sysPrintString(char * string, int R, int G, int B){
+void sysPrintString(char * string, int B, int G, int R){
   int len = strleng(string);
   int i;
   for(i=0;i<len;i++){
-    sysWriteChar(string[i]);
+    sysWriteChar(string[i], B, G, R);
   }
 }
 int strleng(const char *str){
@@ -17,7 +17,7 @@ int strleng(const char *str){
 	return i;
 }
 
-void sysPrintInt(int num, int R, int G, int B){
+void sysPrintInt(int num, int B, int G, int R){
   int dig = countDigits(num);
   char numbers[MAX_DIGITS] = {};
   int count=0;
@@ -32,7 +32,7 @@ void sysPrintInt(int num, int R, int G, int B){
   if (num<0)
     sysWriteChar('-');
 
-  sysPrintString(numbers,R,G,B);
+  sysPrintString(numbers,B,G,R);
 }
 int countDigits(int num){
 	int dig = 1;
@@ -43,8 +43,8 @@ void sysGetChar(char * ch){
   sysCall(4,ch,0,0,0,0);
 }
 
-void sysWriteChar(char * ch){
-  sysCall(7,ch,0,0,0,0);
+void sysWriteChar(char * ch,unsigned char color_blue,unsigned char color_green,unsigned char color_red){
+  sysCall(7,ch,color_blue,color_green,color_red,0);
 }
 
 
