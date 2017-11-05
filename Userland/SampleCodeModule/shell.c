@@ -168,11 +168,6 @@ int multiply(int x, int y) {
 }
 
 int divide(int x, int y) {
-	if (y == 0)
-	{
-		/* EXCEPTION */
-	}
-
 	return x / y;
 }
 

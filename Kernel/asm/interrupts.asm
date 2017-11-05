@@ -13,8 +13,9 @@ GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 
-GLOBAL _exception0Handler
-
+GLOBAL _divideByZeroHandler
+EXTERN ncPrint
+EXTERN ncPrintHex
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 
@@ -38,14 +39,18 @@ SECTION .text
 
 
 
-%macro exceptionHandler 1
+%macro exceptionHandler 2
 	pushState
 
-	mov rdi, %1 ; pasaje de parametro
+	mov rdi, %1 ; pasaje del 1er parametro
+	mov rsi, %2	; pasaje del 2do parametro
+
 	call exceptionDispatcher
 
 	popState
+
 	iretq
+
 %endmacro
 
 
@@ -106,8 +111,15 @@ _irq05Handler:
 
 
 ;Zero Division Exception
-_exception0Handler:
-	exceptionHandler 0
+_divideByZeroHandler:
+	pushState
+	;exceptionHandler 0,40
+	mov rdi,errorString
+	call ncPrint 
+	;mov rsi,40
+	;call exceptionDispatcher
+	popState
+	iretq
 
 haltcpu:
 	cli
@@ -115,6 +127,8 @@ haltcpu:
 	ret
 
 
-
 SECTION .bss
 	aux resq 1
+
+SECTION .data
+	errorString db "Error division by zero",10,0
