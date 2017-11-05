@@ -36,9 +36,13 @@ void paintPixel(int x, int y, char R, char G, char B) {
 }
 
 void writeChar(char c, int R, int G, int B){
+	checkLine();
 	if (c < 31)
 		;//DO UNPRINTABLE CHARS
-
+	if (c =='\n'){
+		newLine();
+		return;
+	}
 	unsigned char * bitmap = pixel_map(c);
 	unsigned char bitmap_aux;
 	int x_counter;
@@ -55,6 +59,15 @@ void writeChar(char c, int R, int G, int B){
 		}
 	}
 	current_x += 8;
+}
+void checkLine(){
+	if(current_x>=SCREEN_WIDTH){
+		current_x=0;
+		current_y+=16;
+		if(current_y>=SCREEN_HEIGHT){
+			current_y-=16;
+		}
+	}
 }
 
 int countDigits(int num){
@@ -94,13 +107,25 @@ int strleng(const char *str){
 	return i;
 }
 
-void newLine(){
+/*void newLine(){                                                            OLD VERSION OF NEWLINE
 	if ((currentVideo-video)/((uint8_t)160) == (uint8_t)(ROW_LIMIT-1)){
 		currentVideo = video;
 		return;
 	}
 
 	currentVideo = ((currentVideo-video)/160+1)*160 + video;
+}*/
+
+void newLine(){
+	current_x=0;
+	current_y+=16;
+	if(current_y>=SCREEN_HEIGHT){
+		current_y--;
+		shift();
+	}
+}
+void shift(){
+	return;            // ESTA FUNCION TENDRIA QUE MOVER TODO PARA ARRIBA
 }
 
 uint8_t * currentline(){
