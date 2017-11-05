@@ -32,5 +32,7 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       break;
     case 6:
       ncClear();
+    case 7:
+      plotFunction(rsi,rdx,rcx);
   }
 }

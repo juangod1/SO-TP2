@@ -123,3 +123,11 @@ void readInput(char * buffer){
 		buffer++;
 	}
 }
+
+void plotFunction(float a, float b, float c) {
+	plotAxis();
+}
+
+void plotAxis() {
+
+}

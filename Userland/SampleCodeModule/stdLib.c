@@ -29,3 +29,7 @@ void sysGetTime(int * buffer){
 void sysClear(){
 	sysCall(6,2,0,0,0,0);
 }
+
+void sysPlotFunction(float a, float b, float c) {
+  sysCall(7,a,b,c,0,0);
+}
