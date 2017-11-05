@@ -128,10 +128,13 @@ void printInt(int num, int R, int G, int B){
 }
 
 void clearScreen(){
-	int i;
-	for(i=0; i<SCREEN_WIDTH*SCREEN_HEIGHT*2; i++){
-		*(video+i) = 0;
+	for(int i=0; i<SCREEN_WIDTH; i+=8){
+		for(int j=0; j<SCREEN_HEIGHT; j++){
+			paintCharSpace(i,j,BG_R,BG_G,BG_B);
+		}
 	}
+	current_x=0;
+	current_y=0;
 }
 
 int strleng(const char *str){

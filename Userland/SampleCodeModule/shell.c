@@ -24,7 +24,7 @@ void startShell(){
 	sysPrintString("$> ",0,0,0);
 	while(1){
 		sysGetChar(ch);
-		sysWriteChar(ch);
+		sysWriteChar(*ch);
 		string[counter]=*ch;
 		(*ch!=0)?counter++:counter;
 		if(*ch=='\n'){
