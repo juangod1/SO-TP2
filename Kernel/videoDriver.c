@@ -129,7 +129,7 @@ void printInt(int num, int R, int G, int B){
 
 void clearScreen(){
 	for(int i=0; i<SCREEN_WIDTH; i+=8){
-		for(int j=0; j<SCREEN_HEIGHT; j++){
+		for(int j=0; j<SCREEN_HEIGHT; j+=16){
 			paintCharSpace(i,j,BG_R,BG_G,BG_B);
 		}
 	}

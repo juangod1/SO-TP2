@@ -50,6 +50,7 @@ static int shift = 0;
 static int alt = 0;
 static int control = 0;
 static int print=1;
+static int caps=0;
 
 
 void keyboard_handler(struct regs *r)
@@ -87,6 +88,9 @@ void keyboard_handler(struct regs *r)
         *  to the above layout to correspond to 'shift' being
         *  held. If shift is held using the larger lookup table,
         *  you would add 128 to the scancode when you look for it */
+    if(scancode==58){ //CAPSLOCK
+      caps=!caps;
+    }
 		if(scancode==54 || scancode==42){ //shift
 			shift=1;
 			print=0;
@@ -100,7 +104,7 @@ void keyboard_handler(struct regs *r)
 			print=0;
 		}
 		char c=keyMap[scancode];
-		if('a'<=c && c<='z' && shift==1){
+		if('a'<=c && c<='z' && ((shift==1 && caps==0)||(shift==0 && caps==1))){
 			c-=('a'-'A');
 		}
 		if(print==1){
