@@ -2,6 +2,7 @@
 #include "videoDriver.h"
 #include "font.h"
 
+
 static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
 static unsigned char ** video_start = (unsigned char**)0x0005C28;
@@ -24,6 +25,22 @@ int boundedPixel(int x, int y) {
 	return (x >= 0) && (x <= SCREEN_WIDTH) && (y >= 0) && (y <= SCREEN_HEIGHT);
 }
 
+void paintBackGround(){
+	for(int i=0; i<SCREEN_WIDTH; i+=5){
+		for(int j=0; j<SCREEN_HEIGHT; j++){
+			paintCharSpace(i,j,BG_R,BG_G,BG_B);
+		}
+	}
+}
+
+void paintCharSpace(int current_x, int current_y, char R, char G, char B){
+	for(int i=0; i<8; i++){
+		for(int j=0; j<16; j++){
+			paintPixel(current_x+i, current_y+j, R, G, B);
+		}
+	}
+}
+
 void paintPixel(int x, int y, char R, char G, char B) {
 	if (!boundedPixel(x, y))
 		return;
@@ -36,25 +53,54 @@ void paintPixel(int x, int y, char R, char G, char B) {
 }
 
 void writeChar(char c, int R, int G, int B){
-	if (c < 31)
-		;//DO UNPRINTABLE CHARS
-
-	unsigned char * bitmap = pixel_map(c);
-	unsigned char bitmap_aux;
-	int x_counter;
-	int y_counter;
-
-	for(y_counter = 0;y_counter<16;y_counter++){
-		for(x_counter = 0;x_counter<8;x_counter++){
-
-			bitmap_aux = bitmap[y_counter];
-			bitmap_aux >>= 8-x_counter;
-
-			if(bitmap_aux%2 == 1)
-				paintPixel(current_x+x_counter,current_y+y_counter,R,G,B);
+	checkLine();
+	if (c < 31){
+		if (c =='\n'){
+			newLine();
+			return;
+		}
+		if (c== 8){	//BACKSPACE
+			backSpace();
+			return;
 		}
 	}
-	current_x += 8;
+	else{
+		unsigned char * bitmap = pixel_map(c);
+		unsigned char bitmap_aux;
+		int x_counter;
+		int y_counter;
+
+		for(y_counter = 0;y_counter<16;y_counter++){
+			for(x_counter = 0;x_counter<8;x_counter++){
+
+				bitmap_aux = bitmap[y_counter];
+				bitmap_aux >>= 8-x_counter;
+
+				if(bitmap_aux%2 == 1)
+					paintPixel(current_x+x_counter,current_y+y_counter,R,G,B);
+				else{
+					paintPixel(current_x+x_counter,current_y+y_counter,BG_R,BG_G,BG_B);
+				}
+			}
+		}
+		current_x += 8;
+	}
+}
+void backSpace(){
+	if(current_x!=0){
+		current_x-=8;
+		paintCharSpace(current_x, current_y, BG_R, BG_G, BG_B);
+	}
+}
+void checkLine(){
+	if(current_x>=SCREEN_WIDTH){
+		current_x=0;
+		current_y+=16;
+		if(current_y>=SCREEN_HEIGHT){
+			current_y-=16;
+			shift();
+		}
+	}
 }
 
 int countDigits(int num){
@@ -94,19 +140,25 @@ int strleng(const char *str){
 	return i;
 }
 
-void newLine(){
+/*void newLine(){                                                            OLD VERSION OF NEWLINE
 	if ((currentVideo-video)/((uint8_t)160) == (uint8_t)(ROW_LIMIT-1)){
 		currentVideo = video;
 		return;
 	}
 
 	currentVideo = ((currentVideo-video)/160+1)*160 + video;
-}
+}*/
 
-void backSpace(){
-	*currentVideo=0;
-	*(currentVideo-1)=0;
-	currentVideo-=2;
+void newLine(){
+	current_x=0;
+	current_y+=16;
+	if(current_y>=SCREEN_HEIGHT){
+		current_y-=16;
+		shift();
+	}
+}
+void shift(){
+	return;            // ESTA FUNCION TENDRIA QUE MOVER TODO PARA ARRIBA
 }
 
 uint8_t * currentline(){

@@ -10,12 +10,16 @@ void sysPrintString(char * string, int R, int G, int B){
 void sysPrintInt(int num, int R, int G, int B){
   sysCall(2,num,R,G,B,0);
 }
-void sysNewLine(){
-  sysCall(4,0,0,0,0,0);
+void sysGetChar(char * ch){
+  sysCall(4,ch,0,0,0,0);
 }
 void sysReadInput(char * buffer){
   sysCall(5,buffer,0,0,0,0);
 }
+void sysWriteChar(char * ch){
+  sysCall(7,ch,0,0,0,0);
+}
+
 
 void sysGetTime(int * buffer){
 	buffer[0] = sysCall(3,0,0,0,0,0); // Seconds

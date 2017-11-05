@@ -1,7 +1,7 @@
 #include "stdLib.h";
 #include "stdio.h";
 #define NULL ((void*)0)
-char* helpIns ="echo *param*...			- prints param (max of 32) to screen\n\
+char* helpIns ="\necho *param*...			- prints param (max of 32) to screen\n\
 				displayTime 			- prints date and time to screen\n\
 				setFontColor *param* 	- changes font color to the one corresponding to d\n\
 				clear 					- clears screen\n\
@@ -9,24 +9,46 @@ char* helpIns ="echo *param*...			- prints param (max of 32) to screen\n\
 											possible options are add, substract, divide and multiply\n\
 				help 					- displays help instructions\n\
 				exit					- exits the shell\n";
-static int color_red=100;
-static int color_green=100;
-static int color_blue=100;
+static int color_red=0;
+static int color_green=0;
+static int color_blue=0;
 
 void startShell(){
 	sysPrintString("Shell initialized",color_red,color_green,color_blue);
-	callFunction("help");
-	sysNewLine();
-	//while(1){
+	callFunction("help\n");
+	char string[80]={0};
+	int counter=0;
+	char* ch;
+	int* ptr;
+	sysPrintString(";) Mamita que pedazo de animacion ;)\n",color_red,color_green,color_blue);
+	sysPrintString("$> ",0,0,0);
+	while(1){
+		sysGetChar(ch);
+		sysWriteChar(ch);
+		string[counter]=*ch;
+		(*ch!=0)?counter++:counter;
+		if(*ch=='\n'){
+			callFunction(string);
+			sysPrintString("$> ",0,0,0);
+			reset(string);
+			counter=0;
+		}
+		if(*ch=='\b'){
+			(counter!=0)?string[counter--]=0:counter;
+			(counter!=0)?string[counter--]=0:counter;
+		}
+	}
 
-	//}
-
+}
+void reset(char * string, int size){
+	for (int i=0; i<size; i++){
+		*(string+i)=0;
+	}
 }
 int callFunction(char* buffer){
 	if(buffer==NULL){
 		return 2;
 	}
-
 	int wordLength=0;
 	int words = 0;
 	char input[32][80]={0};
@@ -49,37 +71,36 @@ int callFunction(char* buffer){
 		words++;
 	}
 
-
-
 	if(strcmp(input[0],"echo")==0){
 		for(int i = 1  ;i < words+1;i++){
 			sysPrintString(input[i],color_red,color_green,color_blue);
 			sysPrintString(" ",color_red,color_green,color_blue);
 		}
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
-	else if(strcmp(input[0],"displayTime")==0){
+
+	else if(strcmp(input[0],"displayTime\n")==0){
 		if(words!=1){
 			sysPrintString("Wrong parameters for displayTime",color_red,color_green,color_blue);
 			return 2;
 		}
 		sysPrintString("Displaying time",color_red,color_green,color_blue);
 		//sysGetTime(buffer);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
-	else if(strcmp(input[0],"setFontColor")==0){
+	else if(strcmp(input[0],"setFontColor\n")==0){
 		if(words!=2){
 			sysPrintString("Wrong parameters for setFontColor",color_red,color_green,color_blue);
 			return 2;
 		}
 		//color = input[1][0]-'0'; HAS TO FIX
 		sysPrintString("Set font color",color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
-	else if(strcmp(input[0],"clear")==0){
+	else if(strcmp(input[0],"clear\n")==0){
 		if(words!=1){
 			sysPrintString("No extra parameters for clear",color_red,color_green,color_blue);
 			return 2;
@@ -87,7 +108,7 @@ int callFunction(char* buffer){
 		sysClear();
 		return 0;
 	}
-	else if(strcmp(input[0],"calculate")==0){
+	else if(strcmp(input[0],"calculate\n")==0){
 		//verificar que hay 4 inputs
 		if(words!=4){
 			sysPrintString("Wrong parameters for calculate",color_red,color_green,color_blue);
@@ -96,28 +117,28 @@ int callFunction(char* buffer){
 		int rta = calculate(input[1],input[2][0]-'0',input[3][0]-'0');
 		sysPrintString("Calculating: ",color_red,color_green,color_blue);
 		sysPrintInt(rta,color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
-	else if(strcmp(input[0],"help")==0){
+	else if(strcmp(input[0],"help\n")==0){
 		if(words!=1){
 			sysPrintString("No extra parameters for help",color_red,color_green,color_blue);
 			return 2;
 		}
 		sysPrintString(helpIns,color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
-	else if(strcmp(input[0],"exit")==0){
+	else if(strcmp(input[0],"exit\n")==0){
 		if(words!=1){
 			sysPrintString("No extra parameters for exit",color_red,color_green,color_blue);
 			return 2;
 		}
 		sysPrintString("See you soon",color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 0;
 	}
-	else if(strcmp(input[0],"graph")==0){
+	else if(strcmp(input[0],"graph\n")==0){
 		if(words!=1){
 			sysPrintString("No extra parameters for graph",color_red,color_green,color_blue);
 			return 2;
@@ -126,9 +147,9 @@ int callFunction(char* buffer){
 		return 0;
 	}
 	else{
-		sysPrintString("Wrong input",color_red,color_green,color_blue);
+		sysPrintString("Wrong input\n",color_red,color_green,color_blue);
 		sysPrintString(input[0],color_red,color_green,color_blue);
-		sysNewLine();
+		sysPrintString("\n",color_red,color_blue,color_green);
 		return 2;
 	}
 	return 1;

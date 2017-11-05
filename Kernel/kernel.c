@@ -86,7 +86,7 @@ void * initializeKernelBinary()
 int main()
 {
 	load_idt();
-
+	paintBackGround();
 	void (*module)();
 	module = sampleCodeModuleAddress;
 
