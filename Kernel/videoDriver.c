@@ -13,11 +13,11 @@ unsigned char * getVideoPix(){
 	return *video_start;
 }
 
-void printString( const char* string, int R, int G, int B){
+void printString( const char* string, int B, int G, int R){
 	int len = strleng(string);
 	int i;
 	for(i=0;i<len;i++){
-		writeChar(string[i],R,G,B);
+		writeChar(string[i],B,G,R);
 	}
 }
 
@@ -28,20 +28,20 @@ int boundedPixel(int x, int y) {
 void paintBackGround(){
 	for(int i=0; i<SCREEN_WIDTH; i+=5){
 		for(int j=0; j<SCREEN_HEIGHT; j++){
-			paintCharSpace(i,j,BG_R,BG_G,BG_B);
+			paintCharSpace(i,j,BG_B,BG_G,BG_R);
 		}
 	}
 }
 
-void paintCharSpace(int current_x, int current_y, char R, char G, char B){
+void paintCharSpace(int current_x, int current_y, char B, char G, char R){
 	for(int i=0; i<8; i++){
 		for(int j=0; j<16; j++){
-			paintPixel(current_x+i, current_y+j, R, G, B);
+			paintPixel(current_x+i, current_y+j, B, G, R);
 		}
 	}
 }
 
-void paintPixel(int x, int y, char R, char G, char B) {
+void paintPixel(int x, int y, char B, char G, char R) {
 	if (!boundedPixel(x, y))
 		return;
 
@@ -52,7 +52,7 @@ void paintPixel(int x, int y, char R, char G, char B) {
 	*(pixel_address+2) = R;
 }
 
-void writeChar(char c, int R, int G, int B){
+void writeChar(char c, int B, int G, int R){
 	checkLine();
 	if (c < 31){
 		if (c =='\n'){
@@ -77,9 +77,9 @@ void writeChar(char c, int R, int G, int B){
 				bitmap_aux >>= 8-x_counter;
 
 				if(bitmap_aux%2 == 1)
-					paintPixel(current_x+x_counter,current_y+y_counter,R,G,B);
+					paintPixel(current_x+x_counter,current_y+y_counter,B,G,R);
 				else{
-					paintPixel(current_x+x_counter,current_y+y_counter,BG_R,BG_G,BG_B);
+					paintPixel(current_x+x_counter,current_y+y_counter,BG_B,BG_G,BG_R);
 				}
 			}
 		}
@@ -89,7 +89,7 @@ void writeChar(char c, int R, int G, int B){
 void backSpace(){
 	if(current_x!=0){
 		current_x-=8;
-		paintCharSpace(current_x, current_y, BG_R, BG_G, BG_B);
+		paintCharSpace(current_x, current_y, BG_B, BG_G, BG_R);
 	}
 }
 void checkLine(){
@@ -109,7 +109,7 @@ int countDigits(int num){
 	return dig;
 }
 
-void printInt(int num, int R, int G, int B){
+void printInt(int num, int B, int G, int R){
 		int dig = countDigits(num);
 		char numbers[MAX_DIGITS] = {};
 		int count=0;
@@ -122,15 +122,15 @@ void printInt(int num, int R, int G, int B){
 		numbers[dig]='\0';
 
 		if (num<0)
-			writeChar('-',R,G,B);
+			writeChar('-',B,G,R);
 
-		printString(numbers,R,G,B);
+		printString(numbers,B,G,R);
 }
 
 void clearScreen(){
 	for(int i=0; i<SCREEN_WIDTH; i+=8){
 		for(int j=0; j<SCREEN_HEIGHT; j+=16){
-			paintCharSpace(i,j,BG_R,BG_G,BG_B);
+			paintCharSpace(i,j,BG_B,BG_G,BG_R);
 		}
 	}
 	current_x=0;
@@ -161,7 +161,23 @@ void newLine(){
 	}
 }
 void shift(){
-	return;            // ESTA FUNCION TENDRIA QUE MOVER TODO PARA ARRIBA
+	unsigned char B;
+	unsigned char G;
+	unsigned char R;
+	unsigned char * pixel_address;
+	for(int i=0; i<SCREEN_WIDTH;i++){
+		for(int j=16; j<SCREEN_HEIGHT;j++){
+			pixel_address = getVideoPix() + 3*(i + j*SCREEN_WIDTH);
+			B=*(pixel_address);
+			G=*(pixel_address+1);
+			R=*(pixel_address+2);
+			paintPixel(i,j-16,B,G,R);
+		}
+	}
+	int j=SCREEN_HEIGHT-16;
+	for(int i=0; i<SCREEN_WIDTH;i+=8){
+		paintCharSpace(i,j,BG_B,BG_G,BG_R);
+	}
 }
 
 uint8_t * currentline(){
