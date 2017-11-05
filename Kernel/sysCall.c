@@ -16,7 +16,7 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       clearScreen();
       break;
     case 7:
-      writeChar((char)rsi,color_red,color_green,color_blue);
+      writeChar((char)rsi,rdx,rcx,r8);
       break;
   }
 }
