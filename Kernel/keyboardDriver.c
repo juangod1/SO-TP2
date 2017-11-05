@@ -149,21 +149,4 @@ void putChar(char c){
 	}
 }
 
-void readAllBuffer(char* buff){
-	if(elements==0){
-		*buff=EOF;
-	}
-	else{
-		int counter=0;
-		while(elements>0){
-			*(buff+counter)=circularBuffer[readindex];
-			counter++;
-			readindex=(readindex+1)%20;
-			elements--;
-		}
-    *(buff+counter)=0;
-	}
-
-}
-
 char getBuffer(){}

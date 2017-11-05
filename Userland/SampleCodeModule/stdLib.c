@@ -42,9 +42,7 @@ int countDigits(int num){
 void sysGetChar(char * ch){
   sysCall(4,ch,0,0,0,0);
 }
-void sysReadInput(char * buffer){
-  sysCall(5,buffer,0,0,0,0);
-}
+
 void sysWriteChar(char * ch){
   sysCall(7,ch,0,0,0,0);
 }

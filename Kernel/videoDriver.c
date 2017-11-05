@@ -143,15 +143,6 @@ int strleng(const char *str){
 	return i;
 }
 
-/*void newLine(){                                                            OLD VERSION OF NEWLINE
-	if ((currentVideo-video)/((uint8_t)160) == (uint8_t)(ROW_LIMIT-1)){
-		currentVideo = video;
-		return;
-	}
-
-	currentVideo = ((currentVideo-video)/160+1)*160 + video;
-}*/
-
 void newLine(){
 	current_x=0;
 	current_y+=16;
@@ -183,14 +174,4 @@ void shift(){
 uint8_t * currentline(){
 	uint8_t * currentline = (currentVideo-video)/((uint8_t)160)*160 + video;
 	return currentline;
-}
-
-void readInput(char * buffer){
-	uint8_t * from = currentline();
-	uint8_t * to = currentVideo;
-	for (;from<to;){
-		*buffer=*from;
-		from=from+2;
-		buffer++;
-	}
 }
