@@ -1,7 +1,7 @@
 #include "stdLib.h";
 #include "stdio.h";
 #define NULL ((void*)0)
-char* helpIns ="echo *param*...			- prints param (max of 32) to screen\n\
+char* helpIns ="\necho *param*...			- prints param (max of 32) to screen\n\
 				displayTime 			- prints date and time to screen\n\
 				setFontColor *param* 	- changes font color to the one corresponding to d\n\
 				clear 					- clears screen\n\
@@ -9,14 +9,15 @@ char* helpIns ="echo *param*...			- prints param (max of 32) to screen\n\
 											possible options are add, substract, divide and multiply\n\
 				help 					- displays help instructions\n\
 				exit					- exits the shell\n";
-static int color_red=100;
-static int color_green=100;
-static int color_blue=100;
+static int color_red=0;
+static int color_green=0;
+static int color_blue=0;
 
 void startShell(){
 	sysPrintString("Shell initialized",color_red,color_green,color_blue);
 	callFunction("help");
 	sysNewLine();
+	sysPrintString(";) Mamita que pedazo de animacion ;)",color_red,color_green,color_blue);
 	//while(1){
 
 	//}

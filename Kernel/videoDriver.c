@@ -1,6 +1,9 @@
 #include <stdint.h>
 #include "videoDriver.h"
 #include "font.h"
+#define BG_R 0
+#define BG_G 255
+#define BG_B 255
 
 static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
@@ -24,6 +27,22 @@ int boundedPixel(int x, int y) {
 	return (x >= 0) && (x <= SCREEN_WIDTH) && (y >= 0) && (y <= SCREEN_HEIGHT);
 }
 
+void paintBackGround(){
+	for(int i=0; i<SCREEN_WIDTH; i++){
+		for(int j=0; j<SCREEN_HEIGHT; j++){
+			paintCharSpace(i,j,BG_R,BG_G,BG_B);
+		}
+	}
+}
+
+void paintCharSpace(int current_x, int current_y, char R, char G, char B){
+	for(int i=0; i<8; i++){
+		for(int j=0; j<16; j++){
+			paintPixel(current_x+i, current_y+j, R, G, B);
+		}
+	}
+}
+
 void paintPixel(int x, int y, char R, char G, char B) {
 	if (!boundedPixel(x, y))
 		return;
@@ -37,11 +56,15 @@ void paintPixel(int x, int y, char R, char G, char B) {
 
 void writeChar(char c, int R, int G, int B){
 	checkLine();
-	if (c < 31)
-		;//DO UNPRINTABLE CHARS
-	if (c =='\n'){
-		newLine();
-		return;
+	if (c < 31){
+		if (c =='\n'){
+			newLine();
+			return;
+		}
+		if (c== 8){	//BACKSPACE
+			backSpace();
+			return;
+		}
 	}
 	unsigned char * bitmap = pixel_map(c);
 	unsigned char bitmap_aux;
@@ -56,9 +79,18 @@ void writeChar(char c, int R, int G, int B){
 
 			if(bitmap_aux%2 == 1)
 				paintPixel(current_x+x_counter,current_y+y_counter,R,G,B);
+			else{
+				paintPixel(current_x+x_counter,current_y+y_counter,BG_R,BG_G,BG_B);
+			}
 		}
 	}
 	current_x += 8;
+}
+void backSpace(){
+	if(current_x!=0){
+		current_x-=8;
+		paintCharSpace(current_x, current_y, BG_R, BG_G, BG_B);
+	}
 }
 void checkLine(){
 	if(current_x>=SCREEN_WIDTH){
@@ -66,6 +98,7 @@ void checkLine(){
 		current_y+=16;
 		if(current_y>=SCREEN_HEIGHT){
 			current_y-=16;
+			shift();
 		}
 	}
 }
@@ -120,7 +153,7 @@ void newLine(){
 	current_x=0;
 	current_y+=16;
 	if(current_y>=SCREEN_HEIGHT){
-		current_y--;
+		current_y-=16;
 		shift();
 	}
 }
