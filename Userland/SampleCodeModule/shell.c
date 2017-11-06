@@ -1,6 +1,7 @@
-#include "stdLib.h";
-#include "stdio.h";
-#include "plotLib.h";
+#include "stdLib.h"
+#include "stdio.h"
+#include "plotLib.h"
+#include "mathLib.h"
 
 #define NULL ((void*)0)
 char* helpIns ="echo *param*...			- prints param (max of 32) to screen\n\
@@ -12,22 +13,22 @@ char* helpIns ="echo *param*...			- prints param (max of 32) to screen\n\
 				help 					- displays help instructions\n\
 				exit					- exits the shell\n";
 static int color_red=0;
-static int color_green=0;
-static int color_blue=0;
+static int color_green=255;
+static int color_blue=255;
 static int isRunning=1;
 
 void startShell(){
-	sysPrintString("Shell initialized\n",color_red,color_green,color_blue);
+	sysPrintString("Shell initialized\n",color_blue,color_green,color_red);
 	callFunction("help\n");
 	char string[80]={0};
 	int counter=0;
 	char* ch;
 	int* ptr;
-	sysPrintString(";) Mamita que pedazo de animacion ;)\n",color_red,color_green,color_blue);
+	sysPrintString(";) Mamita que pedazo de animacion ;)\n",color_blue,color_green,color_red);
 	sysPrintString("$> ",0,155,255);
 	while(isRunning){
 		sysGetChar(ch);
-		sysWriteChar(*ch);
+		sysWriteChar(*ch,color_blue,color_green,color_red);
 		string[counter]=*ch;
 		(*ch!=0)?counter++:counter;
 		if(*ch=='\n'){
@@ -142,7 +143,7 @@ int callFunction(char* buffer){
 			sysPrintString("No extra parameters for graph",color_red,color_green,color_blue);
 			return 2;
 		}
-		//plotFunction(0.0, 1.0, 0.0);
+		plotFunctionInt(0, 1, 0);
 		return 0;
 	}
 	else{

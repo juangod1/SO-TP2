@@ -61,6 +61,6 @@ void sysClear(){
 	sysCall(6,0,0,0,0,0);
 }
 
-void sysPaintPixel(int x, int y, char R, char G, char B) {
-  sysCall(8, x, y, R, G, B);
+void sysPaintPixel(int x, int y, char B, char G, char R) {
+  sysCall(8, x, y, B, G, R);
 }
