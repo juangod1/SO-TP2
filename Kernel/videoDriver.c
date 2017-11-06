@@ -26,8 +26,8 @@ int boundedPixel(int x, int y) {
 }
 
 void paintBackGround(){
-	for(int i=0; i<SCREEN_WIDTH; i+=5){
-		for(int j=0; j<SCREEN_HEIGHT; j++){
+	for(int i=0; i<SCREEN_WIDTH; i+=8){
+		for(int j=0; j<SCREEN_HEIGHT; j+=16){
 			paintCharSpace(i,j,BG_B,BG_G,BG_R);
 		}
 	}
@@ -87,7 +87,7 @@ void writeChar(char c, int B, int G, int R){
 	}
 }
 void backSpace(){
-	if(current_x!=0){
+	if(current_x > 3*8){
 		current_x-=8;
 		paintCharSpace(current_x, current_y, BG_B, BG_G, BG_R);
 	}
