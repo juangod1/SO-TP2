@@ -16,3 +16,22 @@ int isNum(char* s){
 	}
 	return 0;
 }
+
+int strlength(const char* s){
+	const char* p = s;
+	while(*s) ++s;
+	return s-p;
+}
+int toNum(char* string){
+	int length = strlength(string);
+	int powerTo = length-1;
+	int rta=0;
+	for(int i = 0 ; i < length ; i++){ 
+
+		int n = *string-'0';
+		rta += n*tenPow(powerTo);
+		string++;
+		powerTo--;
+	}
+	return rta;
+}

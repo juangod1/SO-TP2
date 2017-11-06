@@ -26,3 +26,26 @@ float sqrt(float S) {
 
 	return babylonianSqrt(n, S, S / 2);
 }
+
+int add(int x, int y) {
+	return x + y;
+}
+
+int subtract(int x, int y) {
+	return x - y;
+}
+
+int multiply(int x, int y) {
+	return x * y;
+}
+
+int divide(int x, int y) {
+	return x / y;
+}
+
+int tenPow(int num){
+	if(num==0){
+		return 1;
+	}
+	return 10*tenPow(--num);
+}

@@ -21,7 +21,7 @@ void startShell(){
 
 	sysPrintString("Shell initialized\n",color_red,color_green,color_blue);
 
-	callFunction("help\n");
+	callFunction("help");
 	char string[80]={0};
 	int counter=0;
 	char* ch;
@@ -60,7 +60,7 @@ int callFunction(char* buffer){
 	char input[32][80]={0};
 	char* aux = buffer;
 	while(*aux!='\0' && wordLength<80){
-		if(*aux==' '){
+		if(*aux==' ' || *aux=='\n'){
 			input[words][wordLength]='\0';
 			wordLength=0;
 			words++;
@@ -87,16 +87,16 @@ int callFunction(char* buffer){
 		return 0;
 	}
 
-	else if(strcmp(input[0],"displayTime\n")==0){
+	else if(strcmp(input[0],"displayTime")==0){
 		if(words!=1){
 			sysPrintString("Wrong parameters for displayTime\n",color_red,color_green,color_blue);
 			return 2;
 		}
-		sysPrintString("Displaying time\n",color_red,color_green,color_blue);
+		sysPrintString("Displaying time",color_red,color_green,color_blue);
 		//sysGetTime(buffer);
 		return 0;
 	}
-	else if(strcmp(input[0],"setFontColor\n")==0){
+	else if(strcmp(input[0],"setFontColor")==0){
 		if(words!=2){
 			sysPrintString("Wrong parameters for setFontColor\n",color_red,color_green,color_blue);
 			return 2;
@@ -105,7 +105,7 @@ int callFunction(char* buffer){
 		sysPrintString("Set font color\n",color_red,color_green,color_blue);
 		return 0;
 	}
-	else if(strcmp(input[0],"clear\n")==0){
+	else if(strcmp(input[0],"clear")==0){
 		if(words!=1){
 			sysPrintString("No extra parameters for clear\n",color_red,color_green,color_blue);
 			return 2;
@@ -116,8 +116,8 @@ int callFunction(char* buffer){
 	else if(strcmp(input[0],"calculate")==0){
 		int ver = calculateVerifications(words, input[2],input[3]);
 		if(ver){
-			int input2 = toNum(input[2],0);
-			int input3 = toNum(input[3],1);
+			int input2 = toNum(input[2]);
+			int input3 = toNum(input[3]);
 			sysPrintInt(input2,0,0,0);
 			sysPrintString("\n",color_blue,color_green,color_red);		
 			sysPrintInt(input3,0,0,0);
@@ -129,7 +129,7 @@ int callFunction(char* buffer){
 		}		
 		return 0;
 	}
-	else if(strcmp(input[0],"help\n")==0){
+	else if(strcmp(input[0],"help")==0){
 		if(words!=1){
 			sysPrintString("No extra parameters for help\n",color_red,color_green,color_blue);
 			return 2;
@@ -137,12 +137,12 @@ int callFunction(char* buffer){
 		sysPrintString(helpIns,color_red,color_green,color_blue);
 		return 0;
 	}
-	else if(strcmp(input[0],"exit\n")==0){
+	else if(strcmp(input[0],"exit")==0){
 		if(words!=1){
 			sysPrintString("No extra parameters for exit\n",color_red,color_green,color_blue);
 			return 2;
 		}
-		sysPrintString("See you soon\n",color_red,color_green,color_blue);
+		sysPrintString("See you soon",color_red,color_green,color_blue);
 		isRunning=0;
 		return 0;
 	}
@@ -161,21 +161,6 @@ int callFunction(char* buffer){
 	return 1;
 }
 
-int add(int x, int y) {
-	return x + y;
-}
-
-int subtract(int x, int y) {
-	return x - y;
-}
-
-int multiply(int x, int y) {
-	return x * y;
-}
-
-int divide(int x, int y) {
-	return x / y;
-}
 
 int calculate(char* func, int param1, int param2){
 
@@ -204,40 +189,4 @@ int calculateVerifications(int words, char* input2, char* input3){
 		return 0;
 	}
 	return 1;
-}
-int toNum(char* string,int last){
-	int length = strlength(string);
-	int powerTo;
-	if(last){
-		powerTo = length -1;
-	}
-	else{
-		powerTo = length;
-	}
-	int limit = length;
-	if(last){
-		limit-- ;
-	}
-	int rta=0;
-	for(int i = 0 ; i < length ; i++){ 
-
-		int n = *string-'0';
-		rta += n*tenPow(powerTo);
-		string++;
-		powerTo--;
-	}
-	return rta;
-}
-
-int tenPow(int num){
-	if(num==0){
-		return 1;
-	}
-	return 10*tenPow(--num);
-}
-
-int strlength(const char* s){
-	const char* p = s;
-	while(*s) ++s;
-	return s-p;
 }
