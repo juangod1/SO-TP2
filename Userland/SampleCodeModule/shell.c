@@ -139,12 +139,14 @@ int callFunction(char* buffer){
 		isRunning=0;
 		return 0;
 	}
-	else if(strcmp(input[0],"graph\n")==0){
-		if(words!=1){
-			sysPrintString("No extra parameters for graph",color_red,color_green,color_blue);
+	else if(strcmp(input[0],"graph")==0){
+		if(words!=(GRAPH_PARAMETERS+1)){
+			sysPrintString("Wrong amount of parameters for graph command",color_red,color_green,color_blue);
 			return 2;
 		}
-		plotFunctionInt(0, 1, 0);
+
+		plotFunctionInt(toNum(input[1]), toNum(input[2]), -80);
+
 		return 0;
 	}
 	else if(strcmp(input[0],"displayTime")==0){

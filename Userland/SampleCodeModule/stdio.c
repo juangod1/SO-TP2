@@ -26,12 +26,20 @@ int toNum(char* string){
 	int length = strlength(string);
 	int powerTo = length-1;
 	int rta=0;
-	for(int i = 0 ; i < length ; i++){ 
+
+	if (*string == '-') {
+		string++;
+		length--;
+		powerTo--;
+	}
+
+	for(int i = 0 ; i < length ; i++){
 
 		int n = *string-'0';
 		rta += n*tenPow(powerTo);
 		string++;
 		powerTo--;
 	}
-	return rta;
+
+	return *string == '-' ? -rta : rta;
 }
