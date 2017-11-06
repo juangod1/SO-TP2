@@ -7,7 +7,7 @@ static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
 static unsigned char ** video_start = (unsigned char**)0x0005C28;
 static unsigned int current_x = 0;
-static unsigned int current_y = 0;
+static unsigned int current_y = SCREEN_HEIGHT-16;
 
 unsigned char * getVideoPix(){
 	return *video_start;
