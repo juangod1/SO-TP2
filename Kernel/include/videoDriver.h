@@ -8,8 +8,8 @@
 #define MAX_DIGITS 20
 #define ROW_LIMIT 25
 #define BG_R 0
-#define BG_G 255
-#define BG_B 255
+#define BG_G 0
+#define BG_B 0
 #define color_red 0
 #define color_green 0
 #define color_blue 0
