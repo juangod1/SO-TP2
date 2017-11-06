@@ -111,10 +111,6 @@ int callFunction(char* buffer){
 		if(ver){
 			int input2 = toNum(input[2]);
 			int input3 = toNum(input[3]);
-			sysPrintInt(input2,0,0,0);
-			sysPrintString("\n",color_blue,color_green,color_red);
-			sysPrintInt(input3,0,0,0);
-			sysPrintString("\n",color_blue,color_green,color_red);
 			int rta = calculate(input[1],input2,input3);
 			sysPrintString("Calculated: ",color_blue,color_green,color_red);
 			sysPrintInt(rta,color_blue,color_green,color_red);

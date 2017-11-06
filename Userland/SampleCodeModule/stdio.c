@@ -10,11 +10,11 @@ int strcmp(const char* s1, const char* s2){
 int isNum(char* s){
 	while(*s != '\0'){
 		if(*s<0 || *s>9){
-			return 0;
+			return 1;
 		}
 		s++;
 	}
-	return 1;
+	return 0;
 }
 
 int strlength(const char* s){
