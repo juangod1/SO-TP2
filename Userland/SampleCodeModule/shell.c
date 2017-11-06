@@ -4,14 +4,15 @@
 #include "mathLib.h"
 
 #define NULL ((void*)0)
-char* helpIns ="echo *param*...			- prints param (max of 32) to screen\n\
-				displayTime 			- prints date and time to screen\n\
-				setFontColor *param* 	- changes font color to the one corresponding to d\n\
-				clear 					- clears screen\n\
-				calculate(*p*,*p*,*p*)	- performs specified calculation in first variable\n\
+char* helpIns ="echo *param*...			- Prints param (max of 32) to screen\n\
+				displayTime 			- Prints date and time to screen\n\
+				setTimeZone       - Set timezone \n\
+				setFontColor *param* 	- Changes font color to the one corresponding to d\n\
+				clear 					- Clears screen\n\
+				calculate(*p*,*p*,*p*)	- Performs specified calculation in first variable\n\
 											possible options are add, substract, divide and multiply\n\
-				help 					- displays help instructions\n\
-				exit					- exits the shell\n";
+				help 					- Displays help instructions\n\
+				exit					- Exits the shell\n";
 static int color_red=0;
 static int color_green=255;
 static int color_blue=255;
@@ -164,6 +165,14 @@ int callFunction(char* buffer){
 		sysPrintInt(timeBuff[5],color_red,color_green,color_blue);
 		sysPrintString("\n",color_red,color_green,color_blue);
 
+		return 0;
+	}
+	else if(strcmp(input[0],"setTimeZone")==0){
+		if(words!=2){
+			sysPrintString("Wrong parameters: setTimeZone timezone\n",color_red,color_green,color_blue);
+			return 2;
+		}
+		timeZone = input[0];
 		return 0;
 	}
 	else{
