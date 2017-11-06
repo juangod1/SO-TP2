@@ -20,6 +20,34 @@ void plotAxis() {
 	}
 }
 
+void plotFunctionInt(int a, int b, int c) {
+	sysClear();
+	plotAxis();
+
+	if (a == 0) {
+		int r = (int) -c / b;
+
+		int x_left_boundary = -(SCREEN_WIDTH / 2) + 1;
+		int x_right_boundary = SCREEN_WIDTH / 2;
+
+		int Fx;
+		//float diff;
+		//int y;
+
+		for (int i = x_left_boundary; i <= x_right_boundary; i++) {
+			Fx = fx(i, a, b, c);
+			//diff = absInt((Fx - (int)Fx));
+			//y = (diff - 0.5 < 0.5) ? fx_to_int : (Fx > 0 ? (fx_to_int+1) : (fx_to_int-1));
+
+			sysPaintPixel(i, Fx, BG_R, BG_G, BG_B);
+		}
+
+	} else {
+
+	}
+}
+
+/*
 void plotFunction(float a, float b, float c) {
 	sysClear();
   plotAxis();
@@ -50,7 +78,7 @@ void plotFunction(float a, float b, float c) {
 
 		// Aligning the x axis boundaries to plot the function
 		if (x_left_boundary >= 0.001 || x_right_boundary <= -0.001) {
-			/* code */
+			// code
 		}
 	} else {
 		// It's linear ===> y = bx + c
@@ -71,3 +99,4 @@ void plotFunction(float a, float b, float c) {
 		}
 	}
 }
+*/
