@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "mathLib.h"
 
 float absFloat(float x) {
