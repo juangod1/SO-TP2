@@ -18,5 +18,8 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
     case 7:
       writeChar((char)rsi,rdx,rcx,r8);
       break;
+    case 8:
+      paintPixel(rsi, rdx, (char)rcx, (char)r8, (char)r9);
+      break;
   }
 }

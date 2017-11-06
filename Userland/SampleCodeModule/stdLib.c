@@ -61,6 +61,6 @@ void sysClear(){
 	sysCall(6,0,0,0,0,0);
 }
 
-void sysPlotFunction(float a, float b, float c) {
-  sysCall(7,a,b,c,0,0);
+void sysPaintPixel(int x, int y, char R, char G, char B) {
+  sysCall(8, x, y, R, G, B);
 }

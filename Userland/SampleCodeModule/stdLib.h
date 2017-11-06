@@ -9,5 +9,6 @@ void sysGetTime(int * buffer);
 void sysNewLine();
 void sysReadInput(char * buffer);
 void sysClear();
+void sysPaintPixel(int x, int y, char R, char G, char B);
 
 #endif
