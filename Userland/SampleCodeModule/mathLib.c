@@ -5,7 +5,7 @@ float absFloat(float x) {
 }
 
 
-float fx(float x, float a, float b, float c) {
+int fx(int x, int a, int b, int c) {
 	return (a * x * x) + (b * x) + c;
 }
 
