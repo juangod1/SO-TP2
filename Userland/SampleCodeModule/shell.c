@@ -18,20 +18,22 @@ static int color_blue=255;
 static int isRunning=1;
 
 void startShell(){
-	sysPrintString("Shell initialized\n",color_blue,color_green,color_red);
+
+	sysPrintString("Shell initialized",color_red,color_green,color_blue);
+
 	callFunction("help\n");
 	char string[80]={0};
 	int counter=0;
 	char* ch;
 	int* ptr;
-	sysPrintString(";) Mamita que pedazo de animacion ;)\n",color_blue,color_green,color_red);
-	sysPrintString("$> ",0,155,255);
-	while(isRunning){
+	sysPrintString("$> ",0,0,0);
+	while(1){
+		
 		sysGetChar(ch);
 		sysWriteChar(*ch,color_blue,color_green,color_red);
 		string[counter]=*ch;
 		(*ch!=0)?counter++:counter;
-		if(*ch=='\n'){
+		if(*ch=='\n'){ 
 			callFunction(string);
 			if(isRunning) sysPrintString("$> ",0,155,255);
 			reset(string);
@@ -75,6 +77,7 @@ int callFunction(char* buffer){
 		words++;
 	}
 
+
 	if(strcmp(input[0],"echo")==0){
 		for(int i = 1  ;i < words+1;i++){
 			sysPrintString(input[i],color_red,color_green,color_blue);
@@ -110,15 +113,20 @@ int callFunction(char* buffer){
 		sysClear();
 		return 0;
 	}
-	else if(strcmp(input[0],"calculate\n")==0){
-		//verificar que hay 4 inputs
-		if(words!=4){
-			sysPrintString("Wrong parameters for calculate\n",color_red,color_green,color_blue);
-			return 2;
-		}
-		int rta = calculate(input[1],input[2][0]-'0',input[3][0]-'0');
-		sysPrintString("Calculating: ",color_red,color_green,color_blue);
-		sysPrintInt(rta,color_red,color_green,color_blue);
+	else if(strcmp(input[0],"calculate")==0){
+		int ver = calculateVerifications(words, input[2],input[3]);
+		if(ver){
+			int input2 = toNum(input[2],0);
+			int input3 = toNum(input[3],1);
+			sysPrintInt(input2,0,0,0);
+			sysPrintString("\n",color_blue,color_green,color_red);		
+			sysPrintInt(input3,0,0,0);
+			sysPrintString("\n",color_blue,color_green,color_red);
+			int rta = calculate(input[1],input2,input3);
+			sysPrintString("Calculated: ",color_blue,color_green,color_red);
+			sysPrintInt(rta,color_blue,color_green,color_red);
+			sysPrintString("\n",color_blue,color_green,color_red);
+		}		
 		return 0;
 	}
 	else if(strcmp(input[0],"help\n")==0){
@@ -148,7 +156,6 @@ int callFunction(char* buffer){
 	}
 	else{
 		sysPrintString("Wrong input\n",color_red,color_green,color_blue);
-		sysPrintString(input[0],color_red,color_green,color_blue);
 		return 2;
 	}
 	return 1;
@@ -188,4 +195,49 @@ int calculate(char* func, int param1, int param2){
 	}
 
 	return 0;
+}
+
+int calculateVerifications(int words, char* input2, char* input3){
+	if(words!=4 || !isNum(input2) || !isNum(input3) ){
+		//veryfing that there are four inputs and that the last two are numbers
+		sysPrintString("Wrong parameters for calculate\n",color_red,color_green,color_blue);
+		return 0;
+	}
+	return 1;
+}
+int toNum(char* string,int last){
+	int length = strlength(string);
+	int powerTo;
+	if(last){
+		powerTo = length -1;
+	}
+	else{
+		powerTo = length;
+	}
+	int limit = length;
+	if(last){
+		limit-- ;
+	}
+	int rta=0;
+	for(int i = 0 ; i < length ; i++){ 
+
+		int n = *string-'0';
+		rta += n*tenPow(powerTo);
+		string++;
+		powerTo--;
+	}
+	return rta;
+}
+
+int tenPow(int num){
+	if(num==0){
+		return 1;
+	}
+	return 10*tenPow(--num);
+}
+
+int strlength(const char* s){
+	const char* p = s;
+	while(*s) ++s;
+	return s-p;
 }

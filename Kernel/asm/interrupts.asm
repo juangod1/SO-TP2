@@ -46,7 +46,6 @@ SECTION .text
 	mov rsi, %2	; pasaje del 2do parametro
 
 	call exceptionDispatcher
-
 	popState
 
 	iretq
@@ -112,14 +111,7 @@ _irq05Handler:
 
 ;Zero Division Exception
 _divideByZeroHandler:
-	pushState
-	;exceptionHandler 0,40
-	mov rdi,errorString
-	call ncPrint 
-	;mov rsi,40
-	;call exceptionDispatcher
-	popState
-	iretq
+	exceptionHandler 0,4
 
 haltcpu:
 	cli
@@ -129,6 +121,3 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
-
-SECTION .data
-	errorString db "Error division by zero",10,0
