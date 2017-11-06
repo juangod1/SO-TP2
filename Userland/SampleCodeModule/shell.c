@@ -16,6 +16,7 @@ static int color_red=0;
 static int color_green=255;
 static int color_blue=255;
 static int isRunning=1;
+static int timeZone=-3;
 
 void startShell(){
 
@@ -28,12 +29,12 @@ void startShell(){
 	int* ptr;
 	sysPrintString("$> ",0,155,255);
 	while(1){
-		
+
 		sysGetChar(ch);
 		sysWriteChar(*ch,color_blue,color_green,color_red);
 		string[counter]=*ch;
 		(*ch!=0)?counter++:counter;
-		if(*ch=='\n'){ 
+		if(*ch=='\n'){
 			callFunction(string);
 			if(isRunning) sysPrintString("$> ",0,155,255);
 			reset(string);
@@ -87,15 +88,6 @@ int callFunction(char* buffer){
 		return 0;
 	}
 
-	else if(strcmp(input[0],"displayTime")==0){
-		if(words!=1){
-			sysPrintString("Wrong parameters for displayTime\n",color_red,color_green,color_blue);
-			return 2;
-		}
-		sysPrintString("Displaying time",color_red,color_green,color_blue);
-		//sysGetTime(buffer);
-		return 0;
-	}
 	else if(strcmp(input[0],"setFontColor")==0){
 		if(words!=2){
 			sysPrintString("Wrong parameters for setFontColor\n",color_red,color_green,color_blue);
@@ -119,14 +111,14 @@ int callFunction(char* buffer){
 			int input2 = toNum(input[2]);
 			int input3 = toNum(input[3]);
 			sysPrintInt(input2,0,0,0);
-			sysPrintString("\n",color_blue,color_green,color_red);		
+			sysPrintString("\n",color_blue,color_green,color_red);
 			sysPrintInt(input3,0,0,0);
 			sysPrintString("\n",color_blue,color_green,color_red);
 			int rta = calculate(input[1],input2,input3);
 			sysPrintString("Calculated: ",color_blue,color_green,color_red);
 			sysPrintInt(rta,color_blue,color_green,color_red);
 			sysPrintString("\n",color_blue,color_green,color_red);
-		}		
+		}
 		return 0;
 	}
 	else if(strcmp(input[0],"help")==0){
@@ -152,6 +144,26 @@ int callFunction(char* buffer){
 			return 2;
 		}
 		plotFunctionInt(0, 1, 0);
+		return 0;
+	}
+	else if(strcmp(input[0],"displayTime")==0){
+		int timeBuff[6];
+
+		sysGetTime(timeBuff);
+		sysPrintInt(timeBuff[2] + timeZone,color_red,color_green,color_blue);
+		sysPrintString(":",color_red,color_green,color_blue);
+		sysPrintInt(timeBuff[1],color_red,color_green,color_blue);
+		sysPrintString(":",color_red,color_green,color_blue);
+		sysPrintInt(timeBuff[0],color_red,color_green,color_blue);
+
+		sysPrintString(" - ",color_red,color_green,color_blue);
+		sysPrintInt(timeBuff[3],color_red,color_green,color_blue);
+		sysPrintString("/",color_red,color_green,color_blue);
+		sysPrintInt(timeBuff[4],color_red,color_green,color_blue);
+		sysPrintString("/",color_red,color_green,color_blue);
+		sysPrintInt(timeBuff[5],color_red,color_green,color_blue);
+		sysPrintString("\n",color_red,color_green,color_blue);
+
 		return 0;
 	}
 	else{
