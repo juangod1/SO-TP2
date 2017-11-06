@@ -19,14 +19,14 @@ static int isRunning=1;
 
 void startShell(){
 
-	sysPrintString("Shell initialized",color_red,color_green,color_blue);
+	sysPrintString("Shell initialized\n",color_red,color_green,color_blue);
 
 	callFunction("help\n");
 	char string[80]={0};
 	int counter=0;
 	char* ch;
 	int* ptr;
-	sysPrintString("$> ",0,0,0);
+	sysPrintString("$> ",0,155,255);
 	while(1){
 		
 		sysGetChar(ch);
