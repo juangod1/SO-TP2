@@ -1,5 +1,7 @@
 #include "stdLib.h";
 #include "stdio.h";
+#include "plotLib.h";
+
 #define NULL ((void*)0)
 char* helpIns ="echo *param*...			- prints param (max of 32) to screen\n\
 				displayTime 			- prints date and time to screen\n\
@@ -140,7 +142,7 @@ int callFunction(char* buffer){
 			sysPrintString("No extra parameters for graph",color_red,color_green,color_blue);
 			return 2;
 		}
-		//graph();
+		//plotFunction(0.0, 1.0, 0.0);
 		return 0;
 	}
 	else{
