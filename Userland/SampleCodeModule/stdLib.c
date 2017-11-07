@@ -19,7 +19,7 @@ int strleng(const char* s){
 	while (*(s + i)) {
     i++;
   }
-  
+
 	return i;
 }
 

@@ -8,6 +8,10 @@ int strcmp(const char* s1, const char* s2){
 }
 
 int isNum(char* s) {
+	if (*s == '-') {
+		s++;
+	}
+
 	while (*s != '\0') {
 		if ((*s - '0') < 0 || (*s - '0') > 9) {
 			return 0;
