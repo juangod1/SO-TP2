@@ -1,3 +1,4 @@
+#include "shell.h"
 #include "stdLib.h"
 #include "stdio.h"
 #include "plotLib.h"
@@ -23,7 +24,7 @@ void startShell(){
 	sysPrintString("Shell initialized\n", R, G, B);
 
 	//callFunction("help");
-	char string[80] = {0};
+	char string[MAX_WORD_LENGTH] = {0};
 	int counter = 0;
 	char* ch;
 	int* ptr;
@@ -63,10 +64,10 @@ int callFunction(char* buffer){
 
 	int wordLength = 0;
 	int words = 0;
-	char input[32][80] = {0};
+	char input[MAX_WORDS][MAX_WORD_LENGTH] = {0};
 	char* aux = buffer;
 
-	while (*aux != '\0' && wordLength < 80) {
+	while (*aux != '\0' && wordLength < MAX_WORD_LENGTH) {
 		if(*aux == ' ' || *aux == '\n') {
 			input[words][wordLength]='\0';
 			wordLength=0;
@@ -140,23 +141,7 @@ int callFunction(char* buffer){
 		return 0;
 	}
 	else if (strcmp(input[0], "graph") == 0) {
-		if (words != (GRAPH_PARAMETERS + 1)) {
-			sysPrintString("Wrong amount of parameters for graph command\n", B, G, R);
-
-			return 2;
-		}
-
-		for (int i = 1; i <= GRAPH_PARAMETERS; i++) {
-			if (!isNum(input[i])) {
-				sysPrintString("Wrong parameters passed to graph command\n", B, G, R);
-
-				return 2;
-			}
-		}
-
-		plotFunctionInt(toNum(input[1]), toNum(input[2]), toNum(input[3]));
-
-		return 0;
+		return graph(input, words);
 	} else if(strcmp(input[0],"displayTime")==0){
 		int timeBuff[6];
 
@@ -220,4 +205,25 @@ int calculateVerifications(int words, char* input2, char* input3){
 		return 0;
 	}
 	return 1;
+}
+
+int graph(char input[][MAX_WORD_LENGTH], int words) {
+	sysPrintInt(words, B, G, R);
+	if (words != (GRAPH_PARAMETERS + 1)) {
+		sysPrintString("Wrong amount of parameters for graph command\n", B, G, R);
+
+		return 2;
+	}
+
+	for (int i = 1; i <= GRAPH_PARAMETERS; i++) {
+		if (!isNum(input[i])) {
+			sysPrintString("Wrong parameters passed to graph command\n", B, G, R);
+
+			return 2;
+		}
+	}
+
+	plotFunctionInt(toNum(input[1]), toNum(input[2]), toNum(input[3]));
+
+	return 0;
 }
