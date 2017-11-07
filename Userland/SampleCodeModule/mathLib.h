@@ -1,6 +1,7 @@
 #ifndef MATHLIB_H_
 #define MATHLIB_H_
 
+float absFloat(float x);
 int absInt(int x);
 int fx(int x, int a, int b, int c);
 float babylonianSqrt(int n, float S, float x0);
@@ -9,5 +10,6 @@ int add(int x, int y);
 int divide(int x, int y);
 int subtract(int x, int y);
 int multiply(int x, int y);
+int tenPow(int num);
 
 #endif

@@ -4,6 +4,9 @@ float absFloat(float x) {
 	return x >= 0.001 ? x : -x;
 }
 
+int absInt(int x) {
+	return x > 0 ? x : -x;
+}
 
 int fx(int x, int a, int b, int c) {
 	return (a * x * x) + (b * x) + c;
@@ -44,8 +47,8 @@ int divide(int x, int y) {
 }
 
 int tenPow(int num){
-	if(num==0){
+	if (num == 0) {
 		return 1;
 	}
-	return 10*tenPow(--num);
+	return 10 * tenPow(num - 1);
 }

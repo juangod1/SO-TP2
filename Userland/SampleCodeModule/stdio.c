@@ -1,6 +1,6 @@
+#include "stdLib.h"
 
 /* Code taken from clc-wiki.net/wiki/C_standard_library:string.h:strcmp */
-
 int strcmp(const char* s1, const char* s2){
 	while(*s1 && (*s1==*s2))
 		s1++, s2++;
@@ -17,29 +17,25 @@ int isNum(char* s){
 	return 0;
 }
 
-int strlength(const char* s){
-	const char* p = s;
-	while(*s) ++s;
-	return s-p;
-}
-int toNum(char* string){
-	int length = strlength(string);
-	int powerTo = length-1;
-	int rta=0;
+int toNum(char* string) {
+	int length;
+	int powerTo;
+	int rta = 0;
+	char* auxString = string;
 
 	if (*string == '-') {
 		string++;
-		length--;
-		powerTo--;
 	}
 
-	for(int i = 0 ; i < length ; i++){
+	length = strleng(string);
+	powerTo = length - 1;
 
-		int n = *string-'0';
-		rta += n*tenPow(powerTo);
+	for (int i = 0 ; i < length ; i++) {
+		int n = *string - '0';
+		rta += n * tenPow(powerTo);
 		string++;
 		powerTo--;
 	}
 
-	return *string == '-' ? -rta : rta;
+	return (*auxString == '-') ? -rta : rta;
 }

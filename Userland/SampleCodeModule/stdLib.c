@@ -1,4 +1,5 @@
 #include "stdLib.h"
+#include "mathLib.h"
 #include <stdint.h>
 #define MAX_DIGITS 20
 
@@ -11,29 +12,38 @@ void sysPrintString(char * string, int B, int G, int R){
     sysWriteChar(string[i], B, G, R);
   }
 }
-int strleng(const char *str){
-	int i=0;
-	while(*(str+i)) i++;
+
+int strleng(const char* s){
+	int i = 0;
+
+	while (*(s + i)) {
+    i++;
+  }
+  
 	return i;
 }
 
-void sysPrintInt(int num, int B, int G, int R){
+void sysPrintInt(int num, int B, int G, int R) {
   int dig = countDigits(num);
   char numbers[MAX_DIGITS] = {};
-  int count=0;
+  int count = 0;
+  int remainder;
 
-  while(count!=dig){
-    numbers[dig-1-count++]=num%10+48;
+  if (num < 0) {
+    sysWriteChar('-', B, G, R);
+  }
+
+  while (count != dig) {
+    remainder = absInt(num % 10);
+    numbers[dig - 1 - count++] = remainder + 48;
     num /= 10;
   }
 
-  numbers[dig]='\0';
+  numbers[dig] = '\0';
 
-  if (num<0)
-    sysWriteChar('-');
-
-  sysPrintString(numbers,B,G,R);
+  sysPrintString(numbers, B, G, R);
 }
+
 int countDigits(int num){
 	int dig = 1;
 	while((num/=10) != 0) dig++;
@@ -43,7 +53,7 @@ void sysGetChar(char * ch){
   sysCall(4,ch,0,0,0,0);
 }
 
-void sysWriteChar(char * ch,unsigned char color_blue,unsigned char color_green,unsigned char color_red){
+void sysWriteChar(char * ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
   sysCall(7,ch,color_blue,color_green,color_red,0);
 }
 

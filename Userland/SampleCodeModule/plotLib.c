@@ -24,28 +24,27 @@ void plotFunctionInt(int a, int b, int c) {
 	sysClear();
 	plotAxis();
 
-	if (a == 0) {
+	/*if (a == 0) {
 		int r = (int) -c / b;
 
-		int x_left_boundary = -(SCREEN_WIDTH / 2) + 1;
-		int x_right_boundary = SCREEN_WIDTH / 2;
-		int y_down_boundary = -(SCREEN_HEIGHT / 2) + 1;
-		int y_up_boundary = SCREEN_HEIGHT / 2;
-
-		int Fx;
-		//float diff;
-		//int y;
-		int j;
-		for (int i = 0; i < SCREEN_WIDTH; i++) {
-			Fx = fx(x_left_boundary + i, a, b, c);
-			//diff = absInt((Fx - (int)Fx));
-			//y = (diff - 0.5 < 0.5) ? fx_to_int : (Fx > 0 ? (fx_to_int+1) : (fx_to_int-1));
-
-			sysPaintPixel(i, - Fx + y_up_boundary, BG_R, BG_G, BG_B);
-		}
 
 	} else {
 
+	}*/
+
+	int x_left_boundary = -(SCREEN_WIDTH / 2) + 1;
+	int x_right_boundary = SCREEN_WIDTH / 2;
+	int y_down_boundary = -(SCREEN_HEIGHT / 2) + 1;
+	int y_up_boundary = SCREEN_HEIGHT / 2;
+
+	//float diff;
+	//int y;
+	for (int i = 0; i < SCREEN_WIDTH; i++) {
+		 int Fx = fx(x_left_boundary + i, a, b, c);
+		//diff = absInt((Fx - (int)Fx));
+		//y = (diff - 0.5 < 0.5) ? fx_to_int : (Fx > 0 ? (fx_to_int+1) : (fx_to_int-1));
+
+		sysPaintPixel(i, - Fx + y_up_boundary, BG_R, BG_G, BG_B);
 	}
 }
 
