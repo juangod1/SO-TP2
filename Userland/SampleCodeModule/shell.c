@@ -98,15 +98,7 @@ int callFunction(char * buffer) {
 
 		return 0;
 	} else if (strcmp(input[0], "clear") == 0) {
-		if (words != 1) {
-			sysPrintString("No extra parameters for clear\n", R, G, B);
-
-			return 2;
-		}
-
-		sysClear();
-
-		return 0;
+		return clear(words);
 	} else if (strcmp(input[0], "calculate") == 0) {
 		int ver = calculateVerifications(words, input[2], input[3]);
 
@@ -223,17 +215,30 @@ int echo(char input[][MAX_WORD_LENGTH], int words) {
 	return 0;
 }
 
+int clear(int words) {
+	if (words != 1) {
+		sysPrintString("No extra parameters for clear\n", R, G, B);
+
+		return 2;
+	}
+
+	sysClear();
+
+	return 0;
+}
+
 int graph(char input[][MAX_WORD_LENGTH], int words) {
-	sysPrintInt(words, B, G, R);
 	if (words != (GRAPH_PARAMETERS + 1)) {
-		sysPrintString("Wrong amount of parameters for graph command\n", B, G, R);
+		sysPrintString("Wrong amount of parameters for graph command\n\
+		Use command help for guidelines\n", B, G, R);
 
 		return 2;
 	}
 
 	for (int i = 1; i <= GRAPH_PARAMETERS; i++) {
 		if (!isNum(input[i])) {
-			sysPrintString("Wrong parameters passed to graph command\n", B, G, R);
+			sysPrintString("Wrong parameters passed to graph command\n\
+			Use command help for guidelines\n", B, G, R);
 
 			return 2;
 		}
