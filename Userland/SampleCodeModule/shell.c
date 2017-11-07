@@ -71,18 +71,17 @@ int callFunction(char* buffer){
 			input[words][wordLength]='\0';
 			wordLength=0;
 			words++;
-		}
-		else{
+		} else {
 			input[words][wordLength] = *aux;
 			wordLength++;
 		}
 
 		aux++;
 	}
-	if(words<4){
+	/*if(words<4){
 		input[words+1][wordLength-1]='\0';
 		words++;
-	}
+	}*/
 
 
 	if(strcmp(input[0],"echo")==0){
@@ -142,16 +141,23 @@ int callFunction(char* buffer){
 	}
 	else if (strcmp(input[0], "graph") == 0) {
 		if (words != (GRAPH_PARAMETERS + 1)) {
-			sysPrintString("Wrong amount of parameters for graph command\n", R, G, B);
+			sysPrintString("Wrong amount of parameters for graph command\n", B, G, R);
 
 			return 2;
+		}
+
+		for (int i = 1; i <= GRAPH_PARAMETERS; i++) {
+			if (!isNum(input[i])) {
+				sysPrintString("Wrong parameters passed to graph command\n", B, G, R);
+
+				return 2;
+			}
 		}
 
 		plotFunctionInt(toNum(input[1]), toNum(input[2]), toNum(input[3]));
 
 		return 0;
-	}
-	else if(strcmp(input[0],"displayTime")==0){
+	} else if(strcmp(input[0],"displayTime")==0){
 		int timeBuff[6];
 
 		sysGetTime(timeBuff);
