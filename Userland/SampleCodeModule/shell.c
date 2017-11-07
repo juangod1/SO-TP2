@@ -86,14 +86,7 @@ int callFunction(char * buffer) {
 	}*/
 
 	if (strcmp(input[0], "echo") == 0) {
-		for (int i = 1  ;i < (words + 1); i++) {
-			sysPrintString(input[i], B, G, R);
-			sysPrintString(" ", B, G, R);
-		}
-
-		sysPrintString("\n", B, G, R);
-
-		return 0;
+		return echo(input, words);
 	} else if (strcmp(input[0], "setFontColor") == 0) {
 		if (words != 2) {
 			sysPrintString("Wrong parameters for setFontColor\n", B, G, R);
@@ -185,7 +178,7 @@ int callFunction(char * buffer) {
 
 		return 2;
 	}
-	
+
 	return 1;
 }
 
@@ -217,6 +210,17 @@ int calculateVerifications(int words, char* input2, char* input3){
 		return 0;
 	}
 	return 1;
+}
+
+int echo(char input[][MAX_WORD_LENGTH], int words) {
+	for (int i = 1  ;i < (words + 1); i++) {
+		sysPrintString(input[i], B, G, R);
+		sysPrintString(" ", B, G, R);
+	}
+
+	sysPrintString("\n", B, G, R);
+
+	return 0;
 }
 
 int graph(char input[][MAX_WORD_LENGTH], int words) {
