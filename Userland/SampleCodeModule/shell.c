@@ -53,11 +53,12 @@ void startShell(){
 }
 
 void reset(char * string, int size){
-	for (int i=0; i<size; i++){
-		*(string+i)=0;
+	for (int i = 0; i < size; i++){
+		*(string + i)=0;
 	}
 }
-int callFunction(char* buffer){
+
+int callFunction(char * buffer) {
 	if (buffer == NULL){
 		return 2;
 	}
@@ -65,7 +66,7 @@ int callFunction(char* buffer){
 	int wordLength = 0;
 	int words = 0;
 	char input[MAX_WORDS][MAX_WORD_LENGTH] = {0};
-	char* aux = buffer;
+	char * aux = buffer;
 
 	while (*aux != '\0' && wordLength < MAX_WORD_LENGTH) {
 		if(*aux == ' ' || *aux == '\n') {
@@ -84,96 +85,107 @@ int callFunction(char* buffer){
 		words++;
 	}*/
 
-
-	if(strcmp(input[0],"echo")==0){
-		for(int i = 1  ;i < words+1;i++){
-			sysPrintString(input[i],R,G,B);
-			sysPrintString(" ",R,G,B);
+	if (strcmp(input[0], "echo") == 0) {
+		for (int i = 1  ;i < (words + 1); i++) {
+			sysPrintString(input[i], B, G, R);
+			sysPrintString(" ", B, G, R);
 		}
-		sysPrintString("\n",R,G,B);
-		return 0;
-	}
 
-	else if(strcmp(input[0],"setFontColor")==0){
-		if(words!=2){
-			sysPrintString("Wrong parameters for setFontColor\n",R,G,B);
+		sysPrintString("\n", B, G, R);
+
+		return 0;
+	} else if (strcmp(input[0], "setFontColor") == 0) {
+		if (words != 2) {
+			sysPrintString("Wrong parameters for setFontColor\n", B, G, R);
+
 			return 2;
 		}
 		//color = input[1][0]-'0'; HAS TO FIX
-		sysPrintString("Set font color\n",R,G,B);
+		sysPrintString("Set font color\n", B, G, R);
+
 		return 0;
-	}
-	else if(strcmp(input[0],"clear")==0){
-		if(words!=1){
-			sysPrintString("No extra parameters for clear\n",R,G,B);
+	} else if (strcmp(input[0], "clear") == 0) {
+		if (words != 1) {
+			sysPrintString("No extra parameters for clear\n", R, G, B);
+
 			return 2;
 		}
+
 		sysClear();
+
 		return 0;
-	}
-	else if(strcmp(input[0],"calculate")==0){
-		int ver = calculateVerifications(words, input[2],input[3]);
-		if(ver){
+	} else if (strcmp(input[0], "calculate") == 0) {
+		int ver = calculateVerifications(words, input[2], input[3]);
+
+		if (ver) {
 			int input2 = toNum(input[2]);
 			int input3 = toNum(input[3]);
-			int rta = calculate(input[1],input2,input3);
-			sysPrintString("Calculated: ",B,G,R);
-			sysPrintInt(rta,B,G,R);
-			sysPrintString("\n",B,G,R);
+			int ans = calculate(input[1], input2, input3);
+
+			sysPrintString("Calculated: ", B, G, R);
+			sysPrintInt(ans, B, G, R);
+			sysPrintString("\n", B, G, R);
 		}
+
 		return 0;
-	}
-	else if(strcmp(input[0],"help")==0){
-		if(words!=1){
-			sysPrintString("No extra parameters for help\n",R,G,B);
+	} else if (strcmp(input[0], "help") == 0) {
+		if(words != 1) {
+			sysPrintString("No extra parameters for help\n", B, G, R);
+
 			return 2;
 		}
-		sysPrintString(helpIns,R,G,B);
+
+		sysPrintString(helpIns, B, G, R);
+
 		return 0;
-	}
-	else if(strcmp(input[0],"exit")==0){
-		if(words!=1){
-			sysPrintString("No extra parameters for exit\n",R,G,B);
+	} else if (strcmp(input[0], "exit") == 0) {
+		if (words != 1) {
+			sysPrintString("No extra parameters for exit\n", B, G, R);
+
 			return 2;
 		}
-		sysPrintString("See you soon",R,G,B);
-		isRunning=0;
+		sysPrintString("See you soon", B, G, R);
+
+		isRunning = 0;
+
 		return 0;
-	}
-	else if (strcmp(input[0], "graph") == 0) {
+	} else if (strcmp(input[0], "graph") == 0) {
 		return graph(input, words);
-	} else if(strcmp(input[0],"displayTime")==0){
+	} else if (strcmp(input[0],"displayTime") == 0) {
 		int timeBuff[6];
 
 		sysGetTime(timeBuff);
-		sysPrintInt(timeBuff[2] + timeZone,R,G,B);
-		sysPrintString(":",R,G,B);
-		sysPrintInt(timeBuff[1],R,G,B);
-		sysPrintString(":",R,G,B);
-		sysPrintInt(timeBuff[0],R,G,B);
+		sysPrintInt(timeBuff[2] + timeZone, B, G, R);
+		sysPrintString(":", B, G, R);
+		sysPrintInt(timeBuff[1], B, G, R);
+		sysPrintString(":", B, G, R);
+		sysPrintInt(timeBuff[0], B, G, R);
 
-		sysPrintString(" - ",R,G,B);
-		sysPrintInt(timeBuff[3],R,G,B);
-		sysPrintString("/",R,G,B);
-		sysPrintInt(timeBuff[4],R,G,B);
-		sysPrintString("/",R,G,B);
-		sysPrintInt(timeBuff[5],R,G,B);
-		sysPrintString("\n",R,G,B);
+		sysPrintString(" - ", B, G, R);
+		sysPrintInt(timeBuff[3], B, G, R);
+		sysPrintString("/", B, G, R);
+		sysPrintInt(timeBuff[4], B, G, R);
+		sysPrintString("/", B, G, R);
+		sysPrintInt(timeBuff[5], B, G, R);
+		sysPrintString("\n", B, G, R);
 
 		return 0;
-	}
-	else if(strcmp(input[0],"setTimeZone")==0){
-		if(words!=2){
-			sysPrintString("Wrong parameters: setTimeZone timezone\n",R,G,B);
+	} else if(strcmp(input[0],"setTimeZone") == 0) {
+		if(words != 2) {
+			sysPrintString("Wrong parameters: setTimeZone timezone\n", B, G, R);
+
 			return 2;
 		}
+
 		timeZone = input[0];
+
 		return 0;
-	}
-	else{
-		sysPrintString("Wrong input\n",R,G,B);
+	} else {
+		sysPrintString("Wrong input\n", B, G, R);
+
 		return 2;
 	}
+	
 	return 1;
 }
 
@@ -201,7 +213,7 @@ int calculate(char* func, int param1, int param2){
 int calculateVerifications(int words, char* input2, char* input3){
 	if(words!=4 || !isNum(input2) || !isNum(input3) ){
 		//veryfing that there are four inputs and that the last two are numbers
-		sysPrintString("Wrong parameters for calculate\n",R,G,B);
+		sysPrintString("Wrong parameters for calculate\n", B, G, R);
 		return 0;
 	}
 	return 1;
