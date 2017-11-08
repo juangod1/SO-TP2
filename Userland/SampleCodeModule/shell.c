@@ -17,11 +17,14 @@ char* helpIns ="echo *param*...			- Prints param (max of 32) to screen\n\
 static int R = 0;
 static int G = 255;
 static int B = 255;
+static int CR = 255;
+static int CG = 255;
+static int CB = 0;
 static int isRunning = 1;
 static int timeZone = -3;
 
 void startShell(){
-	sysPrintString("Shell initialized\n", R, G, B);
+	sysPrintString("Shell initialized\n", CB, CG, CR);
 
 	//callFunction("help");
 	char string[MAX_WORD_LENGTH] = {0};
@@ -32,7 +35,7 @@ void startShell(){
 
 	sysPrintString("$> ",0,155,255);
 
-	while (1) {
+	while (isRunning) {
 		sysGetChar(ch);
 		if(counter<MAX_WORD_LENGTH || *ch == '\n'|| *ch == '\b'){
 			sysWriteChar(*ch, B, G, R);
@@ -101,7 +104,7 @@ int callFunction(char * buffer) {
 		return echo(input, words);
 	} else if (strcmp(input[0], "setFontColor") == 0) {
 		if (words != 2) {
-			sysPrintString("Wrong parameters for setFontColor\n", B, G, R);
+			sysPrintString("Wrong parameters for setFontColor\n", CB, CG, CR);
 
 			return 2;
 		}
@@ -127,7 +130,7 @@ int callFunction(char * buffer) {
 		return 0;
 	} else if (strcmp(input[0], "help") == 0) {
 		if(words != 1) {
-			sysPrintString("No extra parameters for help\n", B, G, R);
+			sysPrintString("No extra parameters for help\n", CB, CG, CR);
 
 			return 2;
 		}
@@ -137,11 +140,12 @@ int callFunction(char * buffer) {
 		return 0;
 	} else if (strcmp(input[0], "exit") == 0) {
 		if (words != 1) {
-			sysPrintString("No extra parameters for exit\n", B, G, R);
+			sysPrintString("No extra parameters for exit\n", CB, CG, CR);
 
 			return 2;
 		}
-		sysPrintString("See you soon", B, G, R);
+		sysClear();
+		sysPrintString("See you soon", CB, CG, CR);
 
 		isRunning = 0;
 
@@ -169,7 +173,7 @@ int callFunction(char * buffer) {
 		return 0;
 	} else if(strcmp(input[0],"setTimeZone") == 0) {
 		if(words != 2) {
-			sysPrintString("Wrong parameters: setTimeZone timezone\n", B, G, R);
+			sysPrintString("Wrong parameters: setTimeZone timezone\n", CB, CG, CR);
 
 			return 2;
 		}
@@ -178,7 +182,7 @@ int callFunction(char * buffer) {
 
 		return 0;
 	} else {
-		sysPrintString("Wrong input\n", B, G, R);
+		sysPrintString("Wrong input\n", CB, CG, CR);
 
 		return 2;
 	}
@@ -210,7 +214,7 @@ int calculate(char* func, int param1, int param2){
 int calculateVerifications(int words, char* input2, char* input3){
 	if(words!=4 || !isNum(input2) || !isNum(input3) ){
 		//veryfing that there are four inputs and that the last two are numbers
-		sysPrintString("Wrong parameters for calculate\n", B, G, R);
+		sysPrintString("Wrong parameters for calculate\n", CB, CG, CR);
 		return 0;
 	}
 	return 1;
@@ -229,7 +233,7 @@ int echo(char input[][MAX_WORD_LENGTH], int words) {
 
 int clear(int words) {
 	if (words != 1) {
-		sysPrintString("No extra parameters for clear\n", R, G, B);
+		sysPrintString("No extra parameters for clear\n", CB, CG, CR);
 
 		return 2;
 	}
@@ -242,7 +246,7 @@ int clear(int words) {
 int graph(char input[][MAX_WORD_LENGTH], int words) {
 	if (words != (GRAPH_PARAMETERS + 1)) {
 		sysPrintString("Wrong amount of parameters for graph command\n\
-		Use command help for guidelines\n", B, G, R);
+		Use command help for guidelines\n", CB, CG, CR);
 
 		return 2;
 	}
@@ -250,13 +254,21 @@ int graph(char input[][MAX_WORD_LENGTH], int words) {
 	for (int i = 1; i <= GRAPH_PARAMETERS; i++) {
 		if (!isNum(input[i])) {
 			sysPrintString("Wrong parameters passed to graph command\n\
-			Use command help for guidelines\n", B, G, R);
+			Use command help for guidelines\n", CB, CG, CR);
 
 			return 2;
 		}
 	}
 
 	plotFunctionInt(toNum(input[1]), toNum(input[2]), toNum(input[3]));
-
-	return 0;
+	char* c=0;
+	int exitFlag=0;
+	while(exitFlag==0){
+		sysGetChar(c);
+		if(*c=='\n'){
+			sysClear();
+			sysPrintString("Exited plot Successfully\n", CB, CG, CR);
+			return 0;
+		}
+	}
 }
