@@ -14,6 +14,7 @@ static int isRunning = 1;
 static int timeZone = -3;
 
 void startShell(){
+	
 	sysPrintString("Shell initialized\n", CB, CG, CR);
 
 	//callFunction("help");
@@ -64,7 +65,7 @@ void startShell(){
 
 int callFunction(char * buffer) {
 	if (buffer == NULL){
-		return 2;
+		return 1;
 	}
 
 	int wordLength = 0;
@@ -92,7 +93,7 @@ int callFunction(char * buffer) {
 		if (words != 2) {
 			sysPrintString("Wrong parameters for setFontColor\n", CB, CG, CR);
 
-			return 2;
+			return 1;
 		}
 		if (strcmp(input[1], "red") == 0){
 			R=255;
@@ -123,8 +124,8 @@ int callFunction(char * buffer) {
 	}
 	else if(strcmp(input[0],"opcode")==0){
 		if(words!=1){
-			sysPrintString("No extra parameters for opcode\n",B,G,R);
-			return 2;
+			sysPrintString("No extra parameters for opcode\n",CB, CG, CR);
+			return 1;
 		}
 		opcodeGenerator();
 		return 0;
@@ -144,9 +145,10 @@ int callFunction(char * buffer) {
 
 		return 0;
 	} else if (strcmp(input[0], "help") == 0) {
-		if(words > 2) {
-			sysPrintString("Too many parameters for help\n", CB, CG, CR);
-			return 2;
+		if(words != 1) {
+			sysPrintString("No extra parameters for help\n", CB, CG, CR);
+
+			return 1;
 		}
 		if(words == 2){
 			if(strcmp(input[1], "echo") == 0){
@@ -183,7 +185,7 @@ int callFunction(char * buffer) {
 		if (words != 1) {
 			sysPrintString("No extra parameters for exit\n", CB, CG, CR);
 
-			return 2;
+			return 1;
 		}
 		sysClear();
 		sysPrintString("See you soon", CB, CG, CR);
@@ -197,7 +199,7 @@ int callFunction(char * buffer) {
 		if(words != 1) {
 			sysPrintString("Wrong parameters: displayTime\n", CB, CG, CR);
 
-			return 2;
+			return 1;
 		}
 		int timeBuff[6];
 
@@ -221,7 +223,7 @@ int callFunction(char * buffer) {
 		if(words != 2) {
 			sysPrintString("Wrong parameters: setTimeZone timezone\n", CB, CG, CR);
 
-			return 2;
+			return 1;
 		}
 		timeZone = toInt(input[1]);
 
@@ -229,7 +231,7 @@ int callFunction(char * buffer) {
 	} else {
 		sysPrintString("Wrong input\n", CB, CG, CR);
 
-		return 2;
+		return 1;
 	}
 
 	return 1;

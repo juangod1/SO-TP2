@@ -1,14 +1,15 @@
-section .text
 
 GLOBAL sysCallDispatcher
 extern sysCallHandler
 
+section .text
+
+
+%include "./asm/macros.m"
+
+
 sysCallDispatcher:
-  push rbp
-  mov rbp, rsp
-
+  pushStateNoRax
   call sysCallHandler
-
-  mov rsp, rbp
-  pop rbp
+  popStateNoRax
   iretq

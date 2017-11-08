@@ -1,4 +1,5 @@
 #include "mathLib.h"
+#include "stdLib.h"
 
 float absFloat(float x) {
 	return x >= 0.001 ? x : -x;

@@ -16,6 +16,7 @@ GLOBAL _irq05Handler
 GLOBAL _divideByZeroHandler
 GLOBAL _overflowHandler
 GLOBAL _opcodeHandler
+GLOBAL _generalProtection
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
@@ -43,10 +44,13 @@ SECTION .text
 %macro exceptionHandler 1
 	pushState
 
-	mov rdi, %1 ; pasaje del 1er parametro
+	mov rdi, %1 ; first parameter
+	mov rsi, rsp ; second parameter
+
 	call exceptionDispatcher
 	
 	popState
+
 	mov qword [rsp],0x400000
 	iretq
 
@@ -120,6 +124,9 @@ _overflowHandler:
 ;Opcode Exception
 _opcodeHandler:
 	exceptionHandler 6
+
+_generalProtection:
+	exceptionHandler 13
 
 haltcpu:
 	cli

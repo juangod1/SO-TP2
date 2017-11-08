@@ -1,41 +1,59 @@
 #include "videoDriver.h"
 
+#include "stdlib.h"
+#include <stdint.h>
 #define ZERO_EXCEPTION_ID 0
 #define OVERFLOW_EXCEPTION_ID 4
 #define INVALID_OPCODE_EXCEPTION_ID 6
 
-void zero_division();
-extern printRegs();
-void exceptionDispatcher(int exception) {
+char* registers[] = {"RAX: ", " RBX: ", " RCX: ", " RDX: ", " RBP: ", "RDI: ", " RSI: ", " R8: "
+					, " R9: ", " R10: ", "R11: ", " R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
+
+void exceptionDispatcher(int exception, uint64_t* rsp) {
+
+	printInt(exception, 0, 155, 255);
 
 	switch(exception){
 		case ZERO_EXCEPTION_ID:
-			zero_division();
+			zero_division(rsp);
 			break;
 		case OVERFLOW_EXCEPTION_ID:
-			overflow();
+			overflow(rsp);
 			break;
 		case INVALID_OPCODE_EXCEPTION_ID:
-			opcode();
+			opcode(rsp);
 			break;
 	}
 }
 
-void zero_division() {
+void zero_division(uint64_t* rsp) {
 	printString("Error: division by zero\n",0,155,255);
-	printRegs();
+	printRegs(rsp);
 	//while(1); //Return to shell
 	
 }
 
-void overflow(){
+void overflow(uint64_t* rsp){
 	printString("Error: overflow\n",0,155,255);
 	printRegs();
-	while(1);
+	//while(1);
 }
 
-void opcode(){
+void opcode(uint64_t* rsp){
 	printString("Error: invalid opcode exception\n",0,155,255);
 	printRegs();
-	while(1);
+	//while(1);
 }
+
+void printRegs(uint64_t*rsp){
+	for(int i = 0 ; i < 16 ; i++){
+		if(i%5==0){
+			printString("\n",0,155,255);
+		}
+		printString(registers[i],0,155,255);
+		printHex(rsp[i]);
+	}
+	printString("\n",0,155,255);
+
+}
+
