@@ -41,6 +41,7 @@ void startShell(){
 			(*ch != 0) ? counter++ : counter;
 
 			if (*ch == '\n') {
+				reset(lastString,strleng(lastString));
 				copy(lastString,string,strleng(string)-1);
 				callFunction(string);
 				if(isRunning) sysPrintString("$> ",0,155,255);
@@ -56,7 +57,6 @@ void startShell(){
 				int len=strleng(lastString);
 				sysPrintString(lastString, B, G, R);
 				copy(string,lastString,len);
-				reset(lastString,len);
 				counter=len;
 			}
 		}
