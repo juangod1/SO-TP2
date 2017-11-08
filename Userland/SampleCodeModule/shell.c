@@ -34,7 +34,7 @@ void startShell(){
 
 	while (1) {
 		sysGetChar(ch);
-		if(counter<MAX_WORD_LENGTH || *ch == '\n'){
+		if(counter<MAX_WORD_LENGTH || *ch == '\n'|| *ch == '\b'){
 			sysWriteChar(*ch, B, G, R);
 
 			string[counter]=*ch;
