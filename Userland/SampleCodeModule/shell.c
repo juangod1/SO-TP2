@@ -6,28 +6,7 @@
 extern opcodeGenerator();
 
 #define NULL ((void*)0)
-const char* helpIns =
-				"echo arguments ...          - Prints arguments\n\
-				displayTime                 - Prints date and time to screen\n\
-				setTimeZone timezone        - Set timezone \n\
-				setFontColor color          - Changes font color\n\
-				clear                       - Clears screen\n\
-				calculate operation op1 op2 - Performs specified calculation \n\
-				help (optional)command      - Displays help instructions for command\n\
-				exit                        - Exits the shell\n";
-const char* echoIns ="Recieves a variable amount of arguments, prints them in the screen (max 32).\n";
-const char* displayTimeIns ="Recieves no arguments. Prints current date and time.\n\
-							Default timezone is UTC-3.\n";
-const char* setTimeZoneIns ="Recieves an integer between -11 and 12.\n\
-							The parameter is set as the computer timezone in\n\
-							future time printings.\n";
-const char* setFontColorIns ="Recieves a string (red, blue, green or default). \n\
-							The fontcolor for future user printings is changed.\n";
-const char* clearIns ="Removes information from screen, starts over.\n";
-const char* calculateIns ="Recieves 3 arguments.\n\
-							Arg 1: Operation (add, substract, multiply, divide).\n\
-							Arg 2 and 3: Operands, real numbers.\n";
-const char* exitIns ="Quits the shell.\n";
+
 static int R = DR;
 static int G = DG;
 static int B = DB;
@@ -179,28 +158,25 @@ int callFunction(char * buffer) {
 		}
 		if(words == 2){
 			if(strcmp(input[1], "echo") == 0){
-				sysPrintString(echoIns, B, G, R);
+				sysPrintString(ECHO_INS, B, G, R);
 			} 
 			else if(strcmp(input[1], "displayTime") == 0){
-				sysPrintString(displayTimeIns, B, G, R);				
+				sysPrintString(DISPLAY_TIME_INS, B, G, R);				
 			}
 			else if(strcmp(input[1], "setTimeZone") == 0){
-				sysPrintString(setTimeZoneIns, B, G, R);				
+				sysPrintString(SET_TIME_ZONE_INS, B, G, R);				
 			}
 			else if(strcmp(input[1], "setFontColor") == 0){
-				sysPrintString(setFontColorIns, B, G, R);				
+				sysPrintString(SET_FONT_COLOR_INS, B, G, R);				
 			}
 			else if(strcmp(input[1], "clear") == 0){
-				sysPrintString(clearIns, B, G, R);	
+				sysPrintString(CLEAR_INS, B, G, R);	
 			}
 			else if(strcmp(input[1], "calculate") == 0){
-				sysPrintString(calculateIns, B, G, R);				
+				sysPrintString(CALCULATE_INS, B, G, R);				
 			}
 			else if(strcmp(input[1], "exit") == 0){
-				sysPrintString(exitIns, B, G, R);
-			}
-			else if(strcmp(input[1], "exit") == 0){
-				sysPrintString(exitIns, B, G, R);
+				sysPrintString(EXIT_INS, B, G, R);
 			}
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
