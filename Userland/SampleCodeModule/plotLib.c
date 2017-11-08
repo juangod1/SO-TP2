@@ -1,4 +1,6 @@
 #include "plotLib.h"
+#include "mathLib.h"
+#include "stdLib.h"
 #include <stdint.h>
 
 void plotAxis() {

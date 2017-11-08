@@ -5,6 +5,13 @@
 
 extern int sysCall(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
+void reset(char * string, int size){
+  for (int i = 0; i < size; i++){
+    *(string + i)=0;
+  }
+}
+
+
 void sysWriteChar(char * ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
   sysCall(7,ch,color_blue,color_green,color_red,0);
 }
