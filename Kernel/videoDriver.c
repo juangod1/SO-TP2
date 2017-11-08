@@ -134,7 +134,7 @@ void clearScreen(){
 		}
 	}
 	current_x=0;
-	current_y=0;
+	current_y=SCREEN_HEIGHT-16;
 }
 
 int strleng(const char *str){
