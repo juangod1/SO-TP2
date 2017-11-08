@@ -5,6 +5,10 @@
 
 extern int sysCall(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
+void sysWriteChar(char * ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
+  sysCall(7,ch,color_blue,color_green,color_red,0);
+}
+
 void sysPrintString(char * string, int B, int G, int R){
   int len = strleng(string);
   int i;
@@ -19,14 +23,18 @@ void copy(char* copy, char* original, int len){
   }
 }
 
-int strleng(const char* s){
-	int i = 0;
+int subStrleng(const char * s, const char c) {
+  int i = 0;
 
-	while (*(s + i)) {
+  while (*(s + i) != c) {
     i++;
   }
 
-	return i;
+  return i;
+}
+
+int strleng(const char* s){
+	return subStrleng(s, '\0');
 }
 
 void sysPrintInt(int num, int B, int G, int R) {
@@ -50,6 +58,20 @@ void sysPrintInt(int num, int B, int G, int R) {
   sysPrintString(numbers, B, G, R);
 }
 
+void sysPrintFloat(float num, int B, int G, int R) {
+  sysPrintInt((int)num, B, G, R);
+
+  if (num != 0) {
+    sysPrintString(".", B, G, R);
+  }
+
+  while (num != 0) {
+    num -= (int)num;
+    num *= 10;
+    sysPrintInt((int)num, B, G, R);
+  }
+}
+
 int countDigits(int num){
 	int dig = 1;
 	while((num/=10) != 0) dig++;
@@ -58,11 +80,6 @@ int countDigits(int num){
 void sysGetChar(char * ch){
   sysCall(4,ch,0,0,0,0);
 }
-
-void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
-  sysCall(7,ch,color_blue,color_green,color_red,0);
-}
-
 
 void sysGetTime(int * buffer){
 	buffer[0] = sysCall(3,0,0,0,0,0); // Seconds
