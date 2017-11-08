@@ -20,8 +20,7 @@ void startShell(){
 	char string[MAX_WORD_LENGTH] = {0};
 	char lastString[MAX_WORD_LENGTH] = {0};
 	int counter = 0;
-	char* ch;
-	int* ptr;
+	char* ch=0;
 
 	sysPrintString("$> ",CB,CG,CR);
 
@@ -38,7 +37,7 @@ void startShell(){
 				copy(lastString,string,strleng(string)-1);
 				callFunction(string);
 				if(isRunning) sysPrintString("$> ",CB,CG,CR);
-				reset(string);
+				reset(string,strleng(string));
 				counter=0;
 			}
 
@@ -60,13 +59,6 @@ void startShell(){
 				}
 			}
 		}
-	}
-}
-
-
-void reset(char * string, int size){
-	for (int i = 0; i < size; i++){
-		*(string + i)=0;
 	}
 }
 

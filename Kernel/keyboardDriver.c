@@ -53,7 +53,7 @@ static int print=1;
 static int caps=0;
 
 
-void keyboard_handler(struct regs *r)
+void keyboard_handler()
 {
     unsigned char scancode;
     /* Read from the keyboard's data buffer */

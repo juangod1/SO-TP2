@@ -5,6 +5,13 @@
 
 extern int sysCall(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
+void reset(char * string, int size){
+  for (int i = 0; i < size; i++){
+    *(string + i)=0;
+  }
+}
+
+
 void sysPrintString(char * string, int B, int G, int R){
   int len = strleng(string);
   int i;

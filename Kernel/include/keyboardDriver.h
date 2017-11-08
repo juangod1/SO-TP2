@@ -8,4 +8,5 @@ extern int get_key();
 char getChar(char * ch);
 void readAllBuffer(char *);
 int isEmpty();
+void putChar(char c);
 #endif
