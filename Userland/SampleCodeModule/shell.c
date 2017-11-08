@@ -141,8 +141,8 @@ int callFunction(char * buffer) {
 		int ver = calculateVerifications(words, input[2], input[3]);
 
 		if (ver) {
-			int input2 = toNum(input[2]);
-			int input3 = toNum(input[3]);
+			int input2 = toInt(input[2]);
+			int input3 = toInt(input[3]);
 			int ans = calculate(input[1], input2, input3);
 
 			sysPrintString("Calculated: ", B, G, R);
@@ -319,15 +319,27 @@ int graph(char input[][MAX_WORD_LENGTH], int words) {
 		}
 	}
 
-	plotFunctionInt(toNum(input[1]), toNum(input[2]), toNum(input[3]));
-	char* c=0;
-	int exitFlag=0;
-	while(exitFlag==0){
+	sysPrintFloat(toFloat(input[1]), B, G, R);
+	sysPrintString("\n", B, G, R);
+	sysPrintFloat(toFloat(input[2]), B, G, R);
+	sysPrintString("\n", B, G, R);
+	sysPrintFloat(toFloat(input[3]), B, G, R);
+	sysPrintString("\n", B, G, R);
+	//plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
+
+	char * c = 0;
+	int ready_to_exit = 0;
+
+	while (!ready_to_exit) {
 		sysGetChar(c);
-		if(*c=='\n'){
+
+		if (*c == '\n') {
 			sysClear();
 			sysPrintString("Exited plot Successfully\n", CB, CG, CR);
-			return 0;
+
+			ready_to_exit = 1;
 		}
 	}
+
+	return 0;
 }
