@@ -1,5 +1,4 @@
 #include "plotLib.h"
-#include "mathLib.h"
 #include <stdint.h>
 
 void plotAxis() {
@@ -19,18 +18,10 @@ void plotAxis() {
 		}
 	}
 }
-
+/*
 void plotFunctionInt(int a, int b, int c) {
 	sysClear();
 	plotAxis();
-
-	/*if (a == 0) {
-		int r = (int) -c / b;
-
-
-	} else {
-
-	}*/
 
 	int x_left_boundary = -(SCREEN_WIDTH / 2) + 1;
 	int x_right_boundary = SCREEN_WIDTH / 2;
@@ -47,57 +38,126 @@ void plotFunctionInt(int a, int b, int c) {
 		sysPaintPixel(i, - Fx + y_up_boundary, BG_R, BG_G, BG_B);
 	}
 }
+*/
+
+// Finds the closest float to x that is multiple of the given interval
+float findFloor(float x, float interval) {
+	float x_floor = 0;
+	float abs_x = absFloat(x);
+
+	while (x_floor < abs_x) {
+		x_floor += interval;
+	}
+
+	return x > 0 ? x_floor : -x_floor;
+}
+
+void plotLinearFloat(float x_left_boundary, float x_right_boundary, float pixelSize, float m, float b) {
+	for (float i = x_left_boundary; i <= x_right_boundary; i += pixelSize) {
+		float fx = fxFloat(i, 0, m, b);
+		float fx_floor = findFloor(fx, pixelSize);
+		float diff = absFloat((fx - fx_floor));
+		// Represents the closest float to 0 that multiple of pixelSize and bigger
+		// than fx if fx > 0, or smaller than fx if fx < 0
+		float fx_roof = fx > 0 ? (fx_floor + pixelSize) : (fx - pixelSize);
+		int y = diff < (pixelSize / 2) ? fx_floor : fx_roof;
+
+		sysPaintPixel((i / pixelSize), y, BG_B, BG_G, BG_R);
+	}
+}
+
+// Plots y = m*x + b
+void linearFunctionFloat(float m, float b) {
+	float pixelSize;
+
+	float x_left_boundary, x_right_boundary;
+	float y_up_boundary, y_down_boundary;
+	float r; // The root of the function (f(x) = 0)
+
+	if (b == 0) {
+		r = 0;
+
+		// This is an arbitrary scale to have a pixelSize of 0.1
+		y_up_boundary = SCREEN_HEIGHT / 20;
+		y_down_boundary = -y_up_boundary;
+
+		x_right_boundary = y_up_boundary * SCREEN_RATIO;
+		x_left_boundary = -x_right_boundary;
+	} else {
+		r = -b / m;
+
+		float dx = absFloat(r);	// The distance between (0,0) and (r,0)
+		float dy = absFloat(b); // The distance between (0,0) and (0,b)
+
+		// If the slope of the function is more vertical than horizontal
+		if (absFloat(m) >= 1) {
+			/*
+			** Double the differential in the y axis will be the distance from b
+			** (where the function "cuts" the y axis) to the upper and lower ends of
+			** the screen
+			*/
+			y_up_boundary = b + (dy * 2);
+			y_down_boundary = b - (dy * 2);
+
+			x_right_boundary = y_up_boundary * SCREEN_RATIO;
+			x_left_boundary = y_down_boundary * SCREEN_RATIO;
+		} else {
+			// If the slope of the function is more horizontal than vertical
+			x_right_boundary = r + (dx * 2);
+			x_left_boundary = r - (dx * 2);
+
+			y_up_boundary = x_right_boundary / SCREEN_RATIO;
+			y_down_boundary = x_left_boundary / SCREEN_RATIO;
+		}
+	}
+
+	// The total range of the y axis divided by the screen's height
+	pixelSize = (y_up_boundary * 2) / SCREEN_HEIGHT;
+
+	plotLinearFloat(x_left_boundary, x_right_boundary, pixelSize, m, b);
+}
+
+void plotFunctionFloat(float a, float b, float c) {
+	sysClear();
+  //plotAxis();
+
+	// If a ~~ 0 ==> linear function ==> y = bx + c
+	if (a < 0.001 && a > -0.001) {
+		linearFunctionFloat(b, c);
+	} else {
+		//quadraticFunctionFloat(a, b, c);
+	}
+}
 
 /*
-void plotFunction(float a, float b, float c) {
-	sysClear();
-  plotAxis();
+void quadraticFunctionFloat(float a, float b, float c) {
+	// x and y coordinates for the vertex
+	float h = -(b / (2 * a));
+	float k = c - ((b * b) / (4 * a));
 
-	// If a != 0 ===> quadratic function
-	if (a >= 0.001 || a <= -0.001) {
-		// x and y coordinates for the vertex
-		float h = -(b / (2 * a));
-		float k = c - ((b * b) / (4 * a));
+	float sqrt_abc = sqrt((b * b) - (4 * a * c));
 
-		float sqrt_arg = (b * b) - (4 * a * c);
+	// First and second root x and y coordinates
+	float r1 = (-b + sqrt_abc) / (2 * a);
+	float r2 = (-b - sqrt_abc) / (2 * a);
 
-		// First and second root x and y coordinates
-		// The relation between r1 and r2 should be such that r1 < r2
-		float x_r1 = (-b + sqrt(sqrt_arg)) / (2 * a);
-		float x_r2 = (-b - sqrt(sqrt_arg)) / (2 * a);
+	// The relation between r1 and r2 should be such that r1 < r2
+	if (r1 > r2) {
+		float aux = r1;
+		r1 = r2;
+		r2 = aux;
+	}
 
-		if (x_r1 > x_r2) {
-			float aux = x_r1;
-			x_r1 = x_r2;
-			x_r2 = aux;
-		}
+	// The distance between the two roots
+	float abs_root_dx = abs(r2 - r1);
 
-		float abs_dx = abs(x_r2 - x_r1);
-
-		float x_left_boundary = x_r1 - (abs_dx / 2);
-		float x_right_boundary = x_r2 + (abs_dx / 2);
-
-		// Aligning the x axis boundaries to plot the function
-		if (x_left_boundary >= 0.001 || x_right_boundary <= -0.001) {
-			// code
-		}
+	if (abs_root_dx < 0.001 && abs_root_dx > -0.001) {
+		// The distance between the two roots is minimal ==> there is only one
+		// root
+		float r = 0;
 	} else {
-		// It's linear ===> y = bx + c
-    a = 0;
-
-		float r = - c / b;
-
-		int x_left_boundary = SCREEN_WIDTH;
-		int x_right_boundary = 3;
-
-		for (int i = x_left_boundary; i <= x_right_boundary; i++) {
-			float fx = fx(i, a, b, c);
-			int fx_to_int = (int)fx;
-			float diff = abs((fx - (int)fx));
-			int y = diff - 0.5 < 0.5 ? fx_to_int : (fx > 0 ? (fx_to_int+1) : (fx_to_int-1));
-
-			sysPaintPixel(i, y, BG_B, BG_G, BG_R);
-		}
+		float x_left_boundary = r1 - (abs_root_dx / 2);
+		float x_right_boundary = r2 + (abs_root_dx / 2);
 	}
 }
 */
