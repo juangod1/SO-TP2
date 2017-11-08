@@ -3,7 +3,8 @@
 
 float absFloat(float x);
 int absInt(int x);
-int fx(int x, int a, int b, int c);
+int fxInt(int x, int a, int b, int c);
+float fxFloat(float x, float a, float b, float c);
 float babylonianSqrt(int n, float S, float x0);
 float sqrt(float S);
 int add(int x, int y);

@@ -8,7 +8,11 @@ int absInt(int x) {
 	return x > 0 ? x : -x;
 }
 
-int fx(int x, int a, int b, int c) {
+int fxInt(int x, int a, int b, int c) {
+	return (a * x * x) + (b * x) + c;
+}
+
+float fxFloat(float x, float a, float b, float c) {
 	return (a * x * x) + (b * x) + c;
 }
 
