@@ -160,6 +160,11 @@ int callFunction(char * buffer) {
 	} else if (strcmp(input[0], "graph") == 0) {
 		return graph(input, words);
 	} else if (strcmp(input[0],"displayTime") == 0) {
+		if(words != 1) {
+			sysPrintString("Wrong parameters: displayTime\n", CB, CG, CR);
+
+			return 2;
+		}
 		int timeBuff[6];
 
 		sysGetTime(timeBuff);
