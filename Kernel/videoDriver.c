@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "videoDriver.h"
 #include "font.h"
-
+//uintToBase taken from naiveConsole.c
 
 static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
@@ -19,6 +19,9 @@ void printString( const char* string, int B, int G, int R){
 	for(i=0;i<len;i++){
 		writeChar(string[i],B,G,R);
 	}
+}
+void printReg(char* s){
+	printString(s,0,155,255);
 }
 
 int boundedPixel(int x, int y) {
@@ -126,7 +129,43 @@ void printInt(int num, int B, int G, int R){
 
 		printString(numbers,B,G,R);
 }
+void printHex(uint64_t num){
+	static char buffer[64] = { '0' };
+	uintToBase(num,buffer,16);
+	printString(buffer,0,155,255);
+}
+static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
+{
+	char *p = buffer;
+	char *p1, *p2;
+	uint32_t digits = 0;
 
+	//Calculate characters for each digit
+	do
+	{
+		uint32_t remainder = value % base;
+		*p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+		digits++;
+	}
+	while (value /= base);
+
+	// Terminate string in buffer.
+	*p = 0;
+
+	//Reverse string in buffer.
+	p1 = buffer;
+	p2 = p - 1;
+	while (p1 < p2)
+	{
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
+	}
+
+	return digits;
+}
 void clearScreen(){
 	for(int i=0; i<SCREEN_WIDTH; i+=8){
 		for(int j=0; j<SCREEN_HEIGHT; j+=16){

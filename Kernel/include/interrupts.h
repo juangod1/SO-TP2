@@ -18,6 +18,8 @@ void _irq04Handler(void);
 void _irq05Handler(void);
 
 void _divideByZeroHandler(void);
+void _overflowHandler(void);
+void _opcodeHandler(void);
 
 void _cli(void);
 

@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "plotLib.h"
 #include "mathLib.h"
+extern opcodeGenerator();
 
 #define NULL ((void*)0)
 char* helpIns ="echo *param*...			- Prints param (max of 32) to screen\n\
@@ -102,10 +103,7 @@ int callFunction(char * buffer) {
 
 		aux++;
 	}
-	/*if(words<4){
-		input[words+1][wordLength-1]='\0';
-		words++;
-	}*/
+	
 
 	if (strcmp(input[0], "echo") == 0) {
 		return echo(input, words);
@@ -121,6 +119,15 @@ int callFunction(char * buffer) {
 		return 0;
 	} else if (strcmp(input[0], "clear") == 0) {
 		return clear(words);
+	}
+	else if(strcmp(input[0],"opcode")==0){
+		if(words!=1){
+			sysPrintString("No extra parameters for opcode\n",color_red,color_green,color_blue);
+			return 2;
+		}
+		opcodeGenerator();
+		return 0;
+	}
 	} else if (strcmp(input[0], "calculate") == 0) {
 		int ver = calculateVerifications(words, input[2], input[3]);
 
@@ -231,6 +238,12 @@ int calculateVerifications(int words, char* input2, char* input3){
 	return 1;
 }
 
+int overflowGenerator(int n){
+	char szBuf[1024] = { '\0' };
+	int x = (n*(n+77)*(n+23)*(n+17)+n)%1024;
+	szBuf[x]=n;
+	return (n>0)? overflowGenerator(n-1) : x;
+}
 int echo(char input[][MAX_WORD_LENGTH], int words) {
 	for (int i = 1  ;i < (words + 1); i++) {
 		sysPrintString(input[i], B, G, R);

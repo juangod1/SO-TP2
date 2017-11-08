@@ -14,11 +14,12 @@ GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 
 GLOBAL _divideByZeroHandler
-EXTERN ncPrint
-EXTERN ncPrintHex
+GLOBAL _overflowHandler
+GLOBAL _opcodeHandler
+
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
-
+EXTERN callModule
 SECTION .text
 
 %include "./asm/macros.m"
@@ -39,15 +40,14 @@ SECTION .text
 
 
 
-%macro exceptionHandler 2
+%macro exceptionHandler 1
 	pushState
 
 	mov rdi, %1 ; pasaje del 1er parametro
-	mov rsi, %2	; pasaje del 2do parametro
-
 	call exceptionDispatcher
+	
 	popState
-
+	mov qword [rsp],0x400000
 	iretq
 
 %endmacro
@@ -111,12 +111,21 @@ _irq05Handler:
 
 ;Zero Division Exception
 _divideByZeroHandler:
-	exceptionHandler 0,4
+	exceptionHandler 0
+
+;Overflow Exception
+_overflowHandler:
+	exceptionHandler 4
+
+;Opcode Exception
+_opcodeHandler:
+	exceptionHandler 6
 
 haltcpu:
 	cli
 	hlt
 	ret
+
 
 
 SECTION .bss
