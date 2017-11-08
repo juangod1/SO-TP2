@@ -6,21 +6,31 @@
 extern opcodeGenerator();
 
 #define NULL ((void*)0)
-char* helpIns ="echo *param*...			- Prints param (max of 32) to screen\n\
-				displayTime 			- Prints date and time to screen\n\
-				setTimeZone       - Set timezone \n\
-				setFontColor *param* 	- Changes font color to the one corresponding to d\n\
-				clear 					- Clears screen\n\
-				calculate(*p*,*p*,*p*)	- Performs specified calculation in first variable\n\
-											possible options are add, substract, divide and multiply\n\
-				help 					- Displays help instructions\n\
-				exit					- Exits the shell\n";
-static int R = 0;
-static int G = 255;
-static int B = 255;
-static int CR = 255;
-static int CG = 255;
-static int CB = 0;
+const char* helpIns =
+				"echo arguments ...          - Prints arguments\n\
+				displayTime                 - Prints date and time to screen\n\
+				setTimeZone timezone        - Set timezone \n\
+				setFontColor color          - Changes font color\n\
+				clear                       - Clears screen\n\
+				calculate operation op1 op2 - Performs specified calculation \n\
+				help (optional)command      - Displays help instructions for command\n\
+				exit                        - Exits the shell\n";
+const char* echoIns ="Recieves a variable amount of arguments, prints them in the screen (max 32).\n";
+const char* displayTimeIns ="Recieves no arguments. Prints current date and time.\n\
+							Default timezone is UTC-3.\n";
+const char* setTimeZoneIns ="Recieves an integer between -11 and 12.\n\
+							The parameter is set as the computer timezone in\n\
+							future time printings.\n";
+const char* setFontColorIns ="Recieves a string (red, blue, green or default). \n\
+							The fontcolor for future user printings is changed.\n";
+const char* clearIns ="Removes information from screen, starts over.\n";
+const char* calculateIns ="Recieves 3 arguments.\n\
+							Arg 1: Operation (add, substract, multiply, divide).\n\
+							Arg 2 and 3: Operands, real numbers.\n";
+const char* exitIns ="Quits the shell.\n";
+static int R = DR;
+static int G = DG;
+static int B = DB;
 static int isRunning = 1;
 static int timeZone = -3;
 
@@ -34,7 +44,7 @@ void startShell(){
 	char* ch;
 	int* ptr;
 
-	sysPrintString("$> ",0,155,255);
+	sysPrintString("$> ",CB,CG,CR);
 
 	while (isRunning) {
 		sysGetChar(ch);
@@ -48,7 +58,7 @@ void startShell(){
 				reset(lastString,strleng(lastString));
 				copy(lastString,string,strleng(string)-1);
 				callFunction(string);
-				if(isRunning) sysPrintString("$> ",0,155,255);
+				if(isRunning) sysPrintString("$> ",CB,CG,CR);
 				reset(string);
 				counter=0;
 			}
@@ -113,7 +123,27 @@ int callFunction(char * buffer) {
 
 			return 2;
 		}
-		//color = input[1][0]-'0'; HAS TO FIX
+		if (strcmp(input[1], "red") == 0){
+			R=255;
+			B=0;
+			G=0;
+		}
+		if (strcmp(input[1], "green") == 0){
+			R=0;
+			B=0;
+			G=255;	
+		}
+		if (strcmp(input[1], "blue") == 0){
+			R=0;
+			B=255;
+			G=0;
+		}
+		if (strcmp(input[1], "default") == 0){
+			R=DR;
+			B=DB;
+			G=DG;
+		}
+
 		sysPrintString("Set font color\n", B, G, R);
 
 		return 0;
@@ -122,13 +152,13 @@ int callFunction(char * buffer) {
 	}
 	else if(strcmp(input[0],"opcode")==0){
 		if(words!=1){
-			sysPrintString("No extra parameters for opcode\n",color_red,color_green,color_blue);
+			sysPrintString("No extra parameters for opcode\n",B,G,R);
 			return 2;
 		}
 		opcodeGenerator();
 		return 0;
 	}
-	} else if (strcmp(input[0], "calculate") == 0) {
+	else if (strcmp(input[0], "calculate") == 0) {
 		int ver = calculateVerifications(words, input[2], input[3]);
 
 		if (ver) {
@@ -143,13 +173,42 @@ int callFunction(char * buffer) {
 
 		return 0;
 	} else if (strcmp(input[0], "help") == 0) {
-		if(words != 1) {
-			sysPrintString("No extra parameters for help\n", CB, CG, CR);
-
+		if(words > 2) {
+			sysPrintString("Too many parameters for help\n", CB, CG, CR);
 			return 2;
 		}
-
-		sysPrintString(helpIns, B, G, R);
+		if(words == 2){
+			if(strcmp(input[1], "echo") == 0){
+				sysPrintString(echoIns, B, G, R);
+			} 
+			else if(strcmp(input[1], "displayTime") == 0){
+				sysPrintString(displayTimeIns, B, G, R);				
+			}
+			else if(strcmp(input[1], "setTimeZone") == 0){
+				sysPrintString(setTimeZoneIns, B, G, R);				
+			}
+			else if(strcmp(input[1], "setFontColor") == 0){
+				sysPrintString(setFontColorIns, B, G, R);				
+			}
+			else if(strcmp(input[1], "clear") == 0){
+				sysPrintString(clearIns, B, G, R);	
+			}
+			else if(strcmp(input[1], "calculate") == 0){
+				sysPrintString(calculateIns, B, G, R);				
+			}
+			else if(strcmp(input[1], "exit") == 0){
+				sysPrintString(exitIns, B, G, R);
+			}
+			else if(strcmp(input[1], "exit") == 0){
+				sysPrintString(exitIns, B, G, R);
+			}
+			else{
+				sysPrintString("Not a valid command\n",CB,CG,CR);
+			}			
+		}
+		else{
+			sysPrintString(helpIns, B, G, R);
+		}
 
 		return 0;
 	} else if (strcmp(input[0], "exit") == 0) {
