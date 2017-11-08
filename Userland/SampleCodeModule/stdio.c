@@ -1,5 +1,6 @@
 #include "stdLib.h"
 #include "mathLib.h"
+#include "stdio.h"
 
 /* Code taken from clc-wiki.net/wiki/C_standard_library:string.h:strcmp */
 int strcmp(const char* s1, const char* s2){

@@ -10,7 +10,7 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       getTimeRTC(rsi);
       break;
     case 4: ;
-      getChar(rsi);
+      getChar((char *)rsi);
       break;
     case 6:
       clearScreen();

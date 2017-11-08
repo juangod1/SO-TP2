@@ -29,5 +29,11 @@ int boundedPixel(int x, int y);
 void paintPixel(int x, int y, char R, char G, char B);
 unsigned char * getVideoPix();
 void writeChar(char c, int R, int G, int B);
+void paintCharSpace(int current_x, int current_y, char B, char G, char R);
+void checkLine();
+void backSpace();
+void shiftVideo();
+void paintBackGround();
+
 
 #endif

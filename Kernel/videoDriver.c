@@ -101,7 +101,7 @@ void checkLine(){
 		current_y+=16;
 		if(current_y>=SCREEN_HEIGHT){
 			current_y-=16;
-			shift();
+			shiftVideo();
 		}
 	}
 }
@@ -187,10 +187,10 @@ void newLine(){
 	current_y+=16;
 	if(current_y>=SCREEN_HEIGHT){
 		current_y-=16;
-		shift();
+		shiftVideo();
 	}
 }
-void shift(){
+void shiftVideo(){
 	//memcpy(getVideoPix, getVideoPix+3*SCREEN_WIDTH, 3*(SCREEN_HEIGHT-16)*(SCREEN_WIDTH));
 	unsigned char B;
 	unsigned char G;

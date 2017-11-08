@@ -91,4 +91,5 @@ int main()
 	module = sampleCodeModuleAddress;
 	
 	module();
+	return 0;
 }

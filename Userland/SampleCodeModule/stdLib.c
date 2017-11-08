@@ -85,7 +85,7 @@ int countDigits(int num){
 	return dig;
 }
 void sysGetChar(char * ch){
-  sysCall(4,ch,0,0,0,0);
+  sysCall(4,(uint64_t)ch,0,0,0,0);
 }
 
 void sysGetTime(int * buffer){
