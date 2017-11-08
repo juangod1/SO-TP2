@@ -14,7 +14,7 @@ static int isRunning = 1;
 static int timeZone = -3;
 
 void startShell(){
-	
+
 	sysPrintString("Shell initialized\n", CB, CG, CR);
 
 	//callFunction("help");
@@ -85,7 +85,7 @@ int callFunction(char * buffer) {
 
 		aux++;
 	}
-	
+
 
 	if (strcmp(input[0], "echo") == 0) {
 		return echo(input, words);
@@ -103,7 +103,7 @@ int callFunction(char * buffer) {
 		if (strcmp(input[1], "green") == 0){
 			R=0;
 			B=0;
-			G=255;	
+			G=255;
 		}
 		if (strcmp(input[1], "blue") == 0){
 			R=0;
@@ -145,7 +145,7 @@ int callFunction(char * buffer) {
 
 		return 0;
 	} else if (strcmp(input[0], "help") == 0) {
-		if(words != 1) {
+		if(words != 2) {
 			sysPrintString("No extra parameters for help\n", CB, CG, CR);
 
 			return 1;
@@ -153,28 +153,28 @@ int callFunction(char * buffer) {
 		if(words == 2){
 			if(strcmp(input[1], "echo") == 0){
 				sysPrintString(ECHO_INS, B, G, R);
-			} 
+			}
 			else if(strcmp(input[1], "displayTime") == 0){
-				sysPrintString(DISPLAY_TIME_INS, B, G, R);				
+				sysPrintString(DISPLAY_TIME_INS, B, G, R);
 			}
 			else if(strcmp(input[1], "setTimeZone") == 0){
-				sysPrintString(SET_TIME_ZONE_INS, B, G, R);				
+				sysPrintString(SET_TIME_ZONE_INS, B, G, R);
 			}
 			else if(strcmp(input[1], "setFontColor") == 0){
-				sysPrintString(SET_FONT_COLOR_INS, B, G, R);				
+				sysPrintString(SET_FONT_COLOR_INS, B, G, R);
 			}
 			else if(strcmp(input[1], "clear") == 0){
-				sysPrintString(CLEAR_INS, B, G, R);	
+				sysPrintString(CLEAR_INS, B, G, R);
 			}
 			else if(strcmp(input[1], "calculate") == 0){
-				sysPrintString(CALCULATE_INS, B, G, R);				
+				sysPrintString(CALCULATE_INS, B, G, R);
 			}
 			else if(strcmp(input[1], "exit") == 0){
 				sysPrintString(EXIT_INS, B, G, R);
 			}
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
-			}			
+			}
 		}
 		else{
 			sysPrintString(helpIns, B, G, R);
