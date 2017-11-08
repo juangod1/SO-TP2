@@ -173,7 +173,7 @@ void reset(char * string, int size){
 int isEmpty(){
   return elements==0;
 }
-char getChar(char * ch){
+void getChar(char * ch){
   if(isEmpty()){
     *ch= EOF;
     return;
@@ -193,5 +193,3 @@ void putChar(char c){
     readindex=(readindex+1)%BUFFERSIZE;
 	}
 }
-
-char getBuffer(){}

@@ -223,7 +223,7 @@ int callFunction(char * buffer) {
 
 			return 2;
 		}
-		timeZone = toNum(input[1]);
+		timeZone = toInt(input[1]);
 
 		return 0;
 	} else {
