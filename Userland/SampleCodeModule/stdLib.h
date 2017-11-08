@@ -10,5 +10,6 @@ void sysNewLine();
 void sysReadInput(char * buffer);
 void sysClear();
 void sysPaintPixel(int x, int y, char R, char G, char B);
+void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red);
 
 #endif

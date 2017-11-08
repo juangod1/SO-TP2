@@ -62,6 +62,13 @@ void startShell(){
 				copy(string,lastString,len);
 				counter=len;
 			}
+			if(*ch==14){
+				while(counter){
+					sysWriteChar('\b',B,G,R);
+					(counter!=0)?string[counter--]=0:counter;
+					(counter!=0)?string[counter]=0:counter;
+				}
+			}
 		}
 	}
 }
@@ -156,7 +163,7 @@ int callFunction(char * buffer) {
 		int timeBuff[6];
 
 		sysGetTime(timeBuff);
-		sysPrintInt(timeBuff[2] + timeZone, B, G, R);
+		sysPrintInt((timeBuff[2] + timeZone)%24, B, G, R);
 		sysPrintString(":", B, G, R);
 		sysPrintInt(timeBuff[1], B, G, R);
 		sysPrintString(":", B, G, R);
@@ -177,8 +184,7 @@ int callFunction(char * buffer) {
 
 			return 2;
 		}
-
-		timeZone = input[0];
+		timeZone = toNum(input[1]);
 
 		return 0;
 	} else {

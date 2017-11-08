@@ -59,7 +59,7 @@ void sysGetChar(char * ch){
   sysCall(4,ch,0,0,0,0);
 }
 
-void sysWriteChar(char * ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
+void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
   sysCall(7,ch,color_blue,color_green,color_red,0);
 }
 

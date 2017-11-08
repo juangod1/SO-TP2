@@ -26,8 +26,8 @@ const char keyMap[128] =
     0,	/* Right Arrow */
   '+',
     0,	/* 79 - End key*/
-    0,	/* Down Arrow */
-    0,	/* Page Down */
+    14,	/* Down Arrow */
+    14,	/* Page Down */
     0,	/* Insert Key */
     0,	/* Delete Key */
     0,   0,   0,
