@@ -13,6 +13,12 @@ void sysPrintString(char * string, int B, int G, int R){
   }
 }
 
+void copy(char* copy, char* original, int len){
+  for(int i=0; i<len; i++){
+    *(copy+i)=*(original+i);
+  }
+}
+
 int strleng(const char* s){
 	int i = 0;
 

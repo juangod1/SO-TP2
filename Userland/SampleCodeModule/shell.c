@@ -25,6 +25,7 @@ void startShell(){
 
 	//callFunction("help");
 	char string[MAX_WORD_LENGTH] = {0};
+	char lastString[MAX_WORD_LENGTH] = {0};
 	int counter = 0;
 	char* ch;
 	int* ptr;
@@ -33,24 +34,35 @@ void startShell(){
 
 	while (1) {
 		sysGetChar(ch);
-		sysWriteChar(*ch, B, G, R);
+		if(counter<MAX_WORD_LENGTH || *ch == '\n'){
+			sysWriteChar(*ch, B, G, R);
 
-		string[counter]=*ch;
-		(*ch != 0) ? counter++ : counter;
+			string[counter]=*ch;
+			(*ch != 0) ? counter++ : counter;
 
-		if (*ch == '\n') {
-			callFunction(string);
-			if(isRunning) sysPrintString("$> ",0,155,255);
-			reset(string);
-			counter=0;
-		}
+			if (*ch == '\n') {
+				copy(lastString,string,strleng(string)-1);
+				callFunction(string);
+				if(isRunning) sysPrintString("$> ",0,155,255);
+				reset(string);
+				counter=0;
+			}
 
-		if(*ch=='\b'){
-			(counter!=0)?string[counter--]=0:counter;
-			(counter!=0)?string[counter--]=0:counter;
+			if(*ch=='\b'){
+				(counter!=0)?string[counter--]=0:counter;
+				(counter!=0)?string[counter--]=0:counter;
+			}
+			if(*ch==15 && counter==1){ //UPARROW
+				int len=strleng(lastString);
+				sysPrintString(lastString, B, G, R);
+				copy(string,lastString,len);
+				reset(lastString,len);
+				counter=len;
+			}
 		}
 	}
 }
+
 
 void reset(char * string, int size){
 	for (int i = 0; i < size; i++){

@@ -18,7 +18,7 @@ const char keyMap[128] =
     0,	/* Num lock -68*/
     0,	/* Scroll Lock -69*/
     0,	/* Home key -70*/
-    0,	/* Up Arrow -71*/
+    15,	/* Up Arrow -71*/
     0,	/* Page Up -72*/
   '-',  /* minus -73*/
     0,	/* Left Arrow */
@@ -159,7 +159,7 @@ void keyboard_handler(struct regs *r)
         }
       }
   		if(print==1){
-          	putChar(c);
+        putChar(c);
   		}
   		print=1;
     }
