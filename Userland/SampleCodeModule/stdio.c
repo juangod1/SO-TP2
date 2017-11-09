@@ -60,35 +60,22 @@ int toInt(char * string) {
 	return (*auxString == '-') ? -rta : rta;
 }
 
-float toFloat(char * string) {
-	int int_length, decimal_length, total_length;
-	int powerTo;
-	float rta = 0;
-	char * auxString = string;
-
-	if (*string == '-') {
-		string++;
-	}
-
-	int_length = subStrleng(string, '.');
-	decimal_length = strleng(string + int_length);
-	total_length = int_length + 1 + decimal_length;
-	powerTo = int_length;
-
-
-	for (int i = 0 ; i < total_length; i++) {
-		int digit = *string - '0';
-
-		if (i < int_length) {
-			powerTo--;
-			rta += ((float)digit * tenPow(powerTo));
-		} else if (i > int_length && (i - (int_length + 1)) < decimal_length) {
-			powerTo++;
-			rta += ((float)digit / tenPow(powerTo));
-		}
-
-		string++;
-	}
-
-	return (*auxString == '-') ? -rta : rta;
+float toFloat(const char * s) {
+  float rez = 0, fact = 1;
+  if (*s == '-'){
+    s++;
+    fact = -1;
+  };
+  for (int point_seen = 0; *s; s++){
+    if (*s == '.'){
+      point_seen = 1;
+      continue;
+    };
+    int d = *s - '0';
+    if (d >= 0 && d <= 9){
+      if (point_seen) fact /= 10.0f;
+      rez = rez * 10.0f + (float)d;
+    };
+  };
+  return rez * fact;
 }

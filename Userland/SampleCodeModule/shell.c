@@ -16,8 +16,6 @@ static int timeZone = -3;
 void startShell(){
 
 	sysPrintString("Shell initialized\n", CB, CG, CR);
-
-	//callFunction("help");
 	char string[MAX_WORD_LENGTH] = {0};
 	char lastString[MAX_WORD_LENGTH] = {0};
 	int counter = 0;
@@ -321,7 +319,6 @@ int graph(char input[4][MAX_WORD_LENGTH], int words) {
 	sysPrintFloat(toFloat(input[3]), B, G, R);
 	sysPrintString("\n", B, G, R);*/
  	plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
-
 	char c = 0;
 	int ready_to_exit = 0;
 

@@ -3,75 +3,10 @@
 #include "stdLib.h"
 #include <stdint.h>
 
-void plotAxis() {
-	// Variables to represent the x and y origin coordinates respectively
-	int x_0 = (SCREEN_WIDTH / 2) - 1;
-	int y_0 = (SCREEN_HEIGHT / 2) - 1;
-
-	// Paint the y-axis
-	for (int j = 0; j < SCREEN_HEIGHT; j++) {
-		if (j == y_0) {
-			// Paint the x-axis
-			for (int i = 0; i < SCREEN_WIDTH; i++) {
-				sysPaintPixel(i, j, BG_R, BG_B, BG_G);
-			}
-		} else {
-			sysPaintPixel(x_0, j, BG_R, BG_B, BG_G);
-		}
-	}
-}
-/*
-void plotFunctionInt(int a, int b, int c) {
-	sysClear();
-	plotAxis();
-
-	int x_left_boundary = -(SCREEN_WIDTH / 2) + 1;
-	int x_right_boundary = SCREEN_WIDTH / 2;
-	int y_down_boundary = -(SCREEN_HEIGHT / 2) + 1;
-	int y_up_boundary = SCREEN_HEIGHT / 2;
-
-	//float diff;
-	//int y;
-	for (int i = 0; i < SCREEN_WIDTH; i++) {
-		 int Fx = fx(x_left_boundary + i, a, b, c);
-		//diff = absInt((Fx - (int)Fx));
-		//y = (diff - 0.5 < 0.5) ? fx_to_int : (Fx > 0 ? (fx_to_int+1) : (fx_to_int-1));
-
-		sysPaintPixel(i, - Fx + y_up_boundary, BG_R, BG_G, BG_B);
-	}
-}
-*/
 
 // Finds the closest float to x that is multiple of the given interval
-float findFloor(float x, float interval) {
-	float x_floor = 0;
-	float abs_x = absFloat(x);
-
-	while (x_floor < abs_x) {
-		x_floor += interval;
-	}
-
-	return x > 0 ? x_floor : -x_floor;
-}
-
-
-/*
-void plotLinearFloat(float x_left_boundary, float x_right_boundary, float pixelSize, float m, float b) {
-	for (float i = x_left_boundary; i <= x_right_boundary; i += pixelSize) {
-		float fx = fxFloat(i, 0, m, b);
-		float fx_floor = findFloor(fx, pixelSize);
-		float diff = absFloat((fx - fx_floor));
-		// Represents the closest float to 0 that multiple of pixelSize and bigger
-		// than fx if fx > 0, or smaller than fx if fx < 0
-		float fx_roof = fx > 0 ? (fx_floor + pixelSize) : (fx - pixelSize);
-		int y = diff < (pixelSize / 2) ? fx_floor : fx_roof;
-
-		sysPaintPixel((int)((x_left_boundary - i) / pixelSize), y, BG_B, BG_G, BG_R);
-	}
-}*/
-
 void plotLinearFloat(float x_left_boundary, float x_right_boundary,
-		float y_down_boundary, float y_up_boundary, float m, float b) {
+		float y_down_boundary, float y_up_boundary, float a, float b, float c) {
 	float x_val, y_val;
 	float diff;
 	sysPrintFloat(x_left_boundary,213,123,123);
@@ -87,12 +22,12 @@ void plotLinearFloat(float x_left_boundary, float x_right_boundary,
 			x_val = x_left_boundary + (i * (x_right_boundary - x_left_boundary)) / SCREEN_WIDTH;
 			y_val = y_up_boundary - (j * (y_up_boundary - y_down_boundary)) / SCREEN_HEIGHT;
 
-			diff = absFloat(fxFloat(x_val, 0.0, m, b) - y_val);
+			diff = absFloat(fxFloat(x_val, a, b, c) - y_val);
 
 			if (diff < 0.1) {
 				sysPaintPixel(i, j, BG_B, BG_G, BG_R);
 			}
-			if(absFloat(x_val)<0.1 || absFloat(y_val)<0.1){
+			if(absFloat(x_val)<0.1 || absFloat(y_val)<0.1){ //PLOT AXIS
 				sysPaintPixel(i,j, 0, 255,255);
 			}
 		}
@@ -143,33 +78,46 @@ void linearFunctionFloat(float m, float b) {
 			y_down_boundary = x_left_boundary / SCREEN_RATIO;
 		}
 	}
-	plotLinearFloat(x_left_boundary, x_right_boundary, y_down_boundary,y_up_boundary, m, b);
+	plotLinearFloat(x_left_boundary, x_right_boundary, y_down_boundary,y_up_boundary,0, m, b);
 }
 
 void plotFunctionFloat(float a, float b, float c) {
 	sysClear();
-  //plotAxis();
-
 	// If a ~~ 0 ==> linear function ==> y = bx + c
 	if (a < 0.001 && a > -0.001) {
 		linearFunctionFloat(b, c);
 	} else {
-		//quadraticFunctionFloat(a, b, c);
+		sysPrintFloat(a,0,0,123);
+		sysPrintFloat(b,0,0,123);
+		sysPrintFloat(c,0,0,123);
+		sysPrintString("\n",0,0,0);
+		quadraticFunctionFloat(a, b, c);
 	}
 }
 
-/*
 void quadraticFunctionFloat(float a, float b, float c) {
-	// x and y coordinates for the vertex
-	float h = -(b / (2 * a));
-	float k = c - ((b * b) / (4 * a));
+	// interesting y coordinates
+	float y_vertex = c - ((b * b) / (4 * a));
+	float y_incept= c;
 
-	float sqrt_abc = sqrt((b * b) - (4 * a * c));
 
-	// First and second root x and y coordinates
-	float r1 = (-b + sqrt_abc) / (2 * a);
-	float r2 = (-b - sqrt_abc) / (2 * a);
 
+
+	float determinant=(b * b) - (4 * a * c);
+	float sqrt_abc = sqrt(determinant);
+
+	float r1;
+	float r2;
+
+	if(sqrt_abc==-1){ //sqrt of a negative number
+			float x_vertex=-b/(2*a);
+			r1=x_vertex;
+			r2=x_vertex;
+	}
+	else{ // First and second root x coordinates
+	r1 = (-b + sqrt_abc) / (2 * a);
+	r2 = (-b - sqrt_abc) / (2 * a);
+	}
 	// The relation between r1 and r2 should be such that r1 < r2
 	if (r1 > r2) {
 		float aux = r1;
@@ -178,15 +126,34 @@ void quadraticFunctionFloat(float a, float b, float c) {
 	}
 
 	// The distance between the two roots
-	float abs_root_dx = abs(r2 - r1);
-
-	if (abs_root_dx < 0.001 && abs_root_dx > -0.001) {
+	float abs_root_dx = absFloat(r2 - r1);
+	float x_left_boundary=-10;
+	float x_right_boundary=10;
+	float y_up_boundary;
+	float y_down_boundary;
+	int flag=0;
+	if (abs_root_dx < 2 && abs_root_dx > 2) {
 		// The distance between the two roots is minimal ==> there is only one
 		// root
-		float r = 0;
+		flag=1;
 	} else {
-		float x_left_boundary = r1 - (abs_root_dx / 2);
-		float x_right_boundary = r2 + (abs_root_dx / 2);
+		x_left_boundary = r1 - (abs_root_dx / 2);
+		x_right_boundary = r2 + (abs_root_dx / 2);
 	}
+
+	float abs_dist_y=absFloat(y_incept-y_vertex);
+
+	if (abs_dist_y < 2 && abs_dist_y > 2) {
+		// The distance between the two points is minimal ==> there is only one point of interest
+		y_down_boundary = x_left_boundary;
+		y_up_boundary = x_right_boundary;
+	} else {
+		y_down_boundary = y_vertex - (abs_dist_y / 2);
+		y_up_boundary = y_incept + (abs_dist_y / 2);
+	}
+	if(flag){
+		x_left_boundary = y_down_boundary;
+		x_right_boundary = y_up_boundary;
+	}
+	plotLinearFloat(x_left_boundary, x_right_boundary, y_down_boundary,y_up_boundary,a, b, c);
 }
-*/
