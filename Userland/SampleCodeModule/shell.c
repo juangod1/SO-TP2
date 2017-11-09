@@ -215,12 +215,20 @@ int callFunction(char * buffer) {
 		sysGetTime(timeBuff);
 		sysPrintInt((timeBuff[2] + timeZone)%24, B, G, R);
 		sysPrintString(":", B, G, R);
+		if(timeBuff[1]/10==0)
+			sysPrintString("0",B,G,R);
 		sysPrintInt(timeBuff[1], B, G, R);
 		sysPrintString(":", B, G, R);
+		if(timeBuff[0]/10==0)
+			sysPrintString("0",B,G,R);
 		sysPrintInt(timeBuff[0], B, G, R);
 
 		sysPrintString(" - ", B, G, R);
-		sysPrintInt(timeBuff[3], B, G, R);
+		if((timeBuff[2] + timeZone)/24!=0)
+			sysPrintInt(timeBuff[3]+1, B, G, R);
+		else
+			sysPrintInt(timeBuff[3], B, G, R);
+
 		sysPrintString("/", B, G, R);
 		sysPrintInt(timeBuff[4], B, G, R);
 		sysPrintString("/", B, G, R);
@@ -231,9 +239,13 @@ int callFunction(char * buffer) {
 	} else if(strcmp(input[0],"setTimeZone") == 0) {
 		if(words != 2) {
 			sysPrintString("Wrong parameters: setTimeZone timezone\n", CB, CG, CR);
-
 			return 1;
 		}
+		if(toInt(input[1])>12 || toInt(input[1])<-11){
+			sysPrintString("Timezone values must be between -11 and +12\n", CB, CG, CR);
+			return 1;
+		}
+
 		timeZone = toInt(input[1]);
 
 		return 0;
