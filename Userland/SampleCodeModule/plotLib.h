@@ -19,11 +19,12 @@
 #define FACTOR 1.5
 #define DEFAULT_PLOT 10
 
+void plotWrapper(int x_l, int x_r, int y_d, int y_u, float a, float b, float c);
+int scaleMarkY(int y);
+int scaleMarkX(int x);
+float plotAxis(float x_l, float x_r, float y_d, float y_u);
+void plotFunction(float x_left_boundary, float x_right_boundary,
+	float y_down_boundary, float y_up_boundary, float a, float b, float c);
 int graphMain(float a, float b, float c);
-void plotFunctionInt(int a, int b, int c);
-void plotFunctionFloat(int x_l, int x_r, int y_d, int y_u, float a, float b, float c);
-void plotLinearFloat(float x_left_boundary, float x_right_boundary,
-		float y_down_boundary, float y_up_boundary ,float a, float b, float c);
-void quadraticFunctionFloat(float a, float b, float c);
 
 #endif

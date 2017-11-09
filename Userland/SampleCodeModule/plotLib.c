@@ -10,8 +10,8 @@ int graphMain(float a, float b, float c){
 	float x_l=-DEFAULT_PLOT;
 	float y_d=x_l;
 	float y_u=x_r;
-	int x_offset=0,y_offset=0, ready_to_exit = 0,draw=1;
-	float factor=FACTOR;
+	float x_offset=0,y_offset=0, ready_to_exit = 0,draw=1;
+	float factor=1;
 	char ch = 0;
 
 	while (!ready_to_exit) {
@@ -23,45 +23,39 @@ int graphMain(float a, float b, float c){
 			ready_to_exit = 1;
 		}
 		if (ch == '+') {
-			y_d/=factor;
-			y_u/=factor;
-			x_r/=factor;
-			x_l/=factor;
+			factor/=FACTOR;
 			draw=1;
 		}
 		if (ch == '-') {
-			y_d*=factor;
-			y_u*=factor;
-			x_r*=factor;
-			x_l*=factor;
+			factor*=FACTOR;
 			draw=1;
 		}
 		if (ch == 15) { //UPARROW
-			y_offset+=5;
+			y_offset+=(5*factor);
 			draw=1;
 		}
 		if (ch == 14) { //DOWNARROW
-			y_offset-=5;
+			y_offset-=(5*factor);
 			draw=1;
 		}
 		if (ch == 13) { //RIGHTARROW
-			x_offset-=5;
+			x_offset-=(5*factor);
 			draw=1;
 		}
 		if (ch == 12) { //LEFTARROW
-			x_offset+=5;
+			x_offset+=(5*factor);
 			draw=1;
 		}
 		if(draw){
 			draw=0;
-			plotFunctionFloat(x_l+x_offset,x_r+x_offset,y_d+y_offset,y_u+y_offset,a, b, c);
+			plotWrapper((x_l*factor)+x_offset,(x_r*factor)+x_offset,(y_d*factor)+y_offset,(y_u*factor)+y_offset,a, b, c);
 		}
 	}
 
 	return 0;
 }
 
-void plotLinearFloat(float x_left_boundary, float x_right_boundary,
+void plotFunction(float x_left_boundary, float x_right_boundary,
 	float y_down_boundary, float y_up_boundary, float a, float b, float c) {
 	float x_val, y_val;
 	float diff;
@@ -78,7 +72,7 @@ void plotLinearFloat(float x_left_boundary, float x_right_boundary,
 		}
 	}
 }
-plotAxis(float x_l, float x_r, float y_d, float y_u){
+float plotAxis(float x_l, float x_r, float y_d, float y_u){
 	float differential = (x_r-x_l)*DIFFERENTIAL_FACTOR;
 	float scale = (x_r-x_l)/SCALE_AMOUNT;
 	float x_val, y_val;
@@ -120,10 +114,10 @@ int scaleMarkY(int y){
 }
 
 
-void plotFunctionFloat(int x_l, int x_r, int y_d, int y_u, float a, float b, float c) {
+void plotWrapper(int x_l, int x_r, int y_d, int y_u, float a, float b, float c) {
 	sysClear();
-	int scale = plotAxis(x_l,x_r,y_d,y_u);
-	plotLinearFloat(x_l,x_r,y_d,y_u,a,b,c);
+	float scale = plotAxis(x_l,x_r,y_d,y_u);
+	plotFunction(x_l,x_r,y_d,y_u,a,b,c);
 	sysPrintString("Scale = ", A_B,A_G,A_R);
-	sysPrintInt(scale,A_B,A_G,A_R);
+	sysPrintFloat(scale,A_B,A_G,A_R);
 }
