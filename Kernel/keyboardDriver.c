@@ -21,9 +21,9 @@ const char keyMap[128] =
     15,	/* Up Arrow -71*/
     0,	/* Page Up -72*/
   '-',  /* minus -73*/
-    0,	/* Left Arrow */
+    13,	/* Left Arrow */
     0,
-    0,	/* Right Arrow */
+    12,	/* Right Arrow */
   '+',
     0,	/* 79 - End key*/
     14,	/* Down Arrow */
