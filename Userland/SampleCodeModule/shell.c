@@ -15,6 +15,7 @@ static int timeZone = -3;
 
 void startShell(){
 
+	//sysPrintFloat(fxFloat(2,-3,4,5),122,33,53);
 	sysPrintString("Shell initialized\n", CB, CG, CR);
 	char string[MAX_WORD_LENGTH] = {0};
 	char lastString[MAX_WORD_LENGTH] = {0};
@@ -312,22 +313,15 @@ int graph(char input[4][MAX_WORD_LENGTH], int words) {
 	}
 
 
-	/*sysPrintFloat(toFloat(input[1]), B, G, R);
-	sysPrintString("\n", B, G, R);
-	sysPrintFloat(toFloat(input[2]), B, G, R);
-	sysPrintString("\n", B, G, R);
-	sysPrintFloat(toFloat(input[3]), B, G, R);
-	sysPrintString("\n", B, G, R);*/
 	float x_r=10;
 	float x_l=-10;
 	float y_d=x_l;
 	float y_u=x_r;
-	int offset=5;
+	int x_offset=0,y_offset=0, ready_to_exit = 0,draw=0;
 	float factor=1.5;
 	char c = 0;
-	int ready_to_exit = 0;
 
-	plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]),x_r,x_l,y_d,y_u);
+	plotFunctionFloat(x_l,x_r,y_d,y_u,toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
 	while (!ready_to_exit) {
 		sysGetChar(&c);
 		if (c == '\n') {
@@ -337,38 +331,38 @@ int graph(char input[4][MAX_WORD_LENGTH], int words) {
 			ready_to_exit = 1;
 		}
 		if (c == '+') {
-			y_d/=offset;
-			y_u/=offset;
-			x_r/=offset;
-			x_l/=offset;
-			plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]),x_r,x_l,y_d,y_u);
+			y_d/=factor;
+			y_u/=factor;
+			x_r/=factor;
+			x_l/=factor;
+			draw=1;
 		}
 		if (c == '-') {
-			y_d*=offset;
-			y_u*=offset;
-			x_r*=offset;
-			x_l*=offset;
-			plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]),x_r,x_l,y_d,y_u);
+			y_d*=factor;
+			y_u*=factor;
+			x_r*=factor;
+			x_l*=factor;
+			draw=1;
 		}
 		if (c == 15) { //UPARROW
-			y_d+=offset;
-			y_u+=offset;
-			plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]),x_r,x_l,y_d,y_u);
+			y_offset+=5;
+			draw=1;
 		}
 		if (c == 14) { //DOWNARROW
-			y_d-=offset;
-			y_u-=offset;
-			plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]),x_r,x_l,y_d,y_u);
-		}
-		if (c == 12) { //LEFTARROW
-			x_r-=offset;
-			x_l-=offset;
-			plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]),x_r,x_l,y_d,y_u);
+			y_offset-=5;
+			draw=1;
 		}
 		if (c == 13) { //RIGHTARROW
-			x_r+=offset;
-			x_l+=offset;
-			plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]),x_r,x_l,y_d,y_u);
+			x_offset-=5;
+			draw=1;
+		}
+		if (c == 12) { //LEFTARROW
+			x_offset+=5;
+			draw=1;
+		}
+		if(draw){
+			draw=0;
+			plotFunctionFloat(x_l+x_offset,x_r+x_offset,y_d+y_offset,y_u+y_offset,toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
 		}
 	}
 
