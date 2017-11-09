@@ -1,4 +1,4 @@
-#include "shell.h"
+	#include "shell.h"
 #include "stdLib.h"
 #include "stdio.h"
 #include "plotLib.h"
@@ -144,7 +144,7 @@ int callFunction(char * buffer) {
 
 		return 0;
 	} else if (strcmp(input[0], "help") == 0) {
-		if(words != 2) {
+		if(words > 2) {
 			sysPrintString("No extra parameters for help\n", CB, CG, CR);
 
 			return 1;
