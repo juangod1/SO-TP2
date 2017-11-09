@@ -95,7 +95,6 @@ int callFunction(char * buffer) {
 	} else if (strcmp(input[0], "setFontColor") == 0) {
 		if (words != 2) {
 			sysPrintString("Wrong parameters for setFontColor\n", CB, CG, CR);
-
 			return 1;
 		}
 		if (strcmp(input[1], "red") == 0){
@@ -103,20 +102,24 @@ int callFunction(char * buffer) {
 			B=0;
 			G=0;
 		}
-		if (strcmp(input[1], "green") == 0){
+		else if (strcmp(input[1], "green") == 0){
 			R=0;
 			B=0;
 			G=255;
 		}
-		if (strcmp(input[1], "blue") == 0){
+		else if (strcmp(input[1], "blue") == 0){
 			R=0;
 			B=255;
 			G=0;
 		}
-		if (strcmp(input[1], "default") == 0){
+		else if (strcmp(input[1], "default") == 0){
 			R=DR;
 			B=DB;
 			G=DG;
+		}
+		else{
+			sysPrintString("Wrong parameters for setFontColor\n", CB, CG, CR);
+			return 1;
 		}
 
 		sysPrintString("Set font color\n", B, G, R);
