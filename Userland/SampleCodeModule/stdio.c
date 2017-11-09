@@ -61,9 +61,7 @@ int toInt(char * string) {
 }
 
 float toFloat(char * string) {
-	int int_length;
-	int decimal_length;
-	int total_length;
+	int int_length, decimal_length, total_length;
 	int powerTo;
 	float rta = 0;
 	char * auxString = string;
@@ -76,19 +74,17 @@ float toFloat(char * string) {
 	decimal_length = strleng(string + 1 + int_length);
 	total_length = int_length + 1 + decimal_length;
 	powerTo = int_length;
-	sysPrintInt(decimal_length, 0, 255, 255);
-	sysPrintString("\n", 0, 255, 255);
+
 
 	for (int i = 0 ; i < total_length; i++) {
-		int n = *string - '0';
+		int digit = *string - '0';
 
 		if (i < int_length) {
 			powerTo--;
-			rta += (n * tenPow(powerTo));
+			rta += ((float)digit * tenPow(powerTo));
 		} else if (i > int_length && (i - (int_length + 1)) < decimal_length) {
-			// The + 1 stands for the decimal mark
 			powerTo++;
-			rta += (n / tenPow(powerTo));
+			rta += ((float)digit / tenPow(powerTo));
 		}
 
 		string++;

@@ -54,6 +54,8 @@ float findFloor(float x, float interval) {
 	return x > 0 ? x_floor : -x_floor;
 }
 
+
+/*
 void plotLinearFloat(float x_left_boundary, float x_right_boundary, float pixelSize, float m, float b) {
 	for (float i = x_left_boundary; i <= x_right_boundary; i += pixelSize) {
 		float fx = fxFloat(i, 0, m, b);
@@ -64,7 +66,26 @@ void plotLinearFloat(float x_left_boundary, float x_right_boundary, float pixelS
 		float fx_roof = fx > 0 ? (fx_floor + pixelSize) : (fx - pixelSize);
 		int y = diff < (pixelSize / 2) ? fx_floor : fx_roof;
 
-		sysPaintPixel((i / pixelSize), y, BG_B, BG_G, BG_R);
+		sysPaintPixel((int)((x_left_boundary - i) / pixelSize), y, BG_B, BG_G, BG_R);
+	}
+}*/
+
+void plotLinearFloat(float x_left_boundary, float x_right_boundary,
+	float y_down_boundary, float y_up_boundary, float m, float b) {
+	float x_val, y_val;
+	float diff;
+
+	for (int i = 0; i < SCREEN_WIDTH; i++) {
+		for (int j = 0; j < SCREEN_HEIGHT ; j++) {
+			x_val = x_left_boundary + (i * (x_right_boundary - x_left_boundary)) / SCREEN_WIDTH;
+			y_val = y_down_boundary + (j * (y_up_boundary - y_down_boundary)) / SCREEN_HEIGHT;
+
+			diff = absFloat(fxFloat(x_val, 0.0, m, b) - y_val);
+
+			if (diff < 0.1) {
+				sysPaintPixel(i, SCREEN_HEIGHT - j, BG_B, BG_G, BG_R);
+			}
+		}
 	}
 }
 
@@ -76,8 +97,8 @@ void linearFunctionFloat(float m, float b) {
 	float y_up_boundary, y_down_boundary;
 	float r; // The root of the function (f(x) = 0)
 
-	if (b == 0) {
-		r = 0;
+	if (b < 0.001 && b > -0.001) {
+		r = 0.0;
 
 		// This is an arbitrary scale to have a pixelSize of 0.1
 		y_up_boundary = SCREEN_HEIGHT / 20;
@@ -116,7 +137,9 @@ void linearFunctionFloat(float m, float b) {
 	// The total range of the y axis divided by the screen's height
 	pixelSize = (y_up_boundary * 2) / SCREEN_HEIGHT;
 
-	plotLinearFloat(x_left_boundary, x_right_boundary, pixelSize, m, b);
+	//plotLinearFloat(x_left_boundary, x_right_boundary, pixelSize, m, b);
+	plotLinearFloat(x_left_boundary, x_right_boundary, y_down_boundary,
+		y_up_boundary, m, b);
 }
 
 void plotFunctionFloat(float a, float b, float c) {

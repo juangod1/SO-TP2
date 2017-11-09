@@ -313,13 +313,14 @@ int graph(char input[][MAX_WORD_LENGTH], int words) {
 		}
 	}
 
-	sysPrintFloat(toFloat(input[1]), B, G, R);
+
+	/*sysPrintFloat(toFloat(input[1]), B, G, R);
 	sysPrintString("\n", B, G, R);
 	sysPrintFloat(toFloat(input[2]), B, G, R);
 	sysPrintString("\n", B, G, R);
 	sysPrintFloat(toFloat(input[3]), B, G, R);
-	sysPrintString("\n", B, G, R);
-	//plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
+	sysPrintString("\n", B, G, R);*/
+	plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
 
 	char * c = 0;
 	int ready_to_exit = 0;

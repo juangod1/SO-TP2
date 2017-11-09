@@ -4,11 +4,13 @@
 #include <stdint.h>
 
 #define IS_DIGIT(c) ((c - '0') >= 0 && (c - '0') <= 9)
+#define DECIMAL_PLACES 3
 
 void reset(char * string, int size);
 int strleng(const char* s);
 void sysPrintString(char * string, int R, int G, int B);
-void sysPrintInt(int num, int R, int G, int B);
+void sysPrintInt(int num, int B, int G, int R);
+void sysPrintFloat(float num, int B, int G, int R);
 void sysGetTime(int * buffer);
 void sysNewLine();
 void sysReadInput(char * buffer);

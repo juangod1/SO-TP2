@@ -67,7 +67,13 @@ void sysPrintInt(int num, int B, int G, int R) {
 
 void sysPrintFloat(float num, int B, int G, int R) {
   sysPrintInt((int)num, B, G, R);
+  num -= (int)num;
+  num *= tenPow(DECIMAL_PLACES);
+  num = num < 0 ? -num : num;
+  sysPrintString(".", B, G, R);
+  sysPrintInt((int)num, B, G, R);
 
+/*
   if (num != 0) {
     sysPrintString(".", B, G, R);
   }
@@ -76,7 +82,7 @@ void sysPrintFloat(float num, int B, int G, int R) {
     num -= (int)num;
     num *= 10;
     sysPrintInt((int)num, B, G, R);
-  }
+  }*/
 }
 
 int countDigits(int num){
@@ -84,6 +90,7 @@ int countDigits(int num){
 	while((num/=10) != 0) dig++;
 	return dig;
 }
+
 void sysGetChar(char * ch){
   sysCall(4,(uint64_t)ch,0,0,0,0);
 }
