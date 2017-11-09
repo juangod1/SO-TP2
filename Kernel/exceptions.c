@@ -5,6 +5,7 @@
 #define ZERO_EXCEPTION_ID 0
 #define OVERFLOW_EXCEPTION_ID 4
 #define INVALID_OPCODE_EXCEPTION_ID 6
+#define GENERAL_PROTECTION_EXCEPTION_ID 13
 
 static char* registers[] = {"RAX: ", " RBX: ", " RCX: ", " RDX: ", " RBP: ", "RDI: ", " RSI: ", " R8: "
 					, " R9: ", " R10: ", "R11: ", " R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
@@ -26,26 +27,29 @@ void exceptionDispatcher(uint64_t exception, uint64_t* rsp) {
 		case INVALID_OPCODE_EXCEPTION_ID:
 			opcode(rsp);
 			break;
+		case GENERAL_PROTECTION_EXCEPTION_ID:
+			generalProtection();
 	}
 }
 
 void zero_division(uint64_t* rsp) {
 	printString("Error: division by zero\n",0,155,255);
 	printRegs(rsp);
-	//while(1); //Return to shell
-
 }
 
 void overflow(uint64_t* rsp){
 	printString("Error: overflow\n",0,155,255);
 	printRegs(rsp);
-	//while(1);
 }
 
 void opcode(uint64_t* rsp){
 	printString("Error: invalid opcode exception\n",0,155,255);
 	printRegs(rsp);
-	//while(1);
+}
+
+void generalProtection(uint64_t* rsp){
+	printString("Error: general protection exception\n",0,155,255);
+	printRegs(rsp);
 }
 
 void printRegs(uint64_t*rsp){
