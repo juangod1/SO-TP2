@@ -318,18 +318,39 @@ int graph(char input[4][MAX_WORD_LENGTH], int words) {
 	sysPrintString("\n", B, G, R);
 	sysPrintFloat(toFloat(input[3]), B, G, R);
 	sysPrintString("\n", B, G, R);*/
- 	plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
+	float x_r=10;
+	float x_l=-10;
+	float y_d=x_l;
+	float y_u=x_r;
 	char c = 0;
 	int ready_to_exit = 0;
 
+	plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]),x_r,x_l,y_d,y_u);
 	while (!ready_to_exit) {
 		sysGetChar(&c);
-
 		if (c == '\n') {
 			sysClear();
 			sysPrintString("Exited plot Successfully\n", CB, CG, CR);
 
 			ready_to_exit = 1;
+		}
+		if (c == '+') {
+
+		}
+		if (c == '-') {
+
+		}
+		if (c == 15) { //UPARROW
+
+		}
+		if (c == 14) { //DOWNARROW
+
+		}
+		if (c == 13) { //LEFTARROW
+
+		}
+		if (c == 12) { //RIGHTARROW
+
 		}
 	}
 

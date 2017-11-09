@@ -81,10 +81,10 @@ void linearFunctionFloat(float m, float b) {
 	plotLinearFloat(x_left_boundary, x_right_boundary, y_down_boundary,y_up_boundary,0, m, b);
 }
 
-void plotFunctionFloat(float a, float b, float c) {
+void plotFunctionFloat(float a, float b, float c, int x_l, int x_r, int y_d, int y_u) {
 	sysClear();
 	// If a ~~ 0 ==> linear function ==> y = bx + c
-	if (a < 0.001 && a > -0.001) {
+	/*if (a < 0.001 && a > -0.001) {
 		linearFunctionFloat(b, c);
 	} else {
 		sysPrintFloat(a,0,0,123);
@@ -92,7 +92,9 @@ void plotFunctionFloat(float a, float b, float c) {
 		sysPrintFloat(c,0,0,123);
 		sysPrintString("\n",0,0,0);
 		quadraticFunctionFloat(a, b, c);
-	}
+	}*/
+	plotLinearFloat(x_l,x_r,y_d,y_u,a,b,c);
+	//plotLinearFloat(-10,10,-10,10,a,b,c);
 }
 
 void quadraticFunctionFloat(float a, float b, float c) {
