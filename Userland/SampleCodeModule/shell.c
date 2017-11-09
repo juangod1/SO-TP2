@@ -296,7 +296,7 @@ int clear(int words) {
 	return 0;
 }
 
-int graph(char input[][MAX_WORD_LENGTH], int words) {
+int graph(char input[4][MAX_WORD_LENGTH], int words) {
 	if (words != (GRAPH_PARAMETERS + 1)) {
 		sysPrintString("Wrong amount of parameters for graph command\n\
 		Use command help for guidelines\n", CB, CG, CR);
@@ -320,15 +320,15 @@ int graph(char input[][MAX_WORD_LENGTH], int words) {
 	sysPrintString("\n", B, G, R);
 	sysPrintFloat(toFloat(input[3]), B, G, R);
 	sysPrintString("\n", B, G, R);*/
-	plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
+ 	plotFunctionFloat(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
 
-	char * c = 0;
+	char c = 0;
 	int ready_to_exit = 0;
 
 	while (!ready_to_exit) {
-		sysGetChar(c);
+		sysGetChar(&c);
 
-		if (*c == '\n') {
+		if (c == '\n') {
 			sysClear();
 			sysPrintString("Exited plot Successfully\n", CB, CG, CR);
 

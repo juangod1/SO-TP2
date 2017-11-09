@@ -33,7 +33,7 @@ void copy(char* copy, char* original, int len){
 int subStrleng(const char * s, const char c) {
   int i = 0;
 
-  while (*(s + i) != c) {
+  while (*(s + i) != c && *(s+i)!=0) {
     i++;
   }
 

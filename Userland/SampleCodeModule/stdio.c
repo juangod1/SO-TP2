@@ -71,7 +71,7 @@ float toFloat(char * string) {
 	}
 
 	int_length = subStrleng(string, '.');
-	decimal_length = strleng(string + 1 + int_length);
+	decimal_length = strleng(string + int_length);
 	total_length = int_length + 1 + decimal_length;
 	powerTo = int_length;
 

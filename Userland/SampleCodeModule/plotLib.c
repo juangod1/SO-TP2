@@ -71,19 +71,29 @@ void plotLinearFloat(float x_left_boundary, float x_right_boundary, float pixelS
 }*/
 
 void plotLinearFloat(float x_left_boundary, float x_right_boundary,
-	float y_down_boundary, float y_up_boundary, float m, float b) {
+		float y_down_boundary, float y_up_boundary, float m, float b) {
 	float x_val, y_val;
 	float diff;
-
+	sysPrintFloat(x_left_boundary,213,123,123);
+	sysPrintString(" x_left\n", 255, 0, 0);
+	sysPrintFloat(x_right_boundary,213,123,123);
+	sysPrintString(" x_right\n", 255, 0, 0);
+	sysPrintFloat(y_down_boundary,213,123,123);
+	sysPrintString(" y_down\n", 255, 0, 0);
+	sysPrintFloat(y_up_boundary,213,123,123);
+	sysPrintString(" y_up\n", 255, 0, 0);
 	for (int i = 0; i < SCREEN_WIDTH; i++) {
 		for (int j = 0; j < SCREEN_HEIGHT ; j++) {
 			x_val = x_left_boundary + (i * (x_right_boundary - x_left_boundary)) / SCREEN_WIDTH;
-			y_val = y_down_boundary + (j * (y_up_boundary - y_down_boundary)) / SCREEN_HEIGHT;
+			y_val = y_up_boundary - (j * (y_up_boundary - y_down_boundary)) / SCREEN_HEIGHT;
 
 			diff = absFloat(fxFloat(x_val, 0.0, m, b) - y_val);
 
 			if (diff < 0.1) {
-				sysPaintPixel(i, SCREEN_HEIGHT - j, BG_B, BG_G, BG_R);
+				sysPaintPixel(i, j, BG_B, BG_G, BG_R);
+			}
+			if(absFloat(x_val)<0.1 || absFloat(y_val)<0.1){
+				sysPaintPixel(i,j, 0, 255,255);
 			}
 		}
 	}
@@ -133,13 +143,7 @@ void linearFunctionFloat(float m, float b) {
 			y_down_boundary = x_left_boundary / SCREEN_RATIO;
 		}
 	}
-
-	// The total range of the y axis divided by the screen's height
-	pixelSize = (y_up_boundary * 2) / SCREEN_HEIGHT;
-
-	//plotLinearFloat(x_left_boundary, x_right_boundary, pixelSize, m, b);
-	plotLinearFloat(x_left_boundary, x_right_boundary, y_down_boundary,
-		y_up_boundary, m, b);
+	plotLinearFloat(x_left_boundary, x_right_boundary, y_down_boundary,y_up_boundary, m, b);
 }
 
 void plotFunctionFloat(float a, float b, float c) {
