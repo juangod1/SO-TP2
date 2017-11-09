@@ -2,20 +2,69 @@
 #include "mathLib.h"
 #include "stdLib.h"
 #include <stdint.h>
+#include "shell.h"
 
+
+int graphMain(float a, float b, float c){
+	float x_r=DEFAULT_PLOT;
+	float x_l=-DEFAULT_PLOT;
+	float y_d=x_l;
+	float y_u=x_r;
+	int x_offset=0,y_offset=0, ready_to_exit = 0,draw=1;
+	float factor=FACTOR;
+	char ch = 0;
+
+	while (!ready_to_exit) {
+		sysGetChar(&ch);
+		if (ch == '\n') {
+			sysClear();
+			sysPrintString("Exited plot Successfully\n", CB, CG, CR);
+
+			ready_to_exit = 1;
+		}
+		if (ch == '+') {
+			y_d/=factor;
+			y_u/=factor;
+			x_r/=factor;
+			x_l/=factor;
+			draw=1;
+		}
+		if (ch == '-') {
+			y_d*=factor;
+			y_u*=factor;
+			x_r*=factor;
+			x_l*=factor;
+			draw=1;
+		}
+		if (ch == 15) { //UPARROW
+			y_offset+=5;
+			draw=1;
+		}
+		if (ch == 14) { //DOWNARROW
+			y_offset-=5;
+			draw=1;
+		}
+		if (ch == 13) { //RIGHTARROW
+			x_offset-=5;
+			draw=1;
+		}
+		if (ch == 12) { //LEFTARROW
+			x_offset+=5;
+			draw=1;
+		}
+		if(draw){
+			draw=0;
+			plotFunctionFloat(x_l+x_offset,x_r+x_offset,y_d+y_offset,y_u+y_offset,a, b, c);
+		}
+	}
+
+	return 0;
+}
 
 void plotLinearFloat(float x_left_boundary, float x_right_boundary,
-		float y_down_boundary, float y_up_boundary, float a, float b, float c) {
+	float y_down_boundary, float y_up_boundary, float a, float b, float c) {
 	float x_val, y_val;
 	float diff;
-	/*sysPrintFloat(x_left_boundary,213,123,123);
-	sysPrintString(" x_left\n", 255, 0, 0);
-	sysPrintFloat(x_right_boundary,213,123,123);
-	sysPrintString(" x_right\n", 255, 0, 0);
-	sysPrintFloat(y_down_boundary,213,123,123);
-	sysPrintString(" y_down\n", 255, 0, 0);
-	sysPrintFloat(y_up_boundary,213,123,123);
-	sysPrintString(" y_up\n", 255, 0, 0);*/
 	float differential = (x_right_boundary-x_left_boundary)*DIFFERENTIAL_FACTOR;
 	for (int i = 0; i < SCREEN_WIDTH; i++) {
 		for (int j = 0; j < SCREEN_HEIGHT ; j++) {
@@ -54,7 +103,7 @@ plotAxis(float x_l, float x_r, float y_d, float y_u){
 int scaleMarkX(int x){
 		int scale = SCREEN_WIDTH/SCALE_AMOUNT;
 		for (int i=0; i<SCALE_AMOUNT+1; i++){
-			if(absInt(x-scale*i)<5){
+			if(absInt(x-scale*i)<1){
 				return 1;
 			}
 		}
@@ -63,7 +112,7 @@ int scaleMarkX(int x){
 int scaleMarkY(int y){
 	int scale = SCREEN_HEIGHT/SCALE_AMOUNT;
 	for (int i=0; i<SCALE_AMOUNT+1; i++){
-		if(absInt(y-scale*i)<5){
+		if(absInt(y-scale*i)<1){
 			return 1;
 		}
 	}

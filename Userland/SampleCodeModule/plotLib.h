@@ -16,7 +16,10 @@
 #define DIFFERENTIAL_FACTOR 0.1/20
 #define AXIS_FACTOR 4.5
 #define SCALE_AMOUNT 10
+#define FACTOR 1.5
+#define DEFAULT_PLOT 10
 
+int graphMain(float a, float b, float c);
 void plotFunctionInt(int a, int b, int c);
 void plotFunctionFloat(int x_l, int x_r, int y_d, int y_u, float a, float b, float c);
 void plotLinearFloat(float x_left_boundary, float x_right_boundary,

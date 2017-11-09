@@ -312,59 +312,7 @@ int graph(char input[4][MAX_WORD_LENGTH], int words) {
 		}
 	}
 
-
-	float x_r=10;
-	float x_l=-10;
-	float y_d=x_l;
-	float y_u=x_r;
-	int x_offset=0,y_offset=0, ready_to_exit = 0,draw=0;
-	float factor=1.5;
-	char c = 0;
-
-	plotFunctionFloat(x_l,x_r,y_d,y_u,toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
-	while (!ready_to_exit) {
-		sysGetChar(&c);
-		if (c == '\n') {
-			sysClear();
-			sysPrintString("Exited plot Successfully\n", CB, CG, CR);
-
-			ready_to_exit = 1;
-		}
-		if (c == '+') {
-			y_d/=factor;
-			y_u/=factor;
-			x_r/=factor;
-			x_l/=factor;
-			draw=1;
-		}
-		if (c == '-') {
-			y_d*=factor;
-			y_u*=factor;
-			x_r*=factor;
-			x_l*=factor;
-			draw=1;
-		}
-		if (c == 15) { //UPARROW
-			y_offset+=5;
-			draw=1;
-		}
-		if (c == 14) { //DOWNARROW
-			y_offset-=5;
-			draw=1;
-		}
-		if (c == 13) { //RIGHTARROW
-			x_offset-=5;
-			draw=1;
-		}
-		if (c == 12) { //LEFTARROW
-			x_offset+=5;
-			draw=1;
-		}
-		if(draw){
-			draw=0;
-			plotFunctionFloat(x_l+x_offset,x_r+x_offset,y_d+y_offset,y_u+y_offset,toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
-		}
-	}
-
+	graphMain(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
 	return 0;
+
 }
