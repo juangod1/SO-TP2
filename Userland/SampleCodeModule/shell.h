@@ -16,6 +16,7 @@
 				setFontColor color          - Changes font color\n\
 				clear                       - Clears screen\n\
 				calculate operation op1 op2 - Performs specified calculation \n\
+				plot coef_a coef_b coef_c   - Plots a Quadratic function for the given values\n\
 				help (optional)command      - Displays help instructions for command\n\
 				exit                        - Exits the shell\n"
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
@@ -30,6 +31,10 @@
 #define CALCULATE_INS "Recieves 3 arguments.\n\
 							Arg 1: Operation (add, substract, multiply, divide).\n\
 							Arg 2 and 3: Operands, real numbers.\n"
+#define PLOT_INS "Recieves 3 arguments.\n\
+							The arguments correspond to the rational coefficients for\n\
+							a quadratic function\n\
+							Once inside navigate with the arrow keys and use +/- to zoom in/out\n"
 #define EXIT_INS "Quits the shell.\n"
 void startShell();
 int graph(char input[][MAX_WORD_LENGTH], int words);

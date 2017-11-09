@@ -14,8 +14,6 @@ static int isRunning = 1;
 static int timeZone = -3;
 
 void startShell(){
-
-	//sysPrintFloat(fxFloat(2,-3,4,5),122,33,53);
 	sysPrintString("Shell initialized\n", CB, CG, CR);
 	char string[MAX_WORD_LENGTH] = {0};
 	char lastString[MAX_WORD_LENGTH] = {0};
@@ -171,6 +169,9 @@ int callFunction(char * buffer) {
 			else if(strcmp(input[1], "exit") == 0){
 				sysPrintString(EXIT_INS, B, G, R);
 			}
+			else if(strcmp(input[1], "plot") == 0){
+				sysPrintString(PLOT_INS, B, G, R);
+			}
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
 			}
@@ -192,7 +193,7 @@ int callFunction(char * buffer) {
 		isRunning = 0;
 
 		return 0;
-	} else if (strcmp(input[0], "graph") == 0) {
+	} else if (strcmp(input[0], "plot") == 0) {
 		return graph(input, words);
 	} else if (strcmp(input[0],"displayTime") == 0) {
 		if(words != 1) {
@@ -297,7 +298,7 @@ int clear(int words) {
 
 int graph(char input[4][MAX_WORD_LENGTH], int words) {
 	if (words != (GRAPH_PARAMETERS + 1)) {
-		sysPrintString("Wrong amount of parameters for graph command\n\
+		sysPrintString("Wrong amount of parameters for plot command\n\
 		Use command help for guidelines\n", CB, CG, CR);
 
 		return 2;
@@ -305,7 +306,7 @@ int graph(char input[4][MAX_WORD_LENGTH], int words) {
 
 	for (int i = 1; i <= GRAPH_PARAMETERS; i++) {
 		if (!isNum(input[i])) {
-			sysPrintString("Wrong parameters passed to graph command\n\
+			sysPrintString("Wrong parameters passed to plot command\n\
 			Use command help for guidelines\n", CB, CG, CR);
 
 			return 2;

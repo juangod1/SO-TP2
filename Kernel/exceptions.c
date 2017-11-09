@@ -1,5 +1,5 @@
 #include "videoDriver.h"
-
+#include "exceptions.h"
 #include "stdlib.h"
 #include <stdint.h>
 #define ZERO_EXCEPTION_ID 0
@@ -30,7 +30,7 @@ void zero_division(uint64_t* rsp) {
 	printString("Error: division by zero\n",0,155,255);
 	printRegs(rsp);
 	//while(1); //Return to shell
-	
+
 }
 
 void overflow(uint64_t* rsp){
@@ -56,4 +56,3 @@ void printRegs(uint64_t*rsp){
 	printString("\n",0,155,255);
 
 }
-
