@@ -6,12 +6,15 @@
 #define OVERFLOW_EXCEPTION_ID 4
 #define INVALID_OPCODE_EXCEPTION_ID 6
 
-char* registers[] = {"RAX: ", " RBX: ", " RCX: ", " RDX: ", " RBP: ", "RDI: ", " RSI: ", " R8: "
+static char* registers[] = {"RAX: ", " RBX: ", " RCX: ", " RDX: ", " RBP: ", "RDI: ", " RSI: ", " R8: "
 					, " R9: ", " R10: ", "R11: ", " R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
 
-void exceptionDispatcher(int exception, uint64_t* rsp) {
+void zero_division(uint64_t* rsp);
+void overflow(uint64_t* rsp);
+void opcode(uint64_t* rsp);
+void printRegs(uint64_t*rsp);
 
-	printInt(exception, 0, 155, 255);
+void exceptionDispatcher(uint64_t exception, uint64_t* rsp) {
 
 	switch(exception){
 		case ZERO_EXCEPTION_ID:
@@ -35,13 +38,13 @@ void zero_division(uint64_t* rsp) {
 
 void overflow(uint64_t* rsp){
 	printString("Error: overflow\n",0,155,255);
-	printRegs();
+	printRegs(rsp);
 	//while(1);
 }
 
 void opcode(uint64_t* rsp){
 	printString("Error: invalid opcode exception\n",0,155,255);
-	printRegs();
+	printRegs(rsp);
 	//while(1);
 }
 

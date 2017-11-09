@@ -82,7 +82,7 @@ void * initializeKernelBinary()
 	ncNewline();
 	return getStackBase();
 }
-#include "videoDriver.h"
+
 int main()
 {
 	load_idt();
@@ -90,6 +90,7 @@ int main()
 	void (*module)();
 	module = sampleCodeModuleAddress;
 	
+
 	module();
 	return 0;
 }

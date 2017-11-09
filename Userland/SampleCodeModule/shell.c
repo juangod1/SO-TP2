@@ -13,24 +13,29 @@ static int B = DB;
 static int isRunning = 1;
 static int timeZone = -3;
 
+
+
 void startShell(){
 	sysPrintString("Shell initialized\n", CB, CG, CR);
 	char string[MAX_WORD_LENGTH] = {0};
 	char lastString[MAX_WORD_LENGTH] = {0};
 	int counter = 0;
-	char* ch=0;
+	char ch;
 
 	sysPrintString("$> ",CB,CG,CR);
 
 	while (isRunning) {
-		sysGetChar(ch);
-		if(counter<MAX_WORD_LENGTH || *ch == '\n'|| *ch == '\b'){
-			sysWriteChar(*ch, B, G, R);
 
-			string[counter]=*ch;
-			(*ch != 0) ? counter++ : counter;
+		sysGetChar(&ch);
+		if(counter<MAX_WORD_LENGTH || ch == '\n'|| ch == '\b'){
 
-			if (*ch == '\n') {
+			sysWriteChar(ch, B, G, R);
+
+
+			string[counter]=ch;
+			(ch != 0) ? counter++ : counter;
+
+			if (ch == '\n') {
 				reset(lastString,strleng(lastString));
 				copy(lastString,string,strleng(string)-1);
 				callFunction(string);
@@ -39,17 +44,17 @@ void startShell(){
 				counter=0;
 			}
 
-			if(*ch=='\b'){
+			if(ch=='\b'){
 				(counter!=0)?string[counter--]=0:counter;
 				(counter!=0)?string[counter--]=0:counter;
 			}
-			if(*ch==15 && counter==1){ //UPARROW
+			if(ch==15 && counter==1){ //UPARROW
 				int len=strleng(lastString);
 				sysPrintString(lastString, B, G, R);
 				copy(string,lastString,len);
 				counter=len;
 			}
-			if(*ch==14){
+			if(ch==14){
 				while(counter){
 					sysWriteChar('\b',B,G,R);
 					(counter!=0)?string[counter--]=0:counter;
@@ -69,6 +74,7 @@ int callFunction(char * buffer) {
 	int words = 0;
 	char input[MAX_WORDS][MAX_WORD_LENGTH] = {0};
 	char * aux = buffer;
+
 
 	while (*aux != '\0' && wordLength < MAX_WORD_LENGTH) {
 		if(*aux == ' ' || *aux == '\n') {
@@ -130,9 +136,12 @@ int callFunction(char * buffer) {
 	else if (strcmp(input[0], "calculate") == 0) {
 		int ver = calculateVerifications(words, input[2], input[3]);
 
+
 		if (ver) {
 			int input2 = toInt(input[2]);
 			int input3 = toInt(input[3]);
+
+
 			int ans = calculate(input[1], input2, input3);
 
 			sysPrintString("Calculated: ", B, G, R);

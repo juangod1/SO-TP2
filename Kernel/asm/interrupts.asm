@@ -20,7 +20,7 @@ GLOBAL _generalProtection
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
-EXTERN callModule
+EXTERN printInt
 SECTION .text
 
 %include "./asm/macros.m"
