@@ -2,15 +2,16 @@
 #include "mathLib.h"
 #include "stdio.h"
 
-/* Code taken from clc-wiki.net/wiki/C_standard_library:string.h:strcmp */
 int strcmp(const char* s1, const char* s2){
 	while(*s1 && (*s1==*s2))
 		s1++, s2++;
 	return *(const unsigned char*)s1 - *(const unsigned char*)s2;
 }
 
+/* Returns 0 if not Num, 1 if int, 2 if float */
 int isNum(char * s) {
 	int decimal_marks = 0;
+	int isFloat = 0;
 
 	if (*s == '-') {
 		s++;
@@ -24,6 +25,8 @@ int isNum(char * s) {
 
 	while (*s != '\0') {
 		if (!IS_DIGIT(*s)) {
+			if(*s == '.')
+				isFloat++;
 			if (*s == '.' && decimal_marks < 1 && IS_DIGIT(*(s + 1))) {
 				decimal_marks++;
 			} else {
@@ -34,7 +37,7 @@ int isNum(char * s) {
 		s++;
 	}
 
-	return 1;
+	return 1 + isFloat;
 }
 
 int toInt(char * string) {
