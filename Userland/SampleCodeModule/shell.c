@@ -179,6 +179,9 @@ int callFunction(char * buffer) {
 			else if(strcmp(input[1], "plot") == 0){
 				sysPrintString(PLOT_INS, B, G, R);
 			}
+			else if(strcmp(input[1], "opcode") == 0){
+				sysPrintString(OPCODE_INS, B, G, R);
+			}
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
 			}

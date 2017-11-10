@@ -18,7 +18,8 @@
 				calculate operation op1 op2 - Performs specified calculation on integer numbers\n\
 				plot coef_a coef_b coef_c   - Plots a Quadratic function for the given values\n\
 				help (optional)command      - Displays help instructions for command\n\
-				exit                        - Exits the shell\n"
+				exit                        - Exits the shell\n\
+				opcode                      - Tests opcode exception\n"
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
 #define DISPLAY_TIME_INS "Recieves no arguments. Prints current date and time.\n\
 							Default timezone is UTC-3.\n"
@@ -36,6 +37,7 @@
 							a quadratic function\n\
 							Once inside navigate with the arrow keys and use +/- to zoom in/out\n"
 #define EXIT_INS "Quits the shell.\n"
+#define OPCODE_INS "Creates opcode exception for testing purposes.\n"
 
 void startShell();
 int graph(char input[][MAX_WORD_LENGTH], int words);
