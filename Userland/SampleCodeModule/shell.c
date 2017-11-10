@@ -1,4 +1,4 @@
-	#include "shell.h"
+#include "shell.h"
 #include "stdLib.h"
 #include "stdio.h"
 #include "plotLib.h"
@@ -71,7 +71,7 @@ int callFunction(char * buffer) {
 
 	int wordLength = 0;
 	int words = 0;
-	char input[MAX_WORDS][MAX_WORD_LENGTH] = {0};
+	char input[MAX_WORDS][MAX_WORD_LENGTH] = {{0}};
 	char * aux = buffer;
 
 
@@ -290,12 +290,6 @@ int calculateVerifications(int words, char* input2, char* input3){
 	return 1;
 }
 
-int overflowGenerator(int n){
-	char szBuf[1024] = { '\0' };
-	int x = (n*(n+77)*(n+23)*(n+17)+n)%1024;
-	szBuf[x]=n;
-	return (n>0)? overflowGenerator(n-1) : x;
-}
 int echo(char input[][MAX_WORD_LENGTH], int words) {
 	for (int i = 1  ;i < (words + 1); i++) {
 		sysPrintString(input[i], B, G, R);
