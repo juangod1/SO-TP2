@@ -278,6 +278,10 @@ int calculate(char* func, int param1, int param2){
 }
 
 int calculateVerifications(int words, char* input2, char* input3){
+	if(isNum(input2)==2 || isNum(input3)==2){
+		sysPrintString("Wrong parameters for calculate: Numbers must be integer\n", CB, CG, CR);
+		return 0;
+	}
 	if(words!=4 || !isNum(input2) || !isNum(input3) ){
 		//veryfing that there are four inputs and that the last two are numbers
 		sysPrintString("Wrong parameters for calculate\n", CB, CG, CR);

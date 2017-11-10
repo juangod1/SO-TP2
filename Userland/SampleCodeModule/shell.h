@@ -15,7 +15,7 @@
 				setTimeZone timezone        - Set timezone \n\
 				setFontColor color          - Changes font color\n\
 				clear                       - Clears screen\n\
-				calculate operation op1 op2 - Performs specified calculation \n\
+				calculate operation op1 op2 - Performs specified calculation on integer numbers\n\
 				plot coef_a coef_b coef_c   - Plots a Quadratic function for the given values\n\
 				help (optional)command      - Displays help instructions for command\n\
 				exit                        - Exits the shell\n"
@@ -30,7 +30,7 @@
 #define CLEAR_INS "Removes information from screen, starts over.\n"
 #define CALCULATE_INS "Recieves 3 arguments.\n\
 							Arg 1: Operation (add, substract, multiply, divide).\n\
-							Arg 2 and 3: Operands, real numbers.\n"
+							Arg 2 and 3: Operands, integer numbers.\n"
 #define PLOT_INS "Recieves 3 arguments.\n\
 							The arguments correspond to the rational coefficients for\n\
 							a quadratic function\n\
