@@ -1,7 +1,5 @@
 #include "keyboardDriver.h"
 #include "videoDriver.h"
-#define BUFFERSIZE 20
-#define EOF 0
 
 const char keyMap[128] =
 {
@@ -36,10 +34,7 @@ const char keyMap[128] =
     0,	/* All other keys are undefined */
 };
 
-/** ACORDARSE DE AVISAR QUE ROBAMOS TODO ESTE CODIGO DE http://www.osdever.net/bkerndev/Docs/keyboard.htm **/
 /* Handles the keyboard interrupt */
-
-
 
 static char circularBuffer[BUFFERSIZE]={0};
 static int readindex=0;

@@ -4,15 +4,11 @@
 #include "plotLib.h"
 #include "mathLib.h"
 
-#define NULL ((void*)0)
-
 static int R = DR;
 static int G = DG;
 static int B = DB;
 static int isRunning = 1;
 static int timeZone = -3;
-
-
 
 void startShell(){
 	sysPrintString("Shell initialized\n", CB, CG, CR);
