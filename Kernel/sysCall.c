@@ -5,19 +5,19 @@
 
 void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
   switch(rdi){
-    case 3:
+    case 1:
       getTimeRTC(rsi);
       break;
-    case 4:
+    case 2:
       getChar((char *)rsi);
       break;
-    case 6:
+    case 3:
       clearScreen();
       break;
-    case 7:
+    case 4:
       writeChar((char)rsi,rdx,rcx,r8);
       break;
-    case 8:
+    case 5:
       paintPixel(rsi, rdx, (char)rcx, (char)r8, (char)r9);
       break;
   }

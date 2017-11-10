@@ -13,7 +13,7 @@ void reset(char * string, int size){
 
 
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
-  sysCall(7,ch,color_blue,color_green,color_red,0);
+  sysCall(4,ch,color_blue,color_green,color_red,0);
 }
 
 void sysPrintString(char * string, int B, int G, int R){
@@ -72,17 +72,6 @@ void sysPrintFloat(float num, int B, int G, int R) {
   num = num < 0 ? -num : num;
   sysPrintString(".", B, G, R);
   sysPrintInt((int)num, B, G, R);
-
-/*
-  if (num != 0) {
-    sysPrintString(".", B, G, R);
-  }
-
-  while (num != 0) {
-    num -= (int)num;
-    num *= 10;
-    sysPrintInt((int)num, B, G, R);
-  }*/
 }
 
 int countDigits(int num){
@@ -92,22 +81,22 @@ int countDigits(int num){
 }
 
 void sysGetChar(char * ch){
-  sysCall(4,(uint64_t)ch,0,0,0,0);
+  sysCall(2,(uint64_t)ch,0,0,0,0);
 }
 
 void sysGetTime(int * buffer){
-	buffer[0] = sysCall(3,0,0,0,0,0); // Seconds
-	buffer[1] = sysCall(3,2,0,0,0,0); // Minutes
-	buffer[2] = sysCall(3,4,0,0,0,0); // Hours
-	buffer[3] = sysCall(3,7,0,0,0,0); // Day
-	buffer[4] = sysCall(3,8,0,0,0,0); // Month
-	buffer[5] = sysCall(3,9,0,0,0,0); // Year
+	buffer[0] = sysCall(1,0,0,0,0,0); // Seconds
+	buffer[1] = sysCall(1,2,0,0,0,0); // Minutes
+	buffer[2] = sysCall(1,4,0,0,0,0); // Hours
+	buffer[3] = sysCall(1,7,0,0,0,0); // Day
+	buffer[4] = sysCall(1,8,0,0,0,0); // Month
+	buffer[5] = sysCall(1,9,0,0,0,0); // Year
 }
 
 void sysClear(){
-	sysCall(6,0,0,0,0,0);
+	sysCall(3,0,0,0,0,0);
 }
 
 void sysPaintPixel(int x, int y, char B, char G, char R) {
-  sysCall(8, x, y, B, G, R);
+  sysCall(5, x, y, B, G, R);
 }
