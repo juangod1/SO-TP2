@@ -1,10 +1,7 @@
 #include <stdint.h>
 #include "videoDriver.h"
 #include "font.h"
-//uintToBase taken from naiveConsole.c
 
-static uint8_t * const video = (uint8_t*)0xB8000;
-static uint8_t * currentVideo = (uint8_t*)0xB8000;
 static unsigned char ** video_start = (unsigned char**)0x0005C28;
 static unsigned int current_x = 0;
 static unsigned int current_y = SCREEN_HEIGHT-16;
@@ -208,20 +205,5 @@ void shiftVideo(){
 	int j=SCREEN_HEIGHT-16;
 	for(int i=0; i<SCREEN_WIDTH;i+=8){
 		paintCharSpace(i,j,BG_B,BG_G,BG_R);
-	}
-}
-
-uint8_t * currentline(){
-	uint8_t * currentline = (currentVideo-video)/((uint8_t)160)*160 + video;
-	return currentline;
-}
-
-void readInput(char * buffer){
-	uint8_t * from = currentline();
-	uint8_t * to = currentVideo;
-	for (;from<to;){
-		*buffer=*from;
-		from=from+2;
-		buffer++;
 	}
 }

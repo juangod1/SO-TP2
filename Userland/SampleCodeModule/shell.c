@@ -3,7 +3,6 @@
 #include "stdio.h"
 #include "plotLib.h"
 #include "mathLib.h"
-extern opcodeGenerator();
 
 #define NULL ((void*)0)
 

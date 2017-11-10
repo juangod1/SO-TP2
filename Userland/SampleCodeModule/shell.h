@@ -36,6 +36,7 @@
 							a quadratic function\n\
 							Once inside navigate with the arrow keys and use +/- to zoom in/out\n"
 #define EXIT_INS "Quits the shell.\n"
+
 void startShell();
 int graph(char input[][MAX_WORD_LENGTH], int words);
 int callFunction(char * buffer);
@@ -44,5 +45,6 @@ int clear(int words);
 int overflowGenerator(int n);
 int calculateVerifications(int words, char* input2, char* input3);
 int calculate(char* func, int param1, int param2);
+extern void opcodeGenerator();
 
 #endif
