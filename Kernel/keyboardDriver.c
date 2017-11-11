@@ -150,11 +150,15 @@ void keyboard_handler()
             case '|':
               c='\\';
               break;
+            case '=':
+              c='+';
+              break;
             }
         }
       }
   		if(print==1){
         putChar(c);
+
   		}
   		print=1;
     }
