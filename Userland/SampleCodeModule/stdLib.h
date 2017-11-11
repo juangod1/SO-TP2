@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #define IS_DIGIT(c) ((c - '0') >= 0 && (c - '0') <= 9)
-#define DECIMAL_PLACES 3
+#define DECIMAL_PLACES 4
 
 void reset(char * string, int size);
 int strleng(const char* s);
