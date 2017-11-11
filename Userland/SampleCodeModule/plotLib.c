@@ -38,11 +38,11 @@ int graphMain(float a, float b, float c){
 			y_offset-=(5*factor);
 			draw=1;
 		}
-		if (ch == 13) { //RIGHTARROW
+		if (ch == 13) { //LEFTARROW
 			x_offset-=(5*factor);
 			draw=1;
 		}
-		if (ch == 12) { //LEFTARROW
+		if (ch == 12) { //RIGHTARROW
 			x_offset+=(5*factor);
 			draw=1;
 		}
@@ -114,7 +114,7 @@ int scaleMarkY(int y){
 }
 
 
-void plotWrapper(int x_l, int x_r, int y_d, int y_u, float a, float b, float c) {
+void plotWrapper(float x_l, float x_r, float y_d, float y_u, float a, float b, float c) {
 	sysClear();
 	float scale = plotAxis(x_l,x_r,y_d,y_u);
 	plotFunction(x_l,x_r,y_d,y_u,a,b,c);

@@ -19,7 +19,7 @@
 #define FACTOR 1.5
 #define DEFAULT_PLOT 10
 
-void plotWrapper(int x_l, int x_r, int y_d, int y_u, float a, float b, float c);
+void plotWrapper(float x_l, float x_r, float y_d, float y_u, float a, float b, float c);
 int scaleMarkY(int y);
 int scaleMarkX(int x);
 float plotAxis(float x_l, float x_r, float y_d, float y_u);
