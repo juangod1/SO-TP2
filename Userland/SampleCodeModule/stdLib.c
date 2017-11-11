@@ -68,10 +68,14 @@ void sysPrintInt(int num, int B, int G, int R) {
 void sysPrintFloat(float num, int B, int G, int R) {
   sysPrintInt((int)num, B, G, R);
   num -= (int)num;
-  num *= tenPow(DECIMAL_PLACES);
-  num = num < 0 ? -num : num;
+  int aux;
   sysPrintString(".", B, G, R);
-  sysPrintInt((int)num, B, G, R);
+  for(int i=1; i<DECIMAL_PLACES; i++){
+    aux = num*tenPow(i);
+    aux = aux%10;
+    aux = aux < 0 ? -aux : aux;
+    sysPrintInt((int)aux, B, G, R);
+  }
 }
 
 int countDigits(int num){
