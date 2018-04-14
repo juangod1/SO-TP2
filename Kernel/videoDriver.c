@@ -187,23 +187,26 @@ void newLine(){
 		shiftVideo();
 	}
 }
-void shiftVideo(){
-	//memcpy(getVideoPix, getVideoPix+3*SCREEN_WIDTH, 3*(SCREEN_HEIGHT-16)*(SCREEN_WIDTH));
-	unsigned char B;
-	unsigned char G;
-	unsigned char R;
-	unsigned char * pixel_address;
-	for(int i=0; i<SCREEN_WIDTH;i++){
-		for(int j=16; j<SCREEN_HEIGHT;j++){
-			pixel_address = getVideoPix() + 3*(i + j*SCREEN_WIDTH);
-			B=*(pixel_address);
-			G=*(pixel_address+1);
-			R=*(pixel_address+2);
-			paintPixel(i,j-16,B,G,R);
+
+void shiftVideo()
+{
+	char * video = getVideoPix();
+	memcpy(video, video+3*SCREEN_WIDTH*16, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-16));
+	for(int i=0; i<3*16*SCREEN_WIDTH; i++)
+	{
+		switch(i%2)
+		{
+			case 0:
+				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16))=BG_B;
+			break;
+			case 1:
+				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16))=BG_G;
+			break;
+			case 2:
+				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16))=BG_R;
+			break;
+			default:
+			break;
 		}
-	}
-	int j=SCREEN_HEIGHT-16;
-	for(int i=0; i<SCREEN_WIDTH;i+=8){
-		paintCharSpace(i,j,BG_B,BG_G,BG_R);
 	}
 }
