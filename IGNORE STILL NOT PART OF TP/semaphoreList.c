@@ -69,9 +69,7 @@ int removelistEntry(listEntry * me_P)
 	listEntry aux=(*me_P)->next;
 	if((*me_P)->sem!=NULL)
 	{
-		totalQueueRemove(&((*me_P)->sem->processQueue));
-		free((*me_P)->sem->processQueue);
-		free((*me_P)->sem);
+		semaphoreFinalization(&((*me_P)->sem));
 	}
 	free(*me_P);
 	(*me_P)=aux;

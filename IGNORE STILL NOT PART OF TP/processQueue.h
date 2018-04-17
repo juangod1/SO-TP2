@@ -10,7 +10,7 @@ struct queueEntryStruct
 
 int processQueueSize(queueEntry *q);
 void processQueueAdd(int pid_P,queueEntry * q);
-int processQueueRemove(queueEntry * q);
+int processQueueRemove(queueEntry * q); //EVENTUALLY HAVE TO CHANGE RETURN TO PID_T
 void totalQueueRemove(queueEntry * q);
 
 #endif

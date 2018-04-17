@@ -12,6 +12,24 @@ void semaphoreInitialization(semaphore * sem)
   return;
 }
 
+void semaphoreFinalization(semaphore * sem)
+{
+  if((*sem)==NULL)
+  {
+    return;
+  }
+  int pid;
+  while(processQueueSize(&((*sem)->processQueue))>0)
+  {
+    pid=processQueueRemove(&((*sem)->processQueue));
+    //schedulerResume(pid);
+  }
+  totalQueueRemove(&((*sem)->processQueue));
+  free((*sem));
+  (*sem)=NULL;
+  return;
+}
+
 int taskRequest(semaphore sem, int pid) //eventually will have to ask pid type
 {
   sem->value--;
