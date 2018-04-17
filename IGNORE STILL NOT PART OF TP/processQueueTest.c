@@ -165,16 +165,24 @@ void testThatRemoveRemovesFirst()
   thenQueueSizeIsOne();
 }
 
+void setConditionsBackToNormal()
+{
+  totalQueueRemove(&globalTestingQueue);
+}
 
 
-int main()
+void processQueueTestMain()
 {
   printf("Testing queue addition\n");
   testQueueAddition();
+  setConditionsBackToNormal();
   printf("Testing queue removal\n");
   testQueueRemoval();
+  setConditionsBackToNormal();
   printf("Testing removal order\n");
   testThatRemoveRemovesFirst();
+  setConditionsBackToNormal();
   printf("Testing removal when empty\n");
   testCantRemoveWhenEmpty();
+  setConditionsBackToNormal();
 }

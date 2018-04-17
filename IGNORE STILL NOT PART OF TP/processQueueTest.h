@@ -19,5 +19,6 @@ void givenADifferentAddition();
 void thenElementIsEqualToFirst();
 void thenQueueSizeIsOne();
 void testThatRemoveRemovesFirst();
+void processQueueTestMain();
 
 #endif

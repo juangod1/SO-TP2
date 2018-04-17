@@ -1,13 +1,8 @@
 #ifndef SEMAPHORELIST_H
 #define SEMAPHORELIST_H
 
-
-typedef struct semStruct * semaphore;
-struct semStruct
-{
-	int value;
-	int * processQueue;
-};
+#include "processQueue.h"
+#include "semaphore.h"
 
 typedef struct listEntryStruct * listEntry;
 struct listEntryStruct
@@ -21,7 +16,9 @@ struct listEntryStruct
 int listContains(int key, listEntry * me_P);
 int listSize(listEntry * me_P);
 int createlistEntry(int key_P, listEntry * me_P);
-int removelistEntry(int key_P, listEntry * me_P);
+int removelistEntry(listEntry * me_P);
+int removeListEntryByKey(int key_P, listEntry * me_P);
+void totalListRemove(listEntry * me_P);
 
 
 #endif

@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "semaphoreList.h"
+#include "processQueue.h"
+#include "semaphore.h"
+
 
 int listContains(int key, listEntry * me_P)
 {
@@ -28,11 +31,11 @@ int createlistEntry(int key_P, listEntry * me_P)
 {
 	if((*me_P)==NULL)
 	{
-		(*me_P) = malloc(sizeof(listEntry));
+		(*me_P) = malloc(sizeof(struct listEntryStruct));
 		(*me_P)->key=key_P;
 		(*me_P)->next=NULL;
 
-		(*me_P)->sem=malloc(sizeof(semaphore));
+		(*me_P)->sem=malloc(sizeof(struct semStruct));
 		(*me_P)->sem->value=1;
 		(*me_P)->sem->processQueue=NULL;
 		return 0;
@@ -44,32 +47,48 @@ int createlistEntry(int key_P, listEntry * me_P)
 	return createlistEntry(key_P, &((*me_P)->next));
 }
 
-int removelistEntry(int key_P, listEntry * me_P)
+int removeListEntryByKey(int key_P, listEntry * me_P)
 {
-	if((*me_P) == NULL)
+	if((*me_P)==NULL)
 	{
-		return -1;
+		return 1;
 	}
 	if((*me_P)->key==key_P)
 	{
+		removelistEntry(me_P);
+	}
+	removeListEntryByKey(key_P, &((*me_P)->next));
+}
+
+int removelistEntry(listEntry * me_P)
+{
+	if(*(me_P)==NULL)
+	{
+		return 0;
+	}
+	listEntry aux=(*me_P)->next;
+	if((*me_P)->sem!=NULL)
+	{
+		totalQueueRemove(&((*me_P)->sem->processQueue));
 		free((*me_P)->sem->processQueue);
 		free((*me_P)->sem);
-		free((*me_P));
-		(*me_P)=NULL;
-		return 0;
 	}
-	if((*me_P)->next == NULL)
+	free(*me_P);
+	(*me_P)=aux;
+	return 0;
+
+}
+
+void totalListRemove(listEntry * me_P)
+{
+	if((*me_P)==NULL)
 	{
-		return -1;
+			return;
 	}
-	if((*me_P)->next->key==key_P)
+	if((*me_P)!=NULL)
 	{
-		listEntry aux = (*me_P)->next->next;
-		free((*me_P)->next->sem->processQueue);
-		free((*me_P)->next->sem);
-		free((*me_P)->next);
-		(*me_P)->next=aux;
-		return 0;
+		 totalListRemove(&((*me_P)->next));
 	}
-	return removelistEntry(key_P, &((*me_P)->next));
+	removelistEntry(me_P);
+	return;
 }

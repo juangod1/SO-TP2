@@ -18,5 +18,6 @@ void testlistRemoval();
 void testTwoSameKeyAdditions();
 void testDifferentAdditions();
 void testingExistanceAfterRemoval();
+void semaphoreListTestMain();
 
 #endif

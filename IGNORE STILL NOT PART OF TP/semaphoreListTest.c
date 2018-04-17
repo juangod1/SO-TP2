@@ -9,11 +9,11 @@ int global_key = 3;
 int global_different_key = 4;
 int global_distinct_key = 5;
 
-void whenAddingAnElement()
+void static whenAddingAnElement()
 {
 	createlistEntry(global_key, &testinglistEntry);
 }
-void thenElementIsAdded()
+void static thenElementIsAdded()
 {
 	if(testinglistEntry!=NULL){
 		if(testinglistEntry->key==global_key)
@@ -34,9 +34,9 @@ void thenElementIsAdded()
 }
 
 
-void whenRemovingAnElement()
+void static whenRemovingAnElement()
 {
-	removelistEntry(global_key, &testinglistEntry);
+	removeListEntryByKey(global_key, &testinglistEntry);
 }
 void thenItemisRemoved()
 {
@@ -60,7 +60,6 @@ void thenThereIsOnlyOneElement()
 	if(listSize(&testinglistEntry)==1)
 	{
 		ok();
-		removelistEntry(3, &testinglistEntry);
 	}
 	else
 	{
@@ -144,17 +143,27 @@ void testingExistanceAfterRemoval()
 	thenTheOtherElementsRemain();
 }
 
-int main()
+void static setConditionsBackToNormal()
+{
+	totalListRemove(&testinglistEntry);
+}
+
+void semaphoreListTestMain()
 {
 	printf("Testing list addition...\n");
 	testlistAddition();
+	setConditionsBackToNormal();
 	printf("Testing list removal...\n");
 	testlistRemoval();
+	setConditionsBackToNormal();
 	printf("Testing two same key additions\n");
 	testTwoSameKeyAdditions();
+	setConditionsBackToNormal();
 	printf("Testing different additions\n");
 	testDifferentAdditions();
+	setConditionsBackToNormal();
 	printf("Testing existance after removal");
 	testingExistanceAfterRemoval();
+	setConditionsBackToNormal();
 
 }

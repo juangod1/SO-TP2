@@ -38,3 +38,18 @@ int processQueueRemove(queueEntry * q)
   (*q)=aux;
   return ret;
 }
+
+void totalQueueRemove(queueEntry * q)
+{
+	if((*q)==NULL)
+	{
+			return;
+	}
+	if((*q)!=NULL)
+	{
+		 totalQueueRemove(&((*q)->next));
+	}
+	free((*q));
+	(*q)=NULL;
+	return;
+}
