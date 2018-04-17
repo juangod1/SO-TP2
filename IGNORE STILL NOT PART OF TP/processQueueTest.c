@@ -52,7 +52,7 @@ void givenAChangeInValue()
   globalPid=2;
 }
 
-void givenAPid()
+void static givenAPid()
 {
   globalPid=1;
 }

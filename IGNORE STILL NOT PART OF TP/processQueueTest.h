@@ -6,7 +6,7 @@ void whenRemovingAnElement();
 void thenElementRemovedIsMinusOne();
 void thenQueueIsEmpty();
 void givenAChangeInValue();
-void givenAPid();
+void static givenAPid();
 void whenAddingAnElement();
 void thenElementIsAdded();
 void givenAnAddition();

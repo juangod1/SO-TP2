@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "testlib.h"
 #include "semaphore.h"
 #include "processQueue.h"
 
