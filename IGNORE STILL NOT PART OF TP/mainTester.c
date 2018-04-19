@@ -2,6 +2,7 @@
 #include "processQueueTest.h"
 #include "semaphoreListTest.h"
 #include "semaphoreTest.h"
+#include "messagingTest.h"
 
 int main()
 {
@@ -11,4 +12,6 @@ int main()
   processQueueTestMain();
   printf("\n________________________________\n\n...Commencing semaphoreTest...\n\n________________________________\n\n");
   semaphoreTestMain();
+  printf("\n________________________________\n\n...Commencing messagingTest...\n\n________________________________\n\n");
+  messagingTestMain();
 }
