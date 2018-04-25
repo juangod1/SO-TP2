@@ -26,7 +26,7 @@ int add(process_t process){
 
     queueSize++;
 
-    if (first == NULL){
+    if (queueSize==0){
         first = newNode;
         last = newNode;
         return 0;
@@ -49,7 +49,7 @@ process_t poll(char checkIfWoke){
     if(checkIfWoke){
         while( tmp->process->sleeps ){
             if(tmp->tail == NULL)
-                return NULL;
+                return NULL; // No woke processes
 
             skippedSleepingProcess = 1;
             previous = tmp;
@@ -78,8 +78,8 @@ process_t poll(char checkIfWoke){
 }
 
 void freeNodeMemory(node nodeToFree){
-    free(nodeToFree->tail);
     freeProcessMemory(nodeToFree->process);
+    free(nodeToFree);
 }
 
 int getQueueSize(){
@@ -88,11 +88,15 @@ int getQueueSize(){
 
 process_t peekByPosition(int position){
     if(queueSize==0)
-        return 0;
+        return NULL;
+
+    if(queueSize<position)
+        return NULL;
 
     node tmp = first;
     int i;
-    for(i=0;i<queueSize;i++)
+
+    for(i=0;i<position;i++)
         tmp=tmp->tail;
 
     return tmp->process;
@@ -123,7 +127,7 @@ void listQueue(){
     node tmp=first;
     printf("POSITION    PID    SLEEP\n");
     for(i=0;i<queueSize;i++) {
-        printf("%d           %d          %d %d\n",i+1,tmp->process->pid,tmp->process->sleeps,tmp->tail==NULL?1:0);
+        printf("%d           %d          %d \n",i+1,tmp->process->pid,tmp->process->sleeps);
         tmp = tmp->tail;
     }
 }
