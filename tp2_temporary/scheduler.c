@@ -61,9 +61,9 @@ void listProcesses(){
 int queueProcess(process_t process){
     int ret = add(process);
     if(ret==-1)
-        perror("Malloc process queue error");
+        perror("Malloc process queue error\n");
     if(ret==-2)
-        perror("received null process");
+        perror("received null process\n");
     return ret;
 }
 

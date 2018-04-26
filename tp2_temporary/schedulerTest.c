@@ -37,10 +37,39 @@ void given3Processes(){
     p3->sleeps=0;
 }
 
-void whenQueueing3Processes(){
+void given3OtherProcesses(){
+    p4 = malloc(sizeof(struct process_t_CDT));
+    if(p4==NULL) perror("Malloc returned NULL.");
+    p4->context = malloc(sizeof(struct process_context_CDT));
+    if(p4->context==NULL) perror("Malloc returned NULL.");
+    p5 = malloc(sizeof(struct process_t_CDT));
+    if(p5==NULL) perror("Malloc returned NULL.");
+    p5->context = malloc(sizeof(struct process_context_CDT));
+    if(p5->context==NULL) perror("Malloc returned NULL.");
+    p6 = malloc(sizeof(struct process_t_CDT));
+    if(p6==NULL) perror("Malloc returned NULL.");
+    p6->context = malloc(sizeof(struct process_context_CDT));
+    if(p6->context==NULL) perror("Malloc returned NULL.");
+
+    p4->pid = 2;
+    p5->pid = 2;
+    p6->pid = 2;
+    p4->sleeps=0;
+    p5->sleeps=0;
+    p6->sleeps=0;
+}
+
+
+void whenQueueing3Processes() {
     queueProcess(p1);
     queueProcess(p2);
     queueProcess(p3);
+}
+
+void whenQueueing3OtherProcesses() {
+    queueProcess(p4);
+    queueProcess(p5);
+    queueProcess(p6);
 }
 
 void thenNNotNullProcessesAreReceived(int n){
@@ -107,6 +136,7 @@ void add3ProcessesTest(){
     given3Processes();
     whenQueueing3Processes();
     thenNNotNullProcessesAreReceived(3);
+
     thenQueueIsEmpty();
 
     freeProcessMemory(p1);
@@ -128,14 +158,30 @@ void checkSleepTest(){
     freeProcessMemory(p1);
     freeProcessMemory(p2);
     freeProcessMemory(p3);
+    destroyProcessQueue();
 }
 
 void queueDestructionTest(){
     printf("Testing Queue Destruction Test\n");
 
     givenAProcessWithPID10();
+    given3OtherProcesses();
+    given3Processes();
+    whenQueueing3OtherProcesses();
+    whenQueueing3Processes();
     whenQueueingProcessWithPID10();
     whenDestroyingQueue();
+    thenQueueIsEmpty();
+}
+
+void queue100processesThenDestroy(){
+    int i = 0;
+    process_t p;
+    for (i=0;i<100;i++){
+        queueProcess(calloc(1,sizeof(struct process_t_CDT)));
+    }
+    listProcesses();
+    destroyProcessQueue();
     thenQueueIsEmpty();
 }
 
@@ -143,4 +189,5 @@ void schedulerTestRun(){
     add3ProcessesTest();
     checkSleepTest();
     queueDestructionTest();
+    //queue100processesThenDestroy();
 }

@@ -24,16 +24,17 @@ int add(process_t process){
     newNode->process = process;
     newNode->tail = NULL;
 
-    queueSize++;
-
     if (queueSize==0){
         first = newNode;
         last = newNode;
+        queueSize++;
         return 0;
     }
 
     last->tail = newNode;
     last = newNode;
+
+    queueSize++;
     return 0;
 }
 
@@ -71,9 +72,9 @@ process_t poll(char checkIfWoke){
     else
         first = tmp->tail;
 
-    queueSize--;
     process_t process = tmp->process;
     free(tmp);
+    queueSize--;
     return process;
 }
 
