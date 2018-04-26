@@ -3,83 +3,103 @@
 #include <string.h>
 #include "messaging.h"
 
+
+/*TODO
+- MESSAGE BOX FINALIZATION API MUST BE COHERENT WITH HEADER REFERENCE OF POST OFFICE
+- FINALIZATION BY KEY OF NON EXISTING MESSAGE BOXS MUST NOT LEAK
+- FINALIZATION BY KEY IN AN ORDER DIFFERENT THAN THE ONE GIVEN MUST NOT LEAK
+- RECEIVE MESSAGE MUST STOP PROCESS JUST LIKE SEMAPHORE
+-
+*/
+postOfficePTR postOffice;
+
+void initializePostOffice()
+{
+  if(postOffice!=NULL)
+  {
+    return;
+  }
+  postOffice=malloc(sizeof(struct postOfficeStruct));
+  postOffice->msgBox=malloc(sizeof(void *));
+  *(postOffice->msgBox)=NULL;
+}
+
+void finalizePostOffice()
+{
+  if(postOffice==NULL)
+  {
+    return;
+  }
+  recursiveFinalizeMessageBox(postOffice->msgBox);
+  free(postOffice->msgBox);
+  postOffice->msgBox=NULL;
+  free(postOffice);
+  postOffice=NULL;
+}
+
 void initializeMessageBox(messageBox * mB, char * key_P, size_t size)
 {
-  //string copy key_P to some other string that exists in kernel heap?
   (*mB)=malloc(sizeof(struct messageBoxStruct));
   (*mB)->key=key_P;
-  (*mB)->msgList=NULL;
+  (*mB)->msg=NULL;
   (*mB)->msgSize=size;
   (*mB)->next=NULL;
+
 }
 
-void initializeMessageList(messageList * mL)
-{
-  (*mL)=malloc(sizeof(struct messageListStruct));
-  (*mL)->msg=NULL;
-  (*mL)->next=NULL;
-}
 
-void initializeMessage(message * m, void * messageContent)
+void initializeMessage(message * m, void * messageContent, size_t messageSize)
 {
   (*m) = malloc(sizeof(struct messageStruct));
-  (*m)->messageBody=messageContent; //MIGHT HAVE TO MEMCPY LATER
+  (*m)->messageBody = malloc(messageSize);
+  memcpy((*m)->messageBody, messageContent, messageSize);
+  (*m)->next=NULL;
 }
 
-void finalizeMessageList(messageList * mL)
-{
-  finalizeMessage(&((*mL)->msg));
-  free(*mL);
-  (*mL)=NULL;
-}
-
-void recursiveFinalizeMessageList(messageList *mL)
-{
-  if((*mL)!=NULL && (*mL)->next!=NULL)
-  {
-    recursiveFinalizeMessageList(&((*mL)->next));
-  }
-  finalizeMessageList(mL);
-}
-
-messageBox getMessageBox(char * key_P, messageBox mB)
-{
-  if(mB==NULL)
-  {
-    return NULL;
-  }
-  if(mB->key==key_P)
-  {
-    return mB;
-  }
-  return getMessageBox(key_P, mB->next);
-}
-
-
-void finalizeMessageBox(messageBox * mB)
+void freeMessageBox(messageBox * mB)
 {
   if((*mB)==NULL)
   {
     return;
   }
-  recursiveFinalizeMessageList(&((*mB)->msgList));
+  recursiveFinalizeMessage(&((*mB)->msg));
+  (*mB)->next=NULL;
   free(*mB);
   (*mB)=NULL;
 }
 
+void finalizeMessageBox(char * key_P)
+{
+  messageBox * del = findMessageBox(key_P, postOffice->msgBox);
+  freeMessageBox(del);
+}
+
 void recursiveFinalizeMessageBox(messageBox *mB)
 {
-  if((*mB)!=NULL && (*mB)->next!=NULL)
+  if((*mB)!=NULL)
   {
     recursiveFinalizeMessageBox(&((*mB)->next));
   }
-  finalizeMessageBox(mB);
+  freeMessageBox(mB);
 }
+
+void recursiveFinalizeMessage(message *mL)
+{
+  if((*mL)!=NULL)
+  {
+    recursiveFinalizeMessage(&((*mL)->next));
+  }
+  finalizeMessage(mL);
+}
+
 
 void finalizeMessage(message * m)
 {
-  if(m==NULL || (*m)==NULL) return;
-  //free((*m)->messageBody);
+  if(m==NULL || (*m)==NULL)
+  {
+    return;
+  }
+  free((*m)->messageBody);
   free(*m);
   (*m)=NULL;
 }
@@ -87,17 +107,14 @@ void finalizeMessage(message * m)
 
 void sendMessage(messageBox * mB, void * messageContent)
 {
-  sendMessageRec(&((*mB)->msgList), (*mB)->msgSize, messageContent);
+  sendMessageRec(&((*mB)->msg), (*mB)->msgSize, messageContent);
 }
 
-void static sendMessageRec(messageList * mL, size_t size, void * messageContent)
+void static sendMessageRec(message * mL, size_t size, void * messageContent)
 {
   if((*mL)==NULL)
   {
-    initializeMessageList(mL);
-    message m;
-    initializeMessage(&m, messageContent);
-    (*mL)->msg=m;
+    initializeMessage(mL, messageContent, size);
     return;
   }
   sendMessageRec(&((*mL)->next),size,messageContent);
@@ -106,29 +123,58 @@ void static sendMessageRec(messageList * mL, size_t size, void * messageContent)
 void recieveMessage(messageBox * mB, void * buffer)
 {
   if(mB==NULL || *mB==NULL) return;
-  recieveMessageRec(&((*mB)->msgList),(*mB)->msgSize,  buffer);
+  recieveMessageRec(&((*mB)->msg),(*mB)->msgSize,  buffer);
 }
 
-void recieveMessageRec(messageList * mL, size_t size, void *buffer)
+void recieveMessageRec(message * mL, size_t size, void *buffer)
 {
   if(mL==NULL || (*mL)==NULL) return;
-  messageList aux = (*mL)->next;
-  memcpy(buffer, (*mL)->msg->messageBody, size);
-  finalizeMessageList(mL);
+  message aux = (*mL)->next;
+  memcpy(buffer, (*mL)->messageBody, size);
+  finalizeMessage(mL);
   (*mL)=aux;
 }
-
-
-
 
 int messageBoxSize(messageBox * mB)
 {
   if(mB==NULL || (*mB)==NULL) return 0;
-  return recMessageListSize(&((*mB)->msgList));
+  return recMessageSize(&((*mB)->msg));
 }
 
-int recMessageListSize(messageList * mL)
+int recMessageSize(message * mL)
 {
   if(mL ==NULL || (*mL)==NULL) return 0;
-  return 1 + recMessageListSize(&((*mL)->next));
+  return 1 + recMessageSize(&((*mL)->next));
+}
+
+messageBox getMessageBox(char * key_P, size_t messageSize)
+{
+  return getMessageBoxRec(key_P, postOffice->msgBox, messageSize);
+}
+
+messageBox getMessageBoxRec(char * key_P, messageBox * mB, size_t messageSize)
+{
+  if((*mB)==NULL)
+  {
+    initializeMessageBox(mB, key_P, messageSize);
+    return (*mB);
+  }
+  if((*mB)->key==key_P)
+  {
+    return *mB;
+  }
+  return getMessageBoxRec(key_P, (&(*mB)->next), messageSize);
+}
+
+messageBox * findMessageBox(char * key_P, messageBox * mB)
+{
+  if((*mB)==NULL)
+  {
+    return NULL;
+  }
+  if((*mB)->key==key_P)
+  {
+    return mB;
+  }
+  return findMessageBox(key_P, (&(*mB)->next));
 }

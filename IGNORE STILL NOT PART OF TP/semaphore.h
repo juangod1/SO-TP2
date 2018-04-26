@@ -6,7 +6,7 @@
 typedef struct semStruct * semaphore;
 struct semStruct
 {
-	int value; //eventually will have to be pid type
+	int value;
 	queueEntry processQueue;
 };
 

@@ -5,43 +5,46 @@
 typedef struct messageStruct * message;
 struct messageStruct
 {
-  //int src; //HAS TO BE PID TYPE EVENTUALLY
-  //int dest; //HAS TO BE PID TYPE EVENTUALLY
+  message next;
   void * messageBody;
 };
-
-typedef struct messageListStruct * messageList;
-struct messageListStruct
-{
-  message msg;
-  messageList next;
-};
-
 
 typedef struct messageBoxStruct * messageBox;
 struct messageBoxStruct
 {
   char * key;
-  messageList msgList;
+  message msg;
   size_t msgSize;
   messageBox next;
 };
 
+typedef struct postOfficeStruct * postOfficePTR;
+struct postOfficeStruct
+{
+  messageBox * msgBox;
+};
 
 void initializeMessageBox(messageBox * mB, char * key_P, size_t size);
-void initializeMessageList(messageList * mL);
-void finalizeMessageList(messageList * mL);
-void recursiveFinalizeMessageList(messageList *mL);
-void finalizeMessageBox(messageBox * mB);
+void finalizeMessageBox(char * key_P);
 void recursiveFinalizeMessageBox(messageBox *mB);
-void finalizeMessage(message * m);
+void freeMessageBox(messageBox * mB);
+
+
+void initializeMessage(message * mL, void * messageBody, size_t size);
+void finalizeMessage(message * mL);
+void recursiveFinalizeMessage(message *mL);
+
 void sendMessage(messageBox * mb, void * messageContent);
-void static sendMessageRec(messageList * mL, size_t size, void * messageContent);
+void static sendMessageRec(message * mL, size_t size, void * messageContent);
 void recieveMessage(messageBox * mb, void * buffer);
-void recieveMessageRec(messageList * mL, size_t size, void * buffer);
+void recieveMessageRec(message * mL, size_t size, void * buffer);
 int messageBoxSize(messageBox * mB);
-int recMessageListSize(messageList * mL);
-void initializeMessage(message * m, void * messageContent);
-messageBox getMessageBox(char * key_P, messageBox mB);
+int recMessageSize(message * mL);
+messageBox getMessageBox(char * key_P, size_t messageSize);
+messageBox getMessageBoxRec(char * key_P, messageBox * mB, size_t messageSize);
+
+messageBox * findMessageBox(char * key_P, messageBox * mB);
+
+void initializePostOffice();
 
 #endif

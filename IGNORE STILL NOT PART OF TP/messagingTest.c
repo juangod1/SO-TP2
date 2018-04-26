@@ -7,17 +7,18 @@
 messageBox global_Message_Box;
 messageBox reception_global_Message_Box;
 message global_message;
+int global_size = 5;
 void * global_buffer;
 char * global_MB_key;
 
-void givenAnInitializedMessageBox()
+void givenAnInitializedPostOffice()
 {
-  initializeMessageBox(&global_Message_Box, "ok", 5);
+  initializePostOffice();
 }
 
-void givenAnInitializedMessageList()
+void givenACreatedMessageBox()
 {
-  initializeMessageList(&(global_Message_Box->msgList));
+  global_Message_Box=getMessageBox("ok", global_size);
 }
 
 void givenAMessage()
@@ -27,7 +28,7 @@ void givenAMessage()
 
 void whenAddingMessageToBox()
 {
-  sendMessage(&global_Message_Box, global_message);
+  sendMessage(&global_Message_Box,  global_message);
 }
 
 void thenMessageIsSent()
@@ -78,11 +79,6 @@ void thenMessageReadIsSame()
   }
 }
 
-void givenAnIncorrectKey()
-{
-  global_MB_key="incorrect";
-}
-
 void givenACorrectKey()
 {
   global_MB_key="ok";
@@ -90,7 +86,7 @@ void givenACorrectKey()
 
 void whenGettingAMessageBox()
 {
-  reception_global_Message_Box=getMessageBox(global_MB_key, global_Message_Box);
+  reception_global_Message_Box=getMessageBox(global_MB_key, global_size);
 }
 
 void thenReceptionIsNull()
@@ -119,15 +115,17 @@ void thenReceptionIsNotNull()
 
 void messageAdditionTest()
 {
-  givenAnInitializedMessageBox();
+  givenAnInitializedPostOffice();
   givenAMessage();
+  givenACreatedMessageBox();
   whenAddingMessageToBox();
   thenMessageIsSent();
 }
 
 void messageReadTest()
 {
-  givenAnInitializedMessageBox();
+  givenAnInitializedPostOffice();
+  givenACreatedMessageBox();
   givenAMessageAdded();
   whenReadingFromMessageBox();
   thenMessageBoxIsEmpty();
@@ -136,34 +134,26 @@ void messageReadTest()
 
 void existingGetTest()
 {
-  givenAnInitializedMessageBox();
+  givenAnInitializedPostOffice();
+  givenACreatedMessageBox();
   givenACorrectKey();
   whenGettingAMessageBox();
   thenReceptionIsNotNull();
 }
 
-void nonExistingGetTest()
-{
-  givenAnInitializedMessageBox();
-  givenAnIncorrectKey();
-  whenGettingAMessageBox();
-  thenReceptionIsNull();
-}
 
 int messagingTestMain()
 {
   printf("Testing message addition\n");
   messageAdditionTest();
-  recursiveFinalizeMessageBox(&global_Message_Box);
+  finalizeMessageBox("ok");
   printf("Testing message reception\n");
   messageReadTest();
-  recursiveFinalizeMessageBox(&global_Message_Box);
+  finalizeMessageBox("ok");
   free(global_buffer);
   printf("Test get an existing messageBox\n");
   existingGetTest();
-  recursiveFinalizeMessageBox(&global_Message_Box);
-  printf("Test get a non existing messageBox\n");
-  nonExistingGetTest();
-  recursiveFinalizeMessageBox(&global_Message_Box);
+  finalizeMessageBox("ok");
+  finalizePostOffice();
 
 }

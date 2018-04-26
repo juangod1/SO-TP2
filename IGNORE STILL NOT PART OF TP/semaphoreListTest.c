@@ -162,7 +162,7 @@ void semaphoreListTestMain()
 	printf("Testing different additions\n");
 	testDifferentAdditions();
 	setConditionsBackToNormal();
-	printf("Testing existance after removal");
+	printf("Testing existance after removal\n");
 	testingExistanceAfterRemoval();
 	setConditionsBackToNormal();
 
