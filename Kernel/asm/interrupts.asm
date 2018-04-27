@@ -139,9 +139,9 @@ haltcpu:
 SECTION .bss
 	aux resq 1
 
-
-%macro POPAQ
-	pop rip
+;no puedo backupear el ip en nasm, 
+;vamos a tener que ver como solucionarlo
+%macro POPAQ 0
 	pop rax
 	pop rbx
 	pop rcx
@@ -163,7 +163,7 @@ SECTION .bss
 
 
 
-%macro PUSHAQ
+%macro PUSHAQ 0
 	push gs
 	push fs
 	push r15
@@ -181,7 +181,6 @@ SECTION .bss
 	push rcx
 	push rbx
 	push rax
-	push rip
 %endmacro
 
 
