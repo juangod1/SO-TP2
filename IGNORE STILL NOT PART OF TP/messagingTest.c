@@ -5,6 +5,7 @@
 #include "messaging.h"
 
 messageBox global_Message_Box;
+messageBox different_Global_Message_Box;
 messageBox reception_global_Message_Box;
 message global_message;
 int global_size = 5;
@@ -14,6 +15,12 @@ char * global_MB_key;
 void givenAnInitializedPostOffice()
 {
   initializePostOffice();
+}
+
+
+void givenADifferentCreatedMessageBox()
+{
+  different_Global_Message_Box=getMessageBox("different", global_size);
 }
 
 void givenACreatedMessageBox()
@@ -29,6 +36,25 @@ void givenAMessage()
 void whenAddingMessageToBox()
 {
   sendMessage(&global_Message_Box,  global_message);
+}
+
+
+void whenDeletingAMessageBox()
+{
+  finalizeMessageBox("different");
+}
+
+
+void thenMessageBoxIsRemoved()
+{
+  if(postOfficeSize()==1)
+  {
+    ok();
+  }
+  else
+  {
+    fail("Expected postOffice size equal to one, found different number");
+  }
 }
 
 void thenMessageIsSent()
@@ -141,6 +167,25 @@ void existingGetTest()
   thenReceptionIsNotNull();
 }
 
+void deletionInDifferentOrderTest()
+{
+  givenAnInitializedPostOffice();
+  givenACreatedMessageBox();
+  givenADifferentCreatedMessageBox();
+  whenDeletingAMessageBox();
+  thenMessageBoxIsRemoved();
+}
+
+void givenNoAdditions(){}
+void thenNothinigHappens(){ok();}
+
+void nonExistingKeyDeletion()
+{
+  givenNoAdditions();
+  whenDeletingAMessageBox();
+  thenNothinigHappens();
+}
+
 
 int messagingTestMain()
 {
@@ -154,6 +199,12 @@ int messagingTestMain()
   printf("Test get an existing messageBox\n");
   existingGetTest();
   finalizeMessageBox("ok");
+  printf("Test deletion in a different order of messageBox\n");
+  deletionInDifferentOrderTest();
+  finalizeMessageBox("ok");
+  printf("Test non existing message box deletion\n");
+  nonExistingKeyDeletion();
+
   finalizePostOffice();
 
 }

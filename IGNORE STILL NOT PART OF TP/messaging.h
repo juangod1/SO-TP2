@@ -44,6 +44,9 @@ messageBox getMessageBox(char * key_P, size_t messageSize);
 messageBox getMessageBoxRec(char * key_P, messageBox * mB, size_t messageSize);
 
 messageBox * findMessageBox(char * key_P, messageBox * mB);
+int postOfficeSize();
+int postOfficeSizeRec(messageBox * mB);
+void finalizePostOffice();
 
 void initializePostOffice();
 

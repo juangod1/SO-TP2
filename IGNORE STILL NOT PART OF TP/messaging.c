@@ -63,15 +63,16 @@ void freeMessageBox(messageBox * mB)
     return;
   }
   recursiveFinalizeMessage(&((*mB)->msg));
+  messageBox aux = (*mB)->next;
   (*mB)->next=NULL;
   free(*mB);
-  (*mB)=NULL;
+  (*mB)=aux;
 }
 
 void finalizeMessageBox(char * key_P)
 {
   messageBox * del = findMessageBox(key_P, postOffice->msgBox);
-  freeMessageBox(del);
+  if(del!=NULL)  freeMessageBox(del);
 }
 
 void recursiveFinalizeMessageBox(messageBox *mB)
@@ -164,6 +165,24 @@ messageBox getMessageBoxRec(char * key_P, messageBox * mB, size_t messageSize)
     return *mB;
   }
   return getMessageBoxRec(key_P, (&(*mB)->next), messageSize);
+}
+
+int postOfficeSize()
+{
+  if(postOffice==NULL)
+  {
+    return 0;
+  }
+  return postOfficeSizeRec(postOffice->msgBox);
+}
+
+int postOfficeSizeRec(messageBox * mB)
+{
+  if((*mB)==NULL)
+  {
+    return 0;
+  }
+  return 1 + postOfficeSizeRec(&((*mB)->next));
 }
 
 messageBox * findMessageBox(char * key_P, messageBox * mB)
