@@ -134,15 +134,17 @@ void listQueue(){
 }
 
 void destroyQueue(){
-    int i;
     if(queueSize==0)
         return;
 
     process_t temp;
-    for(i=0;i<queueSize;i++){
+    /*for(i=0;i<queueSize;i++){
         temp = poll(0);
         freeProcessMemory(temp);
-    }
+    }*/
+    while( (temp=poll(0)) != NULL)
+        freeProcessMemory(temp);
+
     first=NULL;
     last=NULL;
     queueSize = 0;

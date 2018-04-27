@@ -155,6 +155,7 @@ void checkSleepTest(){
     thenNextProcessHasCertainPID(2); // Default PID is 2, if it is 10 then the sleeping process was incorrectly returned
     thenNNotNullProcessesAreReceived(2);
     thenQueueIsNotEmpty();
+
     freeProcessMemory(p1);
     freeProcessMemory(p2);
     freeProcessMemory(p3);
@@ -174,14 +175,18 @@ void queueDestructionTest(){
     thenQueueIsEmpty();
 }
 
-void queue100processesThenDestroy(){
+void given100QueuedProcesses(){
     int i = 0;
-    process_t p;
     for (i=0;i<100;i++){
         queueProcess(calloc(1,sizeof(struct process_t_CDT)));
     }
-    listProcesses();
-    destroyProcessQueue();
+}
+
+void stressTest100Processes(){
+    printf("Testing Stress Test\n");
+
+    given100QueuedProcesses();
+    whenDestroyingQueue();
     thenQueueIsEmpty();
 }
 
@@ -189,5 +194,5 @@ void schedulerTestRun(){
     add3ProcessesTest();
     checkSleepTest();
     queueDestructionTest();
-    //queue100processesThenDestroy();
+    stressTest100Processes();
 }
