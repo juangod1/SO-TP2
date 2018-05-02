@@ -1,25 +1,21 @@
 #include "memorymanager.h"
-
-
-
-
-
-
 void * heapBase = NULL; //Hay que verificar que tipo de dato conviene guardar el address
 //Por el momento utilizo un entero para verificar un valor exacto ya que no se como hacer 
 //para asegurarme que este espacio inicialize en null o 0, de esta forma puedo reducirlo a 
 //un unico bit. Dejo 8 bytes para no perder la alineacion a palabra.
-int * heapBookStarted = (int*)0xFFFFFFFFFFFFEFFF;
-void * heapBookBase = (void*)0xFFFFFFFFFFFFF008;
 
-void * myHeapBase = (void*) 0x10100000;
+bookBlock heapBookBase =  NULL;//Referencia principal a mi cadena de registros
+
+bookBlock myStorageCurrent = NULL;
+bookBlock myStorageLast = NULL;
+bookBlock myStorageBase = (bookBlock) 0x100000;//Este es mi heap
 
 void *malloc(size_t size);
 void free(void *pointer);
 
 bookBlock searchBookedBlock(int id);
 void * popNewPage();
-int getpid();
+//int getpid();
 
 dataBlock getDataBlock(void *pointer);
 dataBlock 	searchFreeBlock(dataBlock *last, size_t size);
@@ -31,8 +27,9 @@ void *sbrk(size_t s);
 
 //Tengo que tener un array con todas las direcciones de las paginas y de ahi voy sacandolas
 //y volviendolas a poner. Al volverlas a poner las tengo que poner en 0 nuevamente
-u_int64_t pageArray[5] = {0x10101000,0x10102000,0x10103000,0x10104000,0x10105000};
-u_int8_t amountOfPagesRemaining  = 6;
+u_int64_t pageDirArray[5] = {0x10101000,0x10102000,0x10103000,0x10104000,0x10105000};//Direcciones
+int pageStatusArray[5] = {0,0,0,0,0};//Estado de cada direccion, hay que cambiarle el tipo de dato para ocupar menos espacio
+int amountOfPages = 5;
 
 
 //Hay que definir un espacio de memoria para el stack y para el heap. El stack se va a ir asignando
@@ -44,42 +41,46 @@ u_int8_t amountOfPagesRemaining  = 6;
 //Problemas a lidiar:
 //- Como ver si un programa esta tratando de utilizar un espacio de memoria que no le pertenece.
 
+//Sacarlo cuando Juan suba el suyo.
 int getpid(){
 	return 0;
 }
+
 //Metodos de parciales
 //Malloc otorga un espacio de memoria de x bytes
 void *malloc(size_t s){
 	//Si nunca fue inicializado el book keeping de las paginas, lo inicializo
-	if(*heapBookStarted != 123){
-		//Limpiar el espacio para el book y crear el primer nodo
-		//Buscar como se hace correctamente
-		//Crear nueva pagina para el proceso
-		//En este caso, deberia primero asignar la pagina 1 al memory manager.
-		bookBlock newBookBlock = myHeapBase;
+	if(myStorageCurrent == NULL){
+		bookBlock newBookBlock = myStorageBase;
 		newBookBlock->owner = getpid();
-		newBookBlock->brk = 0; //Esto es para proxima version
-		newBookBlock->bookedHeapBase = popNewPage();
-		if(newBookBlock->bookedHeapBase == NULL){
+		newBookBlock->brk = s; //No estoy verificando que no caiga de pagina.
+		newBookBlock->base = popNewPage();
+		newBookBlock->next = NULL;
+		if(newBookBlock->base == NULL){
 			//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
 			return NULL;
 		}
-		*heapBookStarted = 123;
-		return newBookBlock->bookedHeapBase;
+		heapBookBase = newBookBlock;
+		myStorageLast = myStorageBase;
+		myStorageCurrent = myStorageBase+1;
+		return newBookBlock->base;
 	}
 	bookBlock bookedBlock = searchBookedBlock(getpid());
 	if(bookedBlock == NULL){
 		//No encontro ninguna pagina almacenada, hay que crear una nueva
-		bookBlock newBookBlock;
+		bookBlock newBookBlock = myStorageCurrent;
 		newBookBlock->owner = getpid();
-		newBookBlock->brk = 0; //Esto es para proxima version
-		newBookBlock->bookedHeapBase = popNewPage();
-		if(newBookBlock->bookedHeapBase == NULL){
+		newBookBlock->brk = s; //No estoy verificando que no caiga de pagina.
+		newBookBlock->base = popNewPage();
+		newBookBlock->next = NULL;
+		if(newBookBlock->base == NULL){
 			//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
 			return NULL;
 		}
-		*heapBookStarted = 123;
-		return newBookBlock->bookedHeapBase;
+		myStorageLast->next = newBookBlock;
+		myStorageLast = myStorageCurrent;
+		myStorageCurrent = myStorageCurrent+1;
+		return newBookBlock->base;
 	}
 	else{
 		//Al encontrarla me guardo el break anterior
@@ -88,12 +89,12 @@ void *malloc(size_t s){
 		//Aumento el brk
 		bookedBlock->brk += s;
 		//Devuelvo el puntero a la pagina sumado el brk anterior
-		return (bookedBlock->bookedHeapBase) + brk;
+		return (bookedBlock->base) + brk;
 	}
 }
 
 bookBlock searchBookedBlock(int id){
-	bookBlock current = (bookBlock)heapBookBase;
+	bookBlock current = heapBookBase;
 	while(current->owner != id){
 		if(current->next == NULL){
 			//No se encontro una pagina asociada al proceso
@@ -106,13 +107,16 @@ bookBlock searchBookedBlock(int id){
 
 void * popNewPage(){
 	//Tiene que verificar que le queda stock de paginas para asignar y manejarse como un stack
-	//Por el momento solo devuelve una hoja 
-	if(amountOfPagesRemaining == 0){
+	//Recorre el array de estados para verificar hojas, luego la marca como ocupada y la devuelve.
+	int i = 0;
+	while(i<amountOfPages && pageStatusArray[i]){//Cuando es 0 no entra, porque esta libre. Cuando es 1 entra porque esta ocupada y busca otra.
+		i++;
+	}
+	if(i==amountOfPages){//Si se paso significa que no hay mas paginas
 		return NULL;
 	}
-	u_int64_t newPage = pageArray[amountOfPagesRemaining-1];//Es menos uno por la correcion de posiciones
-	amountOfPagesRemaining--;
-	return (void*) newPage;
+	pageStatusArray[i] = 1;
+	return (void*) pageDirArray[i];
 }
 
 
@@ -130,6 +134,10 @@ dataBlock searchFreeBlock(dataBlock *last, size_t size)
     current = current->next;
   }
   return current;
+}
+
+//Free temporalmente deshabilitado
+void free(void* pointer){
 }
 
 //Si no se encuentra un bloque que cumpla con lo requerido, se deberia hacer un sbrk()

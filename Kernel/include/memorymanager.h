@@ -13,7 +13,7 @@
 typedef struct bookBlockStruct * bookBlock;
 struct bookBlockStruct {
 	int owner; //Este es el  pid 
-	void *bookedHeapBase;
+	void* base;
 	int brk; //Este puede ser otro tipo de dato para ahorrar memoria
 	struct bookBlockStruct* next;
 }bookBlockStruct;
