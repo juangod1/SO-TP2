@@ -8,7 +8,7 @@
 
 #define HEAP_START 0x400000
 #define HEAP_END 0x799999
-#define NUM_OF_PAGES 1024
+#define NUM_OF_PAGES ((HEAP_END - HEAP_START)/PAGE_SIZE)
 #define PAGE_SIZE 0x1000
 
 typedef struct bookBlockStruct * bookBlock;
