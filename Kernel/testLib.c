@@ -42,12 +42,12 @@ void thenSuccess()
 
 void ok()
 {
-    printString("    Ok!\n");
+    printString("    Ok!\n",0,255,0);
 }
 
 void fail(char * errorMsg)
 {
-    printString("    Failed\n");
+    printString("    Failed\n",0,0,255);
     perror(errorMsg);
 }
 

@@ -126,7 +126,7 @@ void listQueue(){
 
     int i;
     node tmp=first;
-    printString("POSITION    PID    SLEEP\n");
+    printString("POSITION    PID    SLEEP\n",0,255,255);
     for(i=0;i<queueSize;i++) {
         printInt(i+1);
         printString("          ",0,0,0);

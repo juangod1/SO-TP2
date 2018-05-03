@@ -77,6 +77,9 @@ void thenNNotNullProcessesAreReceived(int n){
     int i;
     for(i=0;i<n;i++) {
         t1 = getNextProcess();
+        //printString("\n",0,0,0);
+        //printInt(t1,0,255,0);
+        //printString("\n",0,0,0);
         if (t1 == NULL)
             okFlag = 0;
     }
@@ -108,11 +111,11 @@ void whenSleepingProcess10(){
 void thenNextProcessHasCertainPID(pid_t pid){
     t1 = getNextProcess();
     if(t1->pid != pid){
-        printString("Expected PID:\n",0,255,255);
-        printInt(pid,0,255,255);
-        printString(", Received:\n",0,255,255);
-        printInt(t1->pid,0,255,255);
-        printString("\n",0,255,255);
+        printString("Expected PID: ",0,0,255);
+        printInt(pid,0,0,255);
+        printString(", Received: ",0,0,255);
+        printInt(t1->pid,0,0,255);
+        printString("\n",0,0,255);
     }
     else
         ok();
@@ -139,9 +142,10 @@ void add3ProcessesTest(){
     printString("Testing 3 Processes Test\n",0,255,255);
 
     given3Processes();
-    whenQueueing3Processes();
-    thenNNotNullProcessesAreReceived(3);
 
+    whenQueueing3Processes();
+
+    thenNNotNullProcessesAreReceived(3);
     thenQueueIsEmpty();
 
     freeProcessMemory(p1);
