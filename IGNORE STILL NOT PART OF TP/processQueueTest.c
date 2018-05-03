@@ -173,9 +173,10 @@ void setConditionsBackToNormal()
 
 void processQueueTestMain()
 {
-  printf("Testing queue addition\n");
+  sysPrintString("Testing queue addition\n",0,255,255);
   testQueueAddition();
   setConditionsBackToNormal();
+  sysPrintString("Testing queue addition\n",0,255,255);
   printf("Testing queue removal\n");
   testQueueRemoval();
   setConditionsBackToNormal();

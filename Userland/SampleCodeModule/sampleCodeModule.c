@@ -5,7 +5,7 @@
 #include "plotLib.h"
 
 int main() {
-	//startShell();
+	startShell();
 
 	return 1;
 }

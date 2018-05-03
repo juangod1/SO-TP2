@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include "process.h"
-#include "scheduler.h"
-#include "testLib.h"
-
+#include "include/process.h"
+#include "include/scheduler.h"
+#include "include/testLib.h"
+#include "include/videoDriver.h"
 //
 // Created by juangod on 18/04/18.
 //
@@ -107,8 +107,13 @@ void whenSleepingProcess10(){
 
 void thenNextProcessHasCertainPID(pid_t pid){
     t1 = getNextProcess();
-    if(t1->pid != pid)
-        printf("Expected PID:%d, Received:%d \n",pid,t1->pid);
+    if(t1->pid != pid){
+        printString("Expected PID:\n",0,255,255);
+        printInt(pid,0,255,255);
+        printString(", Received:\n",0,255,255);
+        printInt(t1->pid,0,255,255);
+        printString("\n",0,255,255);
+    }
     else
         ok();
 }
@@ -131,7 +136,7 @@ void whenDestroyingQueue(){
 }
 
 void add3ProcessesTest(){
-    printf("Testing 3 Processes Test\n");
+    printString("Testing 3 Processes Test\n",0,255,255);
 
     given3Processes();
     whenQueueing3Processes();
@@ -145,7 +150,8 @@ void add3ProcessesTest(){
 }
 
 void checkSleepTest(){
-    printf("Testing Sleep Test\n");
+
+    printString("Testing Sleep Test\n",0,255,255);
 
     given3Processes();
     givenAProcessWithPID10();
@@ -163,7 +169,7 @@ void checkSleepTest(){
 }
 
 void queueDestructionTest(){
-    printf("Testing Queue Destruction Test\n");
+    printString("Testing Queue Destruction Test\n",0,255,255);
 
     givenAProcessWithPID10();
     given3OtherProcesses();
@@ -178,12 +184,12 @@ void queueDestructionTest(){
 void given100QueuedProcesses(){
     int i = 0;
     for (i=0;i<100;i++){
-        queueProcess(calloc(1,sizeof(struct process_t_CDT)));
+        queueProcess(malloc(sizeof(struct process_t_CDT)));
     }
 }
 
 void stressTest100Processes(){
-    printf("Testing Stress Test\n");
+    printString("Testing Stress Test\n",0,255,255);
 
     given100QueuedProcesses();
     whenDestroyingQueue();

@@ -57,14 +57,6 @@ int main() {
 
     initPageDirArray();
 
-    int i;
-	char * str;
-	for(i=0;i<1024;i++) {
-		str = malloc(1);
-		*str = 'z';
-		printString(str, 255, 255, 0);
-	}
-
 	void (*module)();
 	module = sampleCodeModuleAddress;
 

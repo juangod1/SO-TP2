@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/tp2_temporary.dir/main.c.o CMakeFiles/tp2_temporary.dir/process.c.o CMakeFiles/tp2_temporary.dir/processQueue.c.o CMakeFiles/tp2_temporary.dir/scheduler.c.o CMakeFiles/tp2_temporary.dir/testLib.c.o CMakeFiles/tp2_temporary.dir/schedulerTest.c.o  -o tp2_temporary 

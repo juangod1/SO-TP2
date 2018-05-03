@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <strings.h>
 #include "testlib.h"
 
 void givenNothing()
@@ -50,7 +50,6 @@ void fail(char * errorMsg)
 
 void notImplemented()
 {
-    fflush(stdout);
     fprintf(stderr, "Not implemented");
     exit(1);
 }

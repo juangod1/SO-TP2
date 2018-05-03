@@ -34,6 +34,7 @@ void checkLine();
 void backSpace();
 void shiftVideo();
 void paintBackGround();
+void perror(const char * string);
 
 
 #endif

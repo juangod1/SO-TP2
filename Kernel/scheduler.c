@@ -4,8 +4,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include "process.h"
-#include "processQueue.h"
+#include "include/process.h"
+#include "include/processQueue.h"
 
 uint64_t kernelTableAddress = 0x0; //placeholder
 process_t currentProcess = NULL;

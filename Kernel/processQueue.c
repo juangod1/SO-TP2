@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "processQueue.h"
+#include "include/processQueue.h"
 
 node first = NULL;
 node last = NULL;
@@ -120,15 +120,20 @@ process_t peekByPID(pid_t pid){
 
 void listQueue(){
     if(queueSize==0){
-        printf("Queue is empty.\n");
+        printString("Queue is empty.\n",0,255,255);
         return;
     }
 
     int i;
     node tmp=first;
-    printf("POSITION    PID    SLEEP\n");
+    printString("POSITION    PID    SLEEP\n");
     for(i=0;i<queueSize;i++) {
-        printf("%d           %d          %d \n",i+1,tmp->process->pid,tmp->process->sleeps);
+        printInt(i+1);
+        printString("          ",0,0,0);
+        printInt(tmp->process->pid);
+        printString("          ",0,0,0);
+        printInt(tmp->process->sleeps);
+        printString("\n",0,0,0);
         tmp = tmp->tail;
     }
 }

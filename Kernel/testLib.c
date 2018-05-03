@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "testLib.h"
 
 void givenNothing()
@@ -43,18 +42,16 @@ void thenSuccess()
 
 void ok()
 {
-    printf("\tOk!\n");
+    printString("    Ok!\n");
 }
 
 void fail(char * errorMsg)
 {
-    printf("\tFailed\n");
-    fprintf(stderr, "%s", errorMsg);
+    printString("    Failed\n");
+    perror(errorMsg);
 }
 
 void notImplemented()
 {
-    fflush(stdout);
-    fprintf(stderr, "Not implemented");
-    exit(1);
+    perror("Not implemented.");
 }

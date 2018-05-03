@@ -17,6 +17,13 @@ void printString( const char* string, int B, int G, int R){
 		writeChar(string[i],B,G,R);
 	}
 }
+
+void perror(const char * string){
+	printString("\n----------------------\n",0,0,255);
+	printString(string,0,0,255);
+	printString("\n----------------------\n",0,0,255);
+}
+
 void printReg(char* s){
 	printString(s,0,155,255);
 }

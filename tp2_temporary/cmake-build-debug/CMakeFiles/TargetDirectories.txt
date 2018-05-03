@@ -1,3 +1,0 @@
-/home/juangod/ITBA/SO/tp2_temporary/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/juangod/ITBA/SO/tp2_temporary/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/juangod/ITBA/SO/tp2_temporary/cmake-build-debug/CMakeFiles/tp2_temporary.dir
