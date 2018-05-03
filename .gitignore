@@ -9,3 +9,7 @@
 
 #Object files
 *.o
+
+.idea/*
+cmake*
+CMake*
