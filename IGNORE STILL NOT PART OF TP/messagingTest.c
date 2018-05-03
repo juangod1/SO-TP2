@@ -3,29 +3,37 @@
 #include <string.h>
 #include "testlib.h"
 #include "messaging.h"
+#include "messagingTest.h"
 
-messageBox global_Message_Box;
-messageBox different_Global_Message_Box;
-messageBox reception_global_Message_Box;
+char * global_MB_key;
 message global_message;
 int global_size = 5;
+mbd_t global_MB_descriptor=NULL;
+mbd_t different_global_MB_descriptor=NULL;
 void * global_buffer;
 char * global_MB_key;
+
+
+void givenAMessageBox()
+{
+  sendMessage(global_MB_descriptor, global_message);
+}
+void givenAnotherMessageBox()
+{
+  sendMessage(different_global_MB_descriptor, global_message);
+}
 
 void givenAnInitializedPostOffice()
 {
   initializePostOffice();
 }
 
-
-void givenADifferentCreatedMessageBox()
+void givenADifferentDescriptor()
 {
-  different_Global_Message_Box=getMessageBox("different", global_size);
-}
-
-void givenACreatedMessageBox()
-{
-  global_Message_Box=getMessageBox("ok", global_size);
+  if(different_global_MB_descriptor!=NULL) return;
+  different_global_MB_descriptor=malloc(sizeof(struct mbd_t_Struct));
+  different_global_MB_descriptor->key=(void*)"diff";
+  different_global_MB_descriptor->size=global_size;
 }
 
 void givenAMessage()
@@ -35,13 +43,13 @@ void givenAMessage()
 
 void whenAddingMessageToBox()
 {
-  sendMessage(&global_Message_Box,  global_message);
+  sendMessage(global_MB_descriptor,global_message);
 }
 
 
 void whenDeletingAMessageBox()
 {
-  finalizeMessageBox("different");
+  finalizeMessageBox(different_global_MB_descriptor);
 }
 
 
@@ -53,13 +61,14 @@ void thenMessageBoxIsRemoved()
   }
   else
   {
-    fail("Expected postOffice size equal to one, found different number");
+    printf("%d",postOfficeSize());
+    fail("Expected postOffice size equal to one, found different number\n");
   }
 }
 
 void thenMessageIsSent()
 {
-  if(messageBoxSize(&global_Message_Box)==1)
+  if(messageBoxSize(global_MB_descriptor)==1)
   {
     ok();
   }
@@ -72,18 +81,18 @@ void thenMessageIsSent()
 void givenAMessageAdded()
 {
   givenAMessage();
-  sendMessage(&global_Message_Box, global_message);
+  sendMessage(global_MB_descriptor,global_message);
 }
 
 void whenReadingFromMessageBox()
 {
   global_buffer=malloc(5);
-  recieveMessage(&global_Message_Box, global_buffer);
+  recieveMessage(global_MB_descriptor,global_buffer);
 }
 
 void thenMessageBoxIsEmpty()
 {
-  if(messageBoxSize(&global_Message_Box)==0)
+  if(messageBoxSize(global_MB_descriptor)==0)
   {
     ok();
   }
@@ -101,49 +110,25 @@ void thenMessageReadIsSame()
   }
   else
   {
-    fail("Expected string 'okay', found another string");
+    fail("Expected string 'okay', found another string\n");
   }
 }
 
-void givenACorrectKey()
+void givenACorrectDescriptor()
 {
-  global_MB_key="ok";
+  if(global_MB_descriptor!=NULL) return;
+  global_MB_descriptor=malloc(sizeof(struct mbd_t_Struct));
+  global_MB_descriptor->key=(void*)"okay";
+  global_MB_descriptor->size=global_size;
 }
 
-void whenGettingAMessageBox()
-{
-  reception_global_Message_Box=getMessageBox(global_MB_key, global_size);
-}
 
-void thenReceptionIsNull()
-{
-  if(reception_global_Message_Box==NULL)
-  {
-    ok();
-  }
-  else
-  {
-    fail("Expected a null Message box, found non null Message box\n");
-  }
-}
-
-void thenReceptionIsNotNull()
-{
-  if(reception_global_Message_Box!=NULL)
-  {
-    ok();
-  }
-  else
-  {
-    fail("Expected a non null Message box, found null Message box\n");
-  }
-}
 
 void messageAdditionTest()
 {
   givenAnInitializedPostOffice();
   givenAMessage();
-  givenACreatedMessageBox();
+  givenACorrectDescriptor();
   whenAddingMessageToBox();
   thenMessageIsSent();
 }
@@ -151,27 +136,21 @@ void messageAdditionTest()
 void messageReadTest()
 {
   givenAnInitializedPostOffice();
-  givenACreatedMessageBox();
+  givenACorrectDescriptor();
+  givenAMessage();
   givenAMessageAdded();
   whenReadingFromMessageBox();
   thenMessageBoxIsEmpty();
   thenMessageReadIsSame();
 }
 
-void existingGetTest()
-{
-  givenAnInitializedPostOffice();
-  givenACreatedMessageBox();
-  givenACorrectKey();
-  whenGettingAMessageBox();
-  thenReceptionIsNotNull();
-}
-
 void deletionInDifferentOrderTest()
 {
   givenAnInitializedPostOffice();
-  givenACreatedMessageBox();
-  givenADifferentCreatedMessageBox();
+  givenACorrectDescriptor();
+  givenADifferentDescriptor();
+  givenAMessageBox();
+  givenAnotherMessageBox();
   whenDeletingAMessageBox();
   thenMessageBoxIsRemoved();
 }
@@ -181,30 +160,122 @@ void thenNothinigHappens(){ok();}
 
 void nonExistingKeyDeletion()
 {
+  givenAnInitializedPostOffice();
   givenNoAdditions();
   whenDeletingAMessageBox();
   thenNothinigHappens();
 }
 
+void whenAddingAHundredMessages()
+{
+  for(int i=0; i<100; i++){
+    sendMessage(global_MB_descriptor, global_message);
+  }
+}
+
+void thenSizeIsHundred()
+{
+  if(messageBoxSize(global_MB_descriptor)==100)
+  {
+    ok();
+  }
+  else
+  {
+    fail("Expected size equal to 100 found different size\n");
+  }
+}
+
+void  hundredAdditionsTest()
+{
+  givenAnInitializedPostOffice();
+  givenACorrectDescriptor();
+  whenAddingAHundredMessages();
+  thenSizeIsHundred();
+}
+
+void whenDeletingAHundredMessages()
+{
+  finalizeMessageBox(global_MB_descriptor);
+}
+
+void thenSizeIsZero()
+{
+  if(messageBoxSize(global_MB_descriptor)==0)
+  {
+    ok();
+  }
+  else
+  {
+    fail("Expected size equal to 0 found different size\n");
+  }
+}
+
+void hundredDeletionsTest()
+{
+  whenDeletingAHundredMessages();
+  thenSizeIsZero();
+}
+
+void whenAddingAHundredMessageBoxs()
+{
+  for (int i=0; i<100; i++)
+  {
+    char * str=malloc(5);
+    str[0]='0'+i%10;
+    str[1]='0'+i/10;
+    str[2]='0'+i%10;
+    str[3]='0'+i/10;
+    str[4]=0;
+    //printf("%s\n", str);
+    struct mbd_t_Struct mbStruct = {global_size, str};
+    sendMessage(&mbStruct, global_message);
+    free(str);
+  }
+}
+
+void hundredMessageBoxAdditionsTest()
+{
+  givenACorrectDescriptor();
+  givenAMessage();
+  givenAnInitializedPostOffice();
+  whenAddingAHundredMessageBoxs();
+  thenPostOfficeSizeIsAHundred();
+}
+
+
+void thenPostOfficeSizeIsAHundred()
+{
+  if(postOfficeSize()==100)
+  {
+    ok();
+  }
+  else
+  {
+    fail("Expected postOfficeSize equal to 100, found different number\n");
+  }
+}
 
 int messagingTestMain()
 {
   printf("Testing message addition\n");
   messageAdditionTest();
-  finalizeMessageBox("ok");
+  finalizePostOffice();
   printf("Testing message reception\n");
   messageReadTest();
-  finalizeMessageBox("ok");
+  finalizePostOffice();
   free(global_buffer);
-  printf("Test get an existing messageBox\n");
-  existingGetTest();
-  finalizeMessageBox("ok");
   printf("Test deletion in a different order of messageBox\n");
   deletionInDifferentOrderTest();
-  finalizeMessageBox("ok");
+  finalizePostOffice();
   printf("Test non existing message box deletion\n");
   nonExistingKeyDeletion();
-
   finalizePostOffice();
-
+  printf("Test a hundred additions\n");
+  hundredAdditionsTest();
+  finalizePostOffice();
+  printf("Test a hundred messageBox additions\n");
+  hundredMessageBoxAdditionsTest();
+  finalizePostOffice();
+  free(global_MB_descriptor);
+  free(different_global_MB_descriptor);
 }

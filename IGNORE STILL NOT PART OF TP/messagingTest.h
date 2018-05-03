@@ -11,7 +11,7 @@ void givenAMessageAdded();
 void whenReadingFromMessageBox();
 void thenMessageBoxIsEmpty();
 void thenMessageReadIsSame();
-void givenACorrectKey();
+void givenACorrectDescriptor();
 void whenGettingAMessageBox();
 void thenReceptionIsNull();
 void thenReceptionIsNotNull();
@@ -19,5 +19,6 @@ void messageAdditionTest();
 void messageReadTest();
 void existingGetTest();
 int messagingTestMain();
+void thenPostOfficeSizeIsAHundred();
 
 #endif

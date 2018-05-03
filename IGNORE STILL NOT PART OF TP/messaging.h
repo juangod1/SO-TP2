@@ -1,6 +1,12 @@
 #ifndef MESSAGING_H
 #define MESSAGING_H
 
+typedef struct mbd_t_Struct * mbd_t;
+struct mbd_t_Struct
+{
+  size_t size;
+  void * key;
+};
 
 typedef struct messageStruct * message;
 struct messageStruct
@@ -24,30 +30,33 @@ struct postOfficeStruct
   messageBox * msgBox;
 };
 
-void initializeMessageBox(messageBox * mB, char * key_P, size_t size);
-void finalizeMessageBox(char * key_P);
-void recursiveFinalizeMessageBox(messageBox *mB);
-void freeMessageBox(messageBox * mB);
-
-
-void initializeMessage(message * mL, void * messageBody, size_t size);
-void finalizeMessage(message * mL);
-void recursiveFinalizeMessage(message *mL);
-
-void sendMessage(messageBox * mb, void * messageContent);
-void static sendMessageRec(message * mL, size_t size, void * messageContent);
-void recieveMessage(messageBox * mb, void * buffer);
-void recieveMessageRec(message * mL, size_t size, void * buffer);
-int messageBoxSize(messageBox * mB);
-int recMessageSize(message * mL);
-messageBox getMessageBox(char * key_P, size_t messageSize);
-messageBox getMessageBoxRec(char * key_P, messageBox * mB, size_t messageSize);
-
-messageBox * findMessageBox(char * key_P, messageBox * mB);
-int postOfficeSize();
-int postOfficeSizeRec(messageBox * mB);
+void initializePostOffice();
 void finalizePostOffice();
 
-void initializePostOffice();
+int postOfficeSize();
+int postOfficeSizeRec(messageBox * mB);
+
+void initializeMessageBox(messageBox * mB, char * key_P, size_t size);
+void freeMessageBox(messageBox * mB);
+void recursiveFinalizeMessageBox(messageBox *mB);
+
+messageBox * findMessageBox(char * key_P, messageBox * mB);
+int messageBoxSize(mbd_t descriptor);
+int recMessageSize(message * mL);
+
+messageBox getMessageBox(char * key_P, size_t messageSize);
+messageBox * getMessageBoxRec(char * key_P, messageBox * mB, size_t messageSize);
+
+void initializeMessage(message * m, void * messageContent, size_t messageSize);
+void finalizeMessage(message * m);
+void recursiveFinalizeMessage(message *mL);
+
+void sendMessageRec(message * mL, size_t size, void * messageContent);
+void recieveMessageRec(message * mL, size_t size, void *buffer);
+
+//THESE ARE THE ONLY FUNCTIONS WHICH CAN BE USED FROM USERLAND
+void finalizeMessageBox(mbd_t descriptor);
+void sendMessage(mbd_t descriptor, void * messageContent);
+void recieveMessage(mbd_t descriptor, void * buffer);
 
 #endif
