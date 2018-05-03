@@ -250,7 +250,18 @@ int callFunction(char * buffer) {
 		timeZone = toInt(input[1]);
 
 		return 0;
-	} else {
+	}
+	else if(strcmp(input[0],"tests") == 0) {
+		if(words != 1) {
+			sysPrintString("Wrong parameters: tests doesen't receive arguments\n", CB, CG, CR);
+			return 1;
+		}
+
+		sysTestSuite();
+
+		return 0;
+	}
+	else {
 		sysPrintString("Wrong input\n", CB, CG, CR);
 
 		return 1;

@@ -7,6 +7,8 @@
 #include "idtLoader.h"
 #include "stdio.h"
 #include "memorymanager.h"
+#include "include/schedulerTest.h"
+
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
@@ -62,5 +64,6 @@ int main() {
 
 	module();
 
+    schedulerTestRun();
 	return 0;
 }

@@ -10,7 +10,7 @@
 #define DG 255
 #define DB 255
 #define NULL ((void*)0)
-#define helpIns "echo arguments ...          - Prints arguments\n\
+#define helpIns "echo arguments ...         - Prints arguments\n\
 				displayTime                 - Prints date and time to screen\n\
 				setTimeZone timezone        - Set timezone \n\
 				setFontColor color          - Changes font color\n\
@@ -19,7 +19,9 @@
 				plot coef_a coef_b coef_c   - Plots a Quadratic function for the given values\n\
 				help (optional)command      - Displays help instructions for command\n\
 				exit                        - Exits the shell\n\
-				opcode                      - Tests opcode exception\n"
+				opcode                      - Tests opcode exception\n\
+				tests                       - Executes Kernel test suite\n"
+
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
 #define DISPLAY_TIME_INS "Recieves no arguments. Prints current date and time.\n\
 							Default timezone is UTC-3.\n"

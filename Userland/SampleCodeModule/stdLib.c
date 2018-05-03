@@ -88,6 +88,10 @@ void sysGetChar(char * ch){
   sysCall(2,(uint64_t)ch,0,0,0,0);
 }
 
+void sysTestSuite(){
+    sysCall(6,0,0,0,0,0);
+}
+
 void sysGetTime(int * buffer){
 	buffer[0] = sysCall(1,0,0,0,0,0); // Seconds
 	buffer[1] = sysCall(1,2,0,0,0,0); // Minutes

@@ -2,6 +2,7 @@
 #include "videoDriver.h"
 #include "time.h"
 #include "keyboardDriver.h"
+#include "schedulerTest.h"
 
 void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
   switch(rdi){
@@ -20,5 +21,9 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
     case 5:
       paintPixel(rsi, rdx, (char)rcx, (char)r8, (char)r9);
       break;
+      case 6:
+        schedulerTestRun();
+        break;
+
   }
 }
