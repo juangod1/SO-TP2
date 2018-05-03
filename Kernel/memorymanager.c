@@ -1,5 +1,5 @@
 #include "memorymanager.h"
-void * heapBase = NULL; //Hay que verificar que tipo de dato conviene guardar el address
+void * heapBase = 0x400000; //Hay que verificar que tipo de dato conviene guardar el address
 //Por el momento utilizo un entero para verificar un valor exacto ya que no se como hacer 
 //para asegurarme que este espacio inicialize en null o 0, de esta forma puedo reducirlo a 
 //un unico bit. Dejo 8 bytes para no perder la alineacion a palabra.
@@ -8,10 +8,7 @@ bookBlock heapBookBase =  NULL;//Referencia principal a mi cadena de registros
 
 bookBlock myStorageCurrent = NULL;
 bookBlock myStorageLast = NULL;
-bookBlock myStorageBase = (bookBlock) 0x100000;//Este es mi heap
-
-void *malloc(size_t size);
-void free(void *pointer);
+bookBlock myStorageBase = (bookBlock) 0x400000;//Este es mi heap
 
 bookBlock searchBookedBlock(int id);
 void * popNewPage();
@@ -27,7 +24,15 @@ void *sbrk(size_t s);
 
 //Tengo que tener un array con todas las direcciones de las paginas y de ahi voy sacandolas
 //y volviendolas a poner. Al volverlas a poner las tengo que poner en 0 nuevamente
-u_int64_t pageDirArray[5] = {0x10101000,0x10102000,0x10103000,0x10104000,0x10105000};//Direcciones
+u_int64_t pageDirArray[NUM_OF_PAGES];
+
+void initPageDirArray(){
+	for(int i=0; i<NUM_OF_PAGES; i++){
+		pageDirArray[i] = myStorageBase + i * PAGE_SIZE;
+	}
+}
+
+
 int pageStatusArray[5] = {0,0,0,0,0};//Estado de cada direccion, hay que cambiarle el tipo de dato para ocupar menos espacio
 int amountOfPages = 5;
 

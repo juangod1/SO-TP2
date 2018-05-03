@@ -6,6 +6,7 @@
 #include "videoDriver.h"
 #include "idtLoader.h"
 #include "stdio.h"
+#include "memorymanager.h"
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
@@ -50,10 +51,19 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
-int main()
-{
-	load_idt();
-	paintBackGround();
+int main() {
+    load_idt();
+    paintBackGround();
+
+    initPageDirArray();
+
+    int i;
+	char * str;
+	for(i=0;i<1024;i++) {
+		str = malloc(1);
+		*str = 'z';
+		printString(str, 255, 255, 0);
+	}
 
 	void (*module)();
 	module = sampleCodeModuleAddress;
