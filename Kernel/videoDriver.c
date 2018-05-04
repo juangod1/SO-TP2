@@ -2,12 +2,9 @@
 #include "videoDriver.h"
 #include "font.h"
 
-
-int h= HMAX/2;
-char * videoStorage;
 static unsigned char ** video_start = (unsigned char**)0x0005C28;
 static unsigned int current_x = 0;
-static unsigned int current_y = 0;//SCREEN_HEIGHT-16;
+static unsigned int current_y = SCREEN_HEIGHT-16;
 
 unsigned char * getVideoPix(){
 	return *video_start;
@@ -197,60 +194,25 @@ void newLine(){
 	}
 }
 
-void initializeVideoStorage()
+void shiftVideo()
 {
-	videoStorage=malloc(3*HMAX*16*SCREEN_WIDTH);
-	for(int i=0; i<3*SCREEN_HEIGHT*SCREEN_WIDTH; i++)
+	char * video = getVideoPix();
+	memcpy(video, video+3*SCREEN_WIDTH*16, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-16));
+	for(int i=0; i<3*16*SCREEN_WIDTH; i++)
 	{
 		switch(i%2)
 		{
 			case 0:
-				*(videoStorage+i)=255;
+				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16))=BG_B;
 			break;
 			case 1:
-				*(videoStorage+i))=170;
+				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16))=BG_G;
 			break;
 			case 2:
-				*(videoStorage+i)=0;
+				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16))=BG_R;
 			break;
 			default:
 			break;
 		}
 	}
-}
-
-void shiftVideo(int upwards)
-{
-	if(upwards)
-	{
-		shiftUpwards();
-	}
-	else
-	{
-		shiftDownards();
-	}
-	/*char * video = getVideoPix();
-	memcpy(video, video+3*SCREEN_WIDTH*16, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-16));
-	*/
-}
-
-void shiftUpwards()
-{
-	if(h<=0) return;
-	char aux[3*16*SCREEN_WIDTH];
-	memcpy(aux, video+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16),3*16*SCREEN_WIDTH);
-	memcpy(video+3*16*SCREEN_HEIGHT, video, 3*(SCREEN_HEIGHT-16)*SCREEN_WIDTH);
-	h--;
-	memcpy(video, videoStorage+3*h*16*SCREEN_WIDTH, 3*SCREEN_WIDTH*16);
-	memcpy(videoStorage+3*h*16*SCREEN_WIDTH, aux, 3*SCREEN_WIDTH*16);
-}
-void shiftDownards()
-{
-	if(h>=HMAX) return;
-	char aux[3*16*SCREEN_WIDTH];
-	memcpy(aux, video, 3*16*SCREEN_WIDTH);
-	memcpy(video, video+3*SCREEN_WIDTH*16, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-16));
-	memcpy(video+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16), videoStorage+3*h*16*SCREEN_WIDTH, 3*16*SCREEN_WIDTH);
-	memcpy(videoStorage+3*h*16*SCREEN_WIDTH, aux, 3*SCREEN_WIDTH*16);
-	h++;
 }
