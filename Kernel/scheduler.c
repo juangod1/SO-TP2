@@ -7,6 +7,8 @@
 #include "include/process.h"
 #include "include/processQueue.h"
 
+void initialize_stack_frame(uint64_t initialBSP);
+
 uint64_t kernelTableAddress = 0x0; //placeholder
 process_t currentProcess = NULL;
 
@@ -69,4 +71,18 @@ int queueProcess(process_t process){
 
 void destroyProcessQueue(){
     destroyQueue();
+}
+
+uint64_t schedule(uint64_t prevSBP)
+{
+    process_t currentProcess = getCurrentProcess();
+    process_t nextProcess = getNextProcess();
+
+    currentProcess->context->stackBasePointer = prevSBP;
+    return nextProcess->context->stackBasePointer;
+}
+
+void initializeProcessStackFrame(uint64_t initialSBP)
+{
+    initialize_stack_frame(initialSBP);
 }
