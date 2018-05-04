@@ -8,9 +8,11 @@
 #include "include/processQueue.h"
 
 void initialize_stack_frame(uint64_t initialBSP);
+uint64_t* get_eip();
 
 uint64_t kernelTableAddress = 0x0; //placeholder
 process_t currentProcess = NULL;
+pid_t lastPid;
 
 pid_t getPid(){
     return currentProcess->pid;
@@ -69,11 +71,17 @@ int queueProcess(process_t process){
     return ret;
 }
 
+pid_t getNewPid()
+{
+    lastPid = lastPid + 1;
+    return lastPid;
+}
+
 void destroyProcessQueue(){
     destroyQueue();
 }
 
-uint64_t schedule(uint64_t prevSBP)
+uint64_t schedule(uint64_t* prevSBP)
 {
     process_t currentProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
@@ -82,7 +90,25 @@ uint64_t schedule(uint64_t prevSBP)
     return nextProcess->context->stackBasePointer;
 }
 
-void initializeProcessStackFrame(uint64_t initialSBP)
+void initializeProcess(uint64_t* eip)
 {
-    initialize_stack_frame(initialSBP);
+    process_t newProcess = malloc(512);
+    newProcess->pid = getNewPid();
+    newProcess->context->stackBasePointer = malloc(1024);
+    initialize_stack_frame(eip);
+    queueProcess(newProcess);
+}
+
+void exec(uint64_t* eip)
+{
+    process_t newProcess = malloc(512);
+    newProcess->pid = getNewPid();
+    newProcess->context->stackBasePointer = malloc(2048);
+    initialize_stack_frame(eip);
+    queueProcess(newProcess);
+}
+
+void initializeProcessStackFrame(uint64_t* initialEIP)
+{
+    initialize_stack_frame(initialEIP);
 }

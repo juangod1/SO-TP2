@@ -1,6 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL initialize_stack_frame
-
+GLOBAL get_eip
 section .text
 
 %macro PUSHAQ 0
@@ -52,4 +52,7 @@ initialize_stack_frame:
 	push rax
 	PUSHFQ
     PUSHAQ
+
+get_eip:
+	pop rax
 

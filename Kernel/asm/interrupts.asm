@@ -91,7 +91,15 @@ picSlaveMask:
 
 ;8254 Timer (Timer Tick)
 _irq00Handler:
-	irqHandlerMaster 0
+	PUSHAQ
+	mov rdi,rsp
+	;optionally change to kernel stack here for security reasons.
+	call schedule 
+	mov rsp, rax
+	POPAQ
+	mov al, 20h
+	out 20h, al
+	iretq
 
 ;Keyboard
 _irq01Handler:

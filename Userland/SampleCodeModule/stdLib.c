@@ -108,3 +108,8 @@ void sysClear(){
 void sysPaintPixel(int x, int y, char B, char G, char R) {
   sysCall(5, x, y, B, G, R);
 }
+
+void exec(uint64_t* functionPointer)
+{
+  sysCall(7,functionPointer,0,0,0,0);
+}
