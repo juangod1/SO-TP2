@@ -13,6 +13,7 @@
 #define color_red 0
 #define color_green 0
 #define color_blue 0
+#define HMAX 100
 
 void clearScreen();
 void printString(const char* string, int R, int G, int B);
@@ -32,7 +33,7 @@ void writeChar(char c, int R, int G, int B);
 void paintCharSpace(int current_x, int current_y, char B, char G, char R);
 void checkLine();
 void backSpace();
-void shiftVideo();
+void shiftVideo(int upwards)
 void paintBackGround();
 void perror(const char * string);
 
