@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
-#include "testlib.h"
-#include "processQueue.h"
+#include "include/semaphoreProcessQueue.h"
 
 int processQueueSize(queueEntry *q)
 {

@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "semaphoreList.h"
-#include "processQueue.h"
-#include "semaphore.h"
+#include "include/semaphoreList.h"
+#include "include/processQueue.h"
+#include "include/semaphore.h"
 
 
 int listContains(int key, listEntry * me_P)

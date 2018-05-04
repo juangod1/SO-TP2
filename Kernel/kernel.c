@@ -63,7 +63,5 @@ int main() {
 	module = sampleCodeModuleAddress;
 
 	module();
-
-    schedulerTestRun();
 	return 0;
 }

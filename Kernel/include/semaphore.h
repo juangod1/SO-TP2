@@ -1,7 +1,7 @@
 #ifndef SEMAPHORE_H
 #define SEMAPHORE_H
 
-#include "processQueue.h"
+#include "semaphoreProcessQueue.h"
 
 typedef struct semStruct * semaphore;
 struct semStruct

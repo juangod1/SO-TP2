@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "testlib.h"
-#include "semaphore.h"
-#include "processQueue.h"
-#include "semaphoreTest.h"
+#include "include/testLib.h"
+#include "include/semaphore.h"
+#include "include/processQueue.h"
+#include "include/semaphoreTest.h"
 
 
 semaphore global_semaphore;
@@ -156,16 +156,16 @@ void static setConditionsBackToNormal()
 
 void semaphoreTestMain()
 {
-  printf("Testing semaphore initialization\n");
+  printString("Testing semaphore initialization\n",0,0,255);
   semaphoreInitializationTest();
 	setConditionsBackToNormal();
-  printf("Testing semaphore finalization\n");
+  printString("Testing semaphore finalization\n",0,0,255);
   semaphoreFinalizationTest();
 	setConditionsBackToNormal();
-  printf("Testing task request\n");
+  printString("Testing task request\n",0,0,255);
   taskRequestTest();
 	setConditionsBackToNormal();
-  printf("Testing double task request\n");
+  printString("Testing double task request\n",0,0,255);
   twoTasksRequestTest();
 	setConditionsBackToNormal();
 }

@@ -1,7 +1,7 @@
 #ifndef SEMAPHORELIST_H
 #define SEMAPHORELIST_H
 
-#include "processQueue.h"
+#include "semaphoreProcessQueue.h"
 #include "semaphore.h"
 
 typedef struct listEntryStruct * listEntry;

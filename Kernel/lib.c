@@ -11,6 +11,18 @@ void * memset(void * destination, int32_t c, uint64_t length)
 	return destination;
 }
 
+int memcmp(const char * destination, const char * source, uint8_t length)
+{
+	for(int i=0; i<length; i++)
+	{
+		if(*(destination+i)!=*(source+i))
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
 void * memcpy(void * destination, const void * source, uint64_t length)
 {
 	/*

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
-#include "testlib.h"
-#include "processQueue.h"
+#include "include/testLib.h"
+#include "include/semaphoreProcessQueue.h"
 
 queueEntry globalTestingQueue;
 int globalPid;
@@ -31,7 +31,7 @@ void thenElementRemovedIsMinusOne()
   }
 }
 
-void thenQueueIsEmpty()
+void thenSemaphoreQueueIsEmpty()
 {
   if(globalTestingQueue==NULL)
   {
@@ -173,17 +173,16 @@ void setConditionsBackToNormal()
 
 void processQueueTestMain()
 {
-  sysPrintString("Testing queue addition\n",0,255,255);
+  printString("Testing queue addition\n",0,255,255);
   testQueueAddition();
   setConditionsBackToNormal();
-  sysPrintString("Testing queue addition\n",0,255,255);
-  printf("Testing queue removal\n");
+  printString("Testing queue removal\n",0,0,255);
   testQueueRemoval();
   setConditionsBackToNormal();
-  printf("Testing removal order\n");
+  printString("Testing removal order\n",0,0,255);
   testThatRemoveRemovesFirst();
   setConditionsBackToNormal();
-  printf("Testing removal when empty\n");
+  printString("Testing removal when empty\n",0,0,255);
   testCantRemoveWhenEmpty();
   setConditionsBackToNormal();
 }

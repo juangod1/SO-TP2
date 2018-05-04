@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <strings.h>
-#include "testlib.h"
-#include "semaphoreList.h"
+#include "include/testLib.h"
+#include "include/semaphoreList.h"
 
 listEntry testinglistEntry=NULL;
 int global_key = 3;
@@ -23,7 +23,7 @@ void static thenElementIsAdded()
 		else
 		{
 			char * errorStr=NULL;
-			sprintf(errorStr, "Expected key value: %d, found: %d\n", global_key, testinglistEntry->key);
+			printString(errorStr, "Expected key value: 3, found different number\n",0,0,255);
 			fail(errorStr);
 		}
 	}
@@ -150,19 +150,19 @@ void static setConditionsBackToNormal()
 
 void semaphoreListTestMain()
 {
-	printf("Testing list addition...\n");
+	printString("Testing list addition...\n",0,0,255);
 	testlistAddition();
 	setConditionsBackToNormal();
-	printf("Testing list removal...\n");
+	printString("Testing list removal...\n",0,0,255);
 	testlistRemoval();
 	setConditionsBackToNormal();
-	printf("Testing two same key additions\n");
+	printString("Testing two same key additions\n",0,0,255,0,0,255);
 	testTwoSameKeyAdditions();
 	setConditionsBackToNormal();
-	printf("Testing different additions\n");
+	printString("Testing different additions\n",0,0,255);
 	testDifferentAdditions();
 	setConditionsBackToNormal();
-	printf("Testing existance after removal\n");
+	printString("Testing existance after removal\n",0,0,255);
 	testingExistanceAfterRemoval();
 	setConditionsBackToNormal();
 

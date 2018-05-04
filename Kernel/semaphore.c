@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "testlib.h"
-#include "semaphore.h"
-#include "processQueue.h"
+
+#include "include/semaphore.h"
+#include "include/processQueue.h"
 
 extern int semaphoreCheck(void * ptr);
 

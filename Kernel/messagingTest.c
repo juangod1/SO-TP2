@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "testlib.h"
-#include "messaging.h"
-#include "messagingTest.h"
+#include "include/testLib.h"
+#include "include/messaging.h"
+#include "include/messagingTest.h"
 
 char * global_MB_key;
 message global_message;
@@ -61,7 +61,7 @@ void thenMessageBoxIsRemoved()
   }
   else
   {
-    printf("%d",postOfficeSize());
+    printString("%d",postOfficeSize());
     fail("Expected postOffice size equal to one, found different number\n");
   }
 }
@@ -226,7 +226,7 @@ void whenAddingAHundredMessageBoxs()
     str[2]='0'+i%10;
     str[3]='0'+i/10;
     str[4]=0;
-    //printf("%s\n", str);
+    //printString("%s\n", str);
     struct mbd_t_Struct mbStruct = {global_size, str};
     sendMessage(&mbStruct, global_message);
     free(str);
@@ -257,23 +257,23 @@ void thenPostOfficeSizeIsAHundred()
 
 int messagingTestMain()
 {
-  printf("Testing message addition\n");
+  printString("Testing message addition\n",0,0,255);
   messageAdditionTest();
   finalizePostOffice();
-  printf("Testing message reception\n");
+  printString("Testing message reception\n",0,0,255);
   messageReadTest();
   finalizePostOffice();
   free(global_buffer);
-  printf("Test deletion in a different order of messageBox\n");
+  printString("Test deletion in a different order of messageBox\n",0,0,255);
   deletionInDifferentOrderTest();
   finalizePostOffice();
-  printf("Test non existing message box deletion\n");
+  printString("Test non existing message box deletion\n",0,0,255);
   nonExistingKeyDeletion();
   finalizePostOffice();
-  printf("Test a hundred additions\n");
+  printString("Test a hundred additions\n",0,0,255);
   hundredAdditionsTest();
   finalizePostOffice();
-  printf("Test a hundred messageBox additions\n");
+  printString("Test a hundred messageBox additions\n",0,0,255);
   hundredMessageBoxAdditionsTest();
   finalizePostOffice();
   free(global_MB_descriptor);
