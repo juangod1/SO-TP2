@@ -19,9 +19,8 @@ void printString( const char* string, int B, int G, int R){
 }
 
 void perror(const char * string){
-	printString("----------------------\n",0,0,255);
 	printString(string,0,0,255);
-	printString("\n----------------------\n",0,0,255);
+	printString("\n",0,0,255);
 }
 
 void printReg(char* s){
