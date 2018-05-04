@@ -53,7 +53,6 @@ void keyboard_handler()
     unsigned char scancode;
     /* Read from the keyboard's data buffer */
     scancode = get_key();
-
     /* If the top bit of the byte we read from the keyboard is
     *  set, that means that a key has just been released */
     if (scancode & 0x80)
@@ -152,6 +151,12 @@ void keyboard_handler()
               break;
             case '=':
               c='+';
+              break;
+            case 14: //DOWN ARROW
+                shiftVideo(0);
+              break;
+            case 15://UP ARROW
+                shiftVideo(1);
               break;
             }
         }

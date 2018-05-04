@@ -33,7 +33,7 @@ void writeChar(char c, int R, int G, int B);
 void paintCharSpace(int current_x, int current_y, char B, char G, char R);
 void checkLine();
 void backSpace();
-void shiftVideo(int upwards)
+void shiftVideo(int upwards);
 void paintBackGround();
 void perror(const char * string);
 

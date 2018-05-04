@@ -54,14 +54,14 @@ void * initializeKernelBinary()
 }
 
 int main() {
-    load_idt();
-    paintBackGround();
+  load_idt();
 
-    initPageDirArray();
+  paintBackGround();
 
+  initPageDirArray();
+	initializeVideoStorage();
 	void (*module)();
 	module = sampleCodeModuleAddress;
-
 	module();
 	return 0;
 }

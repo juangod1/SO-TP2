@@ -107,7 +107,7 @@ void checkLine(){
 		current_y+=16;
 		if(current_y>=SCREEN_HEIGHT){
 			current_y-=16;
-			shiftVideo();
+			shiftVideo(1);
 		}
 	}
 }
@@ -193,7 +193,7 @@ void newLine(){
 	current_y+=16;
 	if(current_y>=SCREEN_HEIGHT){
 		current_y-=16;
-		shiftVideo();
+		shiftVideo(1);
 	}
 }
 
@@ -208,7 +208,7 @@ void initializeVideoStorage()
 				*(videoStorage+i)=255;
 			break;
 			case 1:
-				*(videoStorage+i))=170;
+				*(videoStorage+i)=170;
 			break;
 			case 2:
 				*(videoStorage+i)=0;
@@ -229,25 +229,23 @@ void shiftVideo(int upwards)
 	{
 		shiftDownards();
 	}
-	/*char * video = getVideoPix();
-	memcpy(video, video+3*SCREEN_WIDTH*16, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-16));
-	*/
 }
-
+counter =0;
 void shiftUpwards()
 {
 	if(h<=0) return;
-	char aux[3*16*SCREEN_WIDTH];
+	char * video = getVideoPix();
+	char * aux = 0x1500000; //RANDOM DIRECTION WHICH IS FAR AWAY
 	memcpy(aux, video+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16),3*16*SCREEN_WIDTH);
-	memcpy(video+3*16*SCREEN_HEIGHT, video, 3*(SCREEN_HEIGHT-16)*SCREEN_WIDTH);
-	h--;
-	memcpy(video, videoStorage+3*h*16*SCREEN_WIDTH, 3*SCREEN_WIDTH*16);
-	memcpy(videoStorage+3*h*16*SCREEN_WIDTH, aux, 3*SCREEN_WIDTH*16);
+	memcpy(video+3*16*SCREEN_WIDTH, video, 3*(SCREEN_HEIGHT-32)*SCREEN_WIDTH);
+	//memcpy(video, videoStorage+3*h*16*SCREEN_WIDTH, 3*SCREEN_WIDTH*16);
+	//memcpy(videoStorage+3*h*16*SCREEN_WIDTH, aux, 3*SCREEN_WIDTH*16);
 }
 void shiftDownards()
 {
 	if(h>=HMAX) return;
-	char aux[3*16*SCREEN_WIDTH];
+	char * video = getVideoPix();
+	char * aux = 0x1500000;//RANDOM DIRECTION WHICH IS FAR AWAY
 	memcpy(aux, video, 3*16*SCREEN_WIDTH);
 	memcpy(video, video+3*SCREEN_WIDTH*16, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-16));
 	memcpy(video+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16), videoStorage+3*h*16*SCREEN_WIDTH, 3*16*SCREEN_WIDTH);
