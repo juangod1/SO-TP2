@@ -182,6 +182,9 @@ int callFunction(char * buffer) {
 			else if(strcmp(input[1], "opcode") == 0){
 				sysPrintString(OPCODE_INS, B, G, R);
 			}
+            else if(strcmp(input[1], "test") == 0){
+                sysPrintString(TEST_INS, B, G, R);
+            }
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
 			}
@@ -251,14 +254,23 @@ int callFunction(char * buffer) {
 
 		return 0;
 	}
-	else if(strcmp(input[0],"tests") == 0) {
-		if(words != 1) {
-			sysPrintString("Wrong parameters: tests doesen't receive arguments\n", CB, CG, CR);
+	else if(strcmp(input[0],"test") == 0) {
+		if(words != 2) {
+			sysPrintString("Wrong parameters: test receives one argument.\n", CB, CG, CR);
 			return 1;
 		}
-
-		sysTestSuite();
-
+		
+		if(strcmp(input[1],"scheduler") == 0)
+		    sysTestSuite(1);
+		else if (strcmp(input[1],"ipc") == 0)
+		    sysTestSuite(2);
+        else if (strcmp(input[1],"all") == 0)
+            sysTestSuite(0);
+		else {
+			sysPrintString("Wrong parameters: ", CB, CG, CR);
+			sysPrintString(input[1], B, G, R);
+			sysPrintString(" not recognized as an option.\n", CB, CG, CR);
+		}
 		return 0;
 	}
 	else {

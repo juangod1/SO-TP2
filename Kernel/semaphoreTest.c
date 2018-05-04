@@ -156,16 +156,16 @@ void static setConditionsBackToNormal()
 
 void semaphoreTestMain()
 {
-  printString("Testing semaphore initialization\n",0,0,255);
+  //printString("Testing semaphore initialization\n",0,0,255);
   semaphoreInitializationTest();
 	setConditionsBackToNormal();
-  printString("Testing semaphore finalization\n",0,0,255);
+  //printString("Testing semaphore finalization\n",0,0,255);
   semaphoreFinalizationTest();
 	setConditionsBackToNormal();
-  printString("Testing task request\n",0,0,255);
+  //printString("Testing task request\n",0,0,255);
   taskRequestTest();
 	setConditionsBackToNormal();
-  printString("Testing double task request\n",0,0,255);
+  //printString("Testing double task request\n",0,0,255);
   twoTasksRequestTest();
 	setConditionsBackToNormal();
 }

@@ -6,13 +6,13 @@
 
 int mainTester()
 {
-  printString("\n________________________________\n\n...Commencing semaphoreListTest...\n\n________________________________\n\n",0,0,255);
+  printString("Testing Semaphore List\n",0,255,255);
   semaphoreListTestMain();
-  printString("\n________________________________\n\n...Commencing ProcessQueueTest...\n\n________________________________\n\n",0,0,255);
+  printString("Testing Semaphore Process Queue\n",0,255,255);
   processQueueTestMain();
-  printString("\n________________________________\n\n...Commencing semaphoreTest...\n\n________________________________\n\n",0,0,255);
+  printString("Testing Semaphore\n",0,255,255);
   semaphoreTestMain();
-  printString("\n________________________________\n\n...Commencing messagingTest...\n\n________________________________\n\n",0,0,255);
+  printString("Testing Messaging\n",0,255,255);
   messagingTestMain();
   return 0;
 }

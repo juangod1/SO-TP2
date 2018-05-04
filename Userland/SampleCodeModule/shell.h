@@ -20,7 +20,7 @@
 				help (optional)command      - Displays help instructions for command\n\
 				exit                        - Exits the shell\n\
 				opcode                      - Tests opcode exception\n\
-				tests                       - Executes Kernel test suite\n"
+				test module                 - Executes Kernel test suite\n"
 
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
 #define DISPLAY_TIME_INS "Recieves no arguments. Prints current date and time.\n\
@@ -40,6 +40,7 @@
 							Once inside navigate with the arrow keys and use +/- to zoom in/out\n"
 #define EXIT_INS "Quits the shell.\n"
 #define OPCODE_INS "Creates opcode exception for testing purposes.\n"
+#define TEST_INS "Executes Kenel Testing Suite, the modules are: scheduler, ipc, all\n"
 
 void startShell();
 int graph(char input[][MAX_WORD_LENGTH], int words);

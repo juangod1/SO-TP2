@@ -257,23 +257,23 @@ void thenPostOfficeSizeIsAHundred()
 
 int messagingTestMain()
 {
-  printString("Testing message addition\n",0,0,255);
+  //printString("Testing message addition\n",0,0,255);
   messageAdditionTest();
   finalizePostOffice();
-  printString("Testing message reception\n",0,0,255);
+  //printString("Testing message reception\n",0,0,255);
   messageReadTest();
   finalizePostOffice();
   free(global_buffer);
-  printString("Test deletion in a different order of messageBox\n",0,0,255);
+  //printString("Test deletion in a different order of messageBox\n",0,0,255);
   deletionInDifferentOrderTest();
   finalizePostOffice();
-  printString("Test non existing message box deletion\n",0,0,255);
+  //printString("Test non existing message box deletion\n",0,0,255);
   nonExistingKeyDeletion();
   finalizePostOffice();
-  printString("Test a hundred additions\n",0,0,255);
+  //printString("Test a hundred additions\n",0,0,255);
   hundredAdditionsTest();
   finalizePostOffice();
-  printString("Test a hundred messageBox additions\n",0,0,255);
+  //printString("Test a hundred messageBox additions\n",0,0,255);
   hundredMessageBoxAdditionsTest();
   finalizePostOffice();
   free(global_MB_descriptor);

@@ -21,10 +21,20 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
     case 5:
       paintPixel(rsi, rdx, (char)rcx, (char)r8, (char)r9);
       break;
-      case 6:
-        schedulerTestRun();
-        mainTester();
-        break;
+    case 6:
+        switch(rsi){
+            case 0:
+                mainTester();
+                schedulerTestRun();
+                break;
+	        case 1:
+	            schedulerTestRun();
+	            break;
+	        case 2:
+	            mainTester();
+       	        break;
+	    }
+	    break;
 
   }
 }
