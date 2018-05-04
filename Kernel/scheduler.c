@@ -99,7 +99,7 @@ void initializeProcess(uint64_t* eip)
     queueProcess(newProcess);
 }
 
-void exec(uint64_t* eip)
+void execute(uint64_t* eip)
 {
     process_t newProcess = malloc(512);
     newProcess->pid = getNewPid();
