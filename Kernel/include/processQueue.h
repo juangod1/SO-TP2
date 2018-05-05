@@ -21,4 +21,5 @@ process_t peekByPosition(int position);
 process_t peekByPID(pid_t pid);
 void listQueue();
 void destroyQueue();
+void printQueue();
 #endif //TP2_TEMPORARY_PROCESSQUEUE_H

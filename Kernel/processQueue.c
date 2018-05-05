@@ -133,6 +133,25 @@ void listQueue(pid_t ** buffer, char ** namesBuffer){
     }
 }
 
+void printQueue() { // FOR DEBUGGING
+    if (queueSize == 0) {
+        printString(" ¡QUEUE IS EMPTY! \n",255,255,255);
+        return;
+    }
+
+    int i;
+    node tmp=first;
+    for(i=0;i<queueSize;i++) {
+        printString("PID    SLEEPS\n",255,255,255);
+        printInt(tmp->process->pid,255,255,255);
+        printString("       ",255,255,255);
+        printInt(tmp->process->sleeps,255,255,255);
+        printString("\n",0,0,0);
+
+        tmp = tmp->tail;
+    }
+}
+
 void destroyQueue(){
     if(queueSize==0)
         return;
