@@ -53,10 +53,10 @@ void * initializeKernelBinary()
 }
 
 int main() {
-    load_idt();
-    paintBackGround();
-
-    initPageDirArray();
+  load_idt();
+  paintBackGround();
+	resetScreenCoordinates();
+  initPageDirArray();
 
 	void (*module)();
 	module = sampleCodeModuleAddress;

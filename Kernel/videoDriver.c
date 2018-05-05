@@ -5,7 +5,14 @@
 
 static unsigned char ** video_start = (unsigned char**)0x0005C28;
 static unsigned int current_x = 0;
-static unsigned int current_y = SCREEN_HEIGHT-PIXELS_PER_LINE;
+static unsigned int current_y = 0;
+
+
+void resetScreenCoordinates()
+{
+	current_x=0;
+	current_y=SCREEN_HEIGHT-PIXELS_PER_LINE;
+}
 
 unsigned char * getVideoPix(){
 	return *video_start;
@@ -177,8 +184,7 @@ void clearScreen(){
 			paintCharSpace(i,j,BG_B,BG_G,BG_R);
 		}
 	}
-	current_x=0;
-	current_y=SCREEN_HEIGHT-16;
+	resetScreenCoordinates();
 }
 
 int strleng(const char *str){
