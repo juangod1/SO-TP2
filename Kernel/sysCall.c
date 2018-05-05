@@ -3,6 +3,7 @@
 #include "time.h"
 #include "keyboardDriver.h"
 #include "schedulerTest.h"
+#include "scheduler.h"
 
 void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
   switch(rdi){
@@ -36,7 +37,12 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
 	    }
 	    break;
     case 7:
+      printString("Entered kernel side syscall\n",0,0,0);
       execute(rsi);
+      break;
+
+    case 8:
+      getPid((pid_t*)rsi);
       break;
 
   }

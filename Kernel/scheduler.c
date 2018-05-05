@@ -13,8 +13,11 @@ uint64_t kernelTableAddress = 0x0; //placeholder
 process_t currentProcess = NULL;
 pid_t lastPid;
 
-pid_t getPid(){
-    return currentProcess->pid;
+pid_t getPid(pid_t* pid){
+    if(currentProcess == NULL)
+        *pid = -1;
+    *pid = currentProcess->pid;
+    return;
 }
 
 process_t getCurrentProcess(){
@@ -82,27 +85,37 @@ void destroyProcessQueue(){
 
 uint64_t schedule(uint64_t* prevSBP)
 {
+    // printString("Number of processes scheduled:",255,255,255);
+    // printInt(getAmountOfProcesses(),255,255,255);
+    // printString("\n",0,0,0);
     process_t currentProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
 
+    if(currentProcess == NULL || nextProcess == NULL)
+    {    
+        // printString("One or zero processes.\n",255,255,255);
+        return prevSBP;
+    }
     currentProcess->context->stackBasePointer = prevSBP;
     return nextProcess->context->stackBasePointer;
 }
 
 void initializeProcess(uint64_t* eip)
 {
-    process_t newProcess = malloc(512);
+    printString("Initializing Process\n",255,255,255);
+    process_t newProcess = malloc(256);
     newProcess->pid = getNewPid();
-    newProcess->context->stackBasePointer = malloc(1024);
+    newProcess->context->stackBasePointer = malloc(256);
     initialize_stack_frame(eip);
     queueProcess(newProcess);
 }
 
-void execute(uint64_t* eip)
+void execute(void* eip)
 {
-    process_t newProcess = malloc(512);
-    newProcess->pid = getNewPid();
-    newProcess->context->stackBasePointer = malloc(2048);
+    printString("Tried to initialize process.\n",0,0,0);
+    process_t newProcess = (void*)0x1200000;
+    newProcess->pid = 2;
+    newProcess->context->stackBasePointer = (void*)0x1000000;
     initialize_stack_frame(eip);
     queueProcess(newProcess);
 }

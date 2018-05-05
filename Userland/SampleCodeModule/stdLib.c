@@ -1,5 +1,6 @@
 #include "stdLib.h"
 #include "mathLib.h"
+#include "contextSwitchDemo.h"
 #include <stdint.h>
 #define MAX_DIGITS 20
 
@@ -109,7 +110,16 @@ void sysPaintPixel(int x, int y, char B, char G, char R) {
   sysCall(5, x, y, B, G, R);
 }
 
-void sysExecute(uint64_t* functionPointer)
+void sysExecute(void* functionPointer)
 {
+  sysPrintString("Entered sysExecute\n",0,0,0);
   sysCall(7,functionPointer,0,0,0,0);
+}
+
+int getPid()
+{
+
+  int pid;
+  sysCall(8,&pid,0,0,0,0);
+  return pid;
 }

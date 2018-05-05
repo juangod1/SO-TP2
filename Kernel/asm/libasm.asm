@@ -48,11 +48,12 @@ cpuVendor:
 	ret
 
 initialize_stack_frame:
-	mov rax, [rbp-8]
+	mov rax, rdi
 	push rax
 	PUSHFQ
     PUSHAQ
+	ret
 
 get_eip:
 	pop rax
-
+	ret

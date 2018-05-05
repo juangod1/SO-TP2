@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "plotLib.h"
 #include "mathLib.h"
+#include "contextSwitchDemo.h"
 
 static int R = DR;
 static int G = DG;
@@ -271,6 +272,10 @@ int callFunction(char * buffer) {
 			sysPrintString(input[1], B, G, R);
 			sysPrintString(" not recognized as an option.\n", CB, CG, CR);
 		}
+		return 0;
+	}
+	else if(strcmp(input[0],"contextSwitchDemo") == 0) {
+		runContextSwitchDemo();
 		return 0;
 	}
 	else {

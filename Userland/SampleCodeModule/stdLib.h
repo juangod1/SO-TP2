@@ -22,5 +22,7 @@ void sysGetChar(char * ch);
 void copy(char* copy, char* original, int len);
 int subStrleng(const char * s, const char c);
 void sysPrintFloat(float num, int B, int G, int R);
-
+int getPid();
+void sysExecute(void* functionPointer);
+void sysCSD();
 #endif

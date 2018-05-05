@@ -4,8 +4,19 @@
 #include "mathLib.h"
 #include "plotLib.h"
 
-int main() {
-	startShell();
+void shellWrapper();
 
+int main() 
+{
+	sysPrintString("Entered codeModule main.\n",0,0,0);
+	//sysTestSuite(1);
+	startShell();
+	// void (*shell_ptr)() = &shellWrapper;
+	// sysExecute(shell_ptr);
 	return 1;
+}
+
+void shellWrapper()
+{
+	startShell();
 }
