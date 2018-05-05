@@ -1,6 +1,8 @@
 #ifndef MESSAGING_H
 #define MESSAGING_H
 
+#include "lib.h"
+
 typedef struct mbd_t_Struct * mbd_t;
 struct mbd_t_Struct
 {

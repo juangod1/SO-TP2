@@ -1,8 +1,9 @@
-#include <stdio.h>
 #include "include/semaphoreProcessQueueTest.h"
 #include "include/semaphoreListTest.h"
 #include "include/semaphoreTest.h"
 #include "include/messagingTest.h"
+#include "include/videoDriver.h"
+#include "include/lib.h"
 
 int mainTester()
 {

@@ -6,7 +6,7 @@
 #define TP2_TEMPORARY_PROCESS_H
 
 #include <stdint.h>
-typedef uint16_t pid_t;
+#include "lib.h"
 
 typedef struct process_context_CDT * process_context;
 struct process_context_CDT {

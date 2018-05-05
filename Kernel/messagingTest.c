@@ -1,9 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "include/testLib.h"
 #include "include/messaging.h"
 #include "include/messagingTest.h"
+#include "include/lib.h"
+#include "include/memorymanager.h"
 
 char * global_MB_key;
 message global_message;
@@ -61,7 +60,6 @@ void thenMessageBoxIsRemoved()
   }
   else
   {
-    printString("%d",postOfficeSize());
     fail("Expected postOffice size equal to one, found different number\n");
   }
 }
@@ -255,7 +253,7 @@ void thenPostOfficeSizeIsAHundred()
   }
 }
 
-int messagingTestMain()
+void messagingTestMain()
 {
   //printString("Testing message addition\n",0,0,255);
   messageAdditionTest();

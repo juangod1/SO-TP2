@@ -1,8 +1,7 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <strings.h>
 #include "include/testLib.h"
 #include "include/semaphoreList.h"
+#include "include/lib.h"
+#include "include/videoDriver.h"
 
 listEntry testinglistEntry=NULL;
 int global_key = 3;
@@ -22,9 +21,7 @@ void static thenElementIsAdded()
 		}
 		else
 		{
-			char * errorStr=NULL;
-			printString(errorStr, "Expected key value: 3, found different number\n",0,0,255);
-			fail(errorStr);
+			fail("Expected key value: 3, found different number\n");
 		}
 	}
 	else

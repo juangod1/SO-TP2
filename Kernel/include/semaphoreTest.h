@@ -3,7 +3,7 @@
 
 
 void givenAnEmptySemaphore();
-void static givenAPid();
+void givenAPRocessPid();
 void givenAnInitializedSemaphore();
 void whenSemaphoreIsInitialized();
 void whenSemaphoreIsFinalized();
@@ -19,7 +19,7 @@ void semaphoreInitializationTest();
 void semaphoreFinalizationTest();
 void taskRequestTest();
 void twoTasksRequestTest();
-void static setConditionsBackToNormal();
+void setSemaphoreConditionsBackToNormal();
 void semaphoreTestMain();
 
 #endif

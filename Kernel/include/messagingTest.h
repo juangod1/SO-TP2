@@ -18,7 +18,7 @@ void thenReceptionIsNotNull();
 void messageAdditionTest();
 void messageReadTest();
 void existingGetTest();
-int messagingTestMain();
+void messagingTestMain();
 void thenPostOfficeSizeIsAHundred();
 
 #endif

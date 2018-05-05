@@ -1,4 +1,4 @@
-#include <stdlib.h>
+	#include <stdlib.h>
 #include <stdio.h>
 #include "include/semaphoreList.h"
 #include "include/semaphoreProcessQueue.h"
@@ -55,9 +55,9 @@ int removeListEntryByKey(int key_P, listEntry * me_P)
 	}
 	if((*me_P)->key==key_P)
 	{
-		removelistEntry(me_P);
+		return removelistEntry(me_P);
 	}
-	removeListEntryByKey(key_P, &((*me_P)->next));
+	return removeListEntryByKey(key_P, &((*me_P)->next));
 }
 
 int removelistEntry(listEntry * me_P)

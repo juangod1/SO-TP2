@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "include/lib.h"
 #include "messaging.h"
+#include "include/videoDriver.h"
+#include "include/memorymanager.h"
 
 #define MBKEYSIZE 5
 

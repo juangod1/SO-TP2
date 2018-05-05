@@ -1,11 +1,10 @@
 //
 // Created by juangod on 18/04/18.
 //
-
-#include <stdint.h>
-#include <stdio.h>
 #include "include/process.h"
+#include "include/memorymanager.h"
 #include "include/processQueue.h"
+#include "include/videoDriver.h"
 
 void initialize_stack_frame(uint64_t initialBSP);
 uint64_t* get_eip();

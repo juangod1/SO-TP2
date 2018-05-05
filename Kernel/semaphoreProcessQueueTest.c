@@ -1,8 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
 #include "include/testLib.h"
 #include "include/semaphoreProcessQueue.h"
+#include "include/lib.h"
+#include "include/videoDriver.h"
 
 queueEntry globalTestingQueue;
 int globalPid;
@@ -11,7 +10,7 @@ int comparativeGlobalPid;
 
 void givenAnEmptyQueue()
 {
-  globalTestingQueue==NULL;
+  globalTestingQueue=NULL;
 }
 
 void whenRemovingAnElement()
@@ -52,7 +51,7 @@ void givenAChangeInValue()
   globalPid=2;
 }
 
-void static givenAPid()
+void static givenAPRocessQueuePid()
 {
   globalPid=1;
 }
@@ -96,12 +95,12 @@ void testCantRemoveWhenEmpty()
   givenAnEmptyQueue();
   whenRemovingAnElement();
   thenElementRemovedIsMinusOne();
-  thenQueueIsEmpty();
+  thenSemaphoreQueueIsEmpty();
 }
 
 void testQueueAddition()
 {
-  givenAPid();
+  givenAPRocessQueuePid();
   givenAnEmptyQueue();
   whenAddingAnElement();
   thenElementIsAdded();
@@ -109,13 +108,13 @@ void testQueueAddition()
 
 void testQueueRemoval()
 {
-  givenAPid();
+  givenAPRocessQueuePid();
   givenAnEmptyQueue();
   givenAnAddition();
   givenAChangeInValue();
   whenRemovingAnElement();
   thenElementRemovedIsEqual();
-  thenQueueIsEmpty();
+  thenSemaphoreQueueIsEmpty();
 }
 
 void givenADifferentPid()
@@ -155,7 +154,7 @@ void thenQueueSizeIsOne()
 
 void testThatRemoveRemovesFirst()
 {
-  givenAPid();
+  givenAPRocessQueuePid();
   givenADifferentPid();
   givenAnEmptyQueue();
   givenAnAddition();

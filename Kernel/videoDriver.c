@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "videoDriver.h"
+#include "include/lib.h"
 #include "font.h"
 
 static unsigned char ** video_start = (unsigned char**)0x0005C28;
@@ -18,7 +19,8 @@ void printString( const char* string, int B, int G, int R){
 	}
 }
 
-void perror(const char * string){
+void perror(const char * string)
+{
 	printString(string,0,0,255);
 	printString("\n",0,0,255);
 }

@@ -1,9 +1,9 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "include/testLib.h"
 #include "include/semaphore.h"
 #include "include/processQueue.h"
+#include "include/videoDriver.h"
 #include "include/semaphoreTest.h"
+#include "include/lib.h"
 
 
 semaphore global_semaphore;
@@ -14,7 +14,7 @@ void givenAnEmptySemaphore()
   global_semaphore=NULL;
 }
 
-void static givenAPid()
+void givenAPRocessPid()
 {
   global_pid=1;
 }
@@ -132,7 +132,7 @@ void semaphoreFinalizationTest()
 
 void taskRequestTest()
 {
-  givenAPid();
+  givenAPRocessPid();
   givenAnInitializedSemaphore();
   whenRequestingATask();
   thenProcessQueueIsEmpty();
@@ -141,7 +141,7 @@ void taskRequestTest()
 
 void twoTasksRequestTest()
 {
-  givenAPid();
+  givenAPRocessPid();
   givenAnInitializedSemaphore();
   givenAPreviousTaskRequest();
   whenRequestingATask();
@@ -149,7 +149,7 @@ void twoTasksRequestTest()
   thenSemaphoreValueIsMinusOne();
 }
 
-void static setConditionsBackToNormal()
+void setSemaphoreConditionsBackToNormal()
 {
   semaphoreFinalization(&global_semaphore);
 }
@@ -158,14 +158,14 @@ void semaphoreTestMain()
 {
   //printString("Testing semaphore initialization\n",0,0,255);
   semaphoreInitializationTest();
-	setConditionsBackToNormal();
+	setSemaphoreConditionsBackToNormal();
   //printString("Testing semaphore finalization\n",0,0,255);
   semaphoreFinalizationTest();
-	setConditionsBackToNormal();
+	setSemaphoreConditionsBackToNormal();
   //printString("Testing task request\n",0,0,255);
   taskRequestTest();
-	setConditionsBackToNormal();
+	setSemaphoreConditionsBackToNormal();
   //printString("Testing double task request\n",0,0,255);
   twoTasksRequestTest();
-	setConditionsBackToNormal();
+	setSemaphoreConditionsBackToNormal();
 }

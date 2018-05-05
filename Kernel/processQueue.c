@@ -3,10 +3,10 @@
 //
 
 #include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
+#include "include/videoDriver.h"
 #include "include/processQueue.h"
+#include "include/memorymanager.h"
 
 node first = NULL;
 node last = NULL;
@@ -128,11 +128,11 @@ void listQueue(){
     node tmp=first;
     printString("POSITION    PID    SLEEP\n",0,255,255);
     for(i=0;i<queueSize;i++) {
-        printInt(i+1);
+        printInt(i+1,0,255,255);
         printString("          ",0,0,0);
-        printInt(tmp->process->pid);
+        printInt(tmp->process->pid,0,255,255);
         printString("          ",0,0,0);
-        printInt(tmp->process->sleeps);
+        printInt(tmp->process->sleeps,0,255,255);
         printString("\n",0,0,0);
         tmp = tmp->tail;
     }

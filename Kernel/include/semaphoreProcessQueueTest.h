@@ -6,7 +6,7 @@ void whenRemovingAnElement();
 void thenElementRemovedIsMinusOne();
 void thenQueueIsEmpty();
 void givenAChangeInValue();
-void static givenAPid();
+void givenAPRocessQueuePid();
 void whenAddingAnElement();
 void thenElementIsAdded();
 void givenAnAddition();

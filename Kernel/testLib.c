@@ -1,10 +1,8 @@
 //
 // Created by juangod on 18/04/18.
 //
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "include/lib.h"
+#include "include/videoDriver.h"
 #include "testLib.h"
 
 void givenNothing()

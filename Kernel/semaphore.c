@@ -1,7 +1,6 @@
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "include/semaphore.h"
+#include "include/lib.h"
+#include "include/memorymanager.h"
 #include "include/semaphoreProcessQueue.h"
 
 extern int semaphoreCheck(void * ptr);
@@ -42,6 +41,7 @@ int taskRequest(semaphore sem, int pid) //eventually will have to ask pid type
   sem->value--;
   //schedulerWait(pid)
   processQueueAdd(pid, &(sem->processQueue));
+  return 0;
 }
 
 void taskFinished(semaphore sem, int pid) //eventually will have to ask for pid type

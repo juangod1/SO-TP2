@@ -2,7 +2,6 @@
 #define MEMORYMANAGER_H
 
 #include <assert.h>
-#include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
 

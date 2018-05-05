@@ -1,8 +1,8 @@
-#include <stdio.h>
 #include "include/process.h"
 #include "include/scheduler.h"
 #include "include/testLib.h"
 #include "include/videoDriver.h"
+#include "include/memorymanager.h"
 //
 // Created by juangod on 18/04/18.
 //
