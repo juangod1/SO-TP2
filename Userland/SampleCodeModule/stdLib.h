@@ -38,4 +38,5 @@ void sysExecute(void* functionPointer);
 void sysTestSuite(int num);
 void sysCSD();
 void sysGetProcesses(pid_t ** buffer, char ** namesBuffer);
+void listProcesses();
 #endif

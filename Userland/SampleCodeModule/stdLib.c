@@ -178,3 +178,21 @@ void stopSemaphore(int key)
 {
   sysCall(16,key,0,0,0,0);
 }
+
+
+void listProcesses(){
+  int buffer[MAX_PROCESSES][2]={};
+  int names[MAX_PROCESSES][MAX_PROCESS_NAME_LENGTH]={};
+  sysGetProcesses(buffer,names);
+
+  sysPrintString("PID    NAME        SLEEPS\n",255,255,255);
+  int i;
+  for(i=0;i<MAX_PROCESSES;i++){
+    sysPrintInt(buffer[i][0],255,255,255);
+    sysPrintString("            ",255,255,255);
+    sysPrintString(names[i],255,255,255);
+    sysPrintString("            ",255,255,255);
+    sysPrintInt(buffer[i][1],255,255,255);
+    sysPrintString("\n",0,0,0);
+  }
+}
