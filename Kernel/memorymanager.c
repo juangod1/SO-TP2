@@ -25,6 +25,7 @@ void *sbrk(size_t s);
 //Tengo que tener un array con todas las direcciones de las paginas y de ahi voy sacandolas
 //y volviendolas a poner. Al volverlas a poner las tengo que poner en 0 nuevamente
 u_int64_t pageDirArray[NUM_OF_PAGES];
+char pageStatusArray[NUM_OF_PAGES];
 
 void initPageDirArray(){
 	for(int i=0; i<NUM_OF_PAGES; i++){
