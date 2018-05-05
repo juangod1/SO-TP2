@@ -1,7 +1,7 @@
 #include "memorymanager.h"
 void * heapBase = 0x400000; //Hay que verificar que tipo de dato conviene guardar el address
-//Por el momento utilizo un entero para verificar un valor exacto ya que no se como hacer 
-//para asegurarme que este espacio inicialize en null o 0, de esta forma puedo reducirlo a 
+//Por el momento utilizo un entero para verificar un valor exacto ya que no se como hacer
+//para asegurarme que este espacio inicialize en null o 0, de esta forma puedo reducirlo a
 //un unico bit. Dejo 8 bytes para no perder la alineacion a palabra.
 
 bookBlock heapBookBase =  NULL;//Referencia principal a mi cadena de registros
@@ -29,12 +29,9 @@ u_int64_t pageDirArray[NUM_OF_PAGES];
 void initPageDirArray(){
 	for(int i=0; i<NUM_OF_PAGES; i++){
 		pageDirArray[i] = myStorageBase + i * PAGE_SIZE;
+		pageStatusArray[i]=0;
 	}
 }
-
-
-int pageStatusArray[5] = {0,0,0,0,0};//Estado de cada direccion, hay que cambiarle el tipo de dato para ocupar menos espacio
-int amountOfPages = 5;
 
 
 //Hay que definir un espacio de memoria para el stack y para el heap. El stack se va a ir asignando
@@ -57,8 +54,8 @@ void *malloc(size_t s){
 	//Si nunca fue inicializado el book keeping de las paginas, lo inicializo
 	if(myStorageCurrent == NULL){
 		bookBlock newBookBlock = myStorageBase;
-		newBookBlock->owner = getpid();
-		newBookBlock->brk = s; //No estoy verificando que no caiga de pagina.
+		newBookBlock->owner = 3570;//Este es mi bloque elijamos un numero
+		newBookBlock->brk = 0; //No estoy verificando que no caiga de pagina.
 		newBookBlock->base = popNewPage();
 		newBookBlock->next = NULL;
 		if(newBookBlock->base == NULL){
@@ -68,11 +65,13 @@ void *malloc(size_t s){
 		heapBookBase = newBookBlock;
 		myStorageLast = myStorageBase;
 		myStorageCurrent = myStorageBase+1;
-		return newBookBlock->base;
+		//Termine de armar el primero bloque que soy yo.
 	}
 	bookBlock bookedBlock = searchBookedBlock(getpid());
 	if(bookedBlock == NULL){
 		//No encontro ninguna pagina almacenada, hay que crear una nueva
+		if((myStorageCurrent+sizeof(struct bookBlockStruct)) >= (myStorageBase+PAGE_SIZE))//Verifico que mi nuevo bloque no se caiga de mi pagina. Si queremos hay que agrandar el espacio de storage.
+			return NULL;
 		bookBlock newBookBlock = myStorageCurrent;
 		newBookBlock->owner = getpid();
 		newBookBlock->brk = s; //No estoy verificando que no caiga de pagina.
@@ -92,6 +91,9 @@ void *malloc(size_t s){
 		int brk = bookedBlock->brk;
 		//Deberia verificar que tiene espacio en la pagina para la nueva magnitud
 		//Aumento el brk
+		if((brk + s) >= (bookedBlock->base+PAGE_SIZE)){//Se cae de la pagina
+			return NULL;
+		}
 		bookedBlock->brk += s;
 		//Devuelvo el puntero a la pagina sumado el brk anterior
 		return (bookedBlock->base) + brk;
@@ -114,10 +116,10 @@ void * popNewPage(){
 	//Tiene que verificar que le queda stock de paginas para asignar y manejarse como un stack
 	//Recorre el array de estados para verificar hojas, luego la marca como ocupada y la devuelve.
 	int i = 0;
-	while(i<amountOfPages && pageStatusArray[i]){//Cuando es 0 no entra, porque esta libre. Cuando es 1 entra porque esta ocupada y busca otra.
+	while(pageStatusArray[i]){//Cuando es 0 no entra, porque esta libre. Cuando es 1 entra porque esta ocupada y busca otra.
 		i++;
 	}
-	if(i==amountOfPages){//Si se paso significa que no hay mas paginas
+	if(i==NUM_OF_PAGES){//Si se paso significa que no hay mas paginas
 		return NULL;
 	}
 	pageStatusArray[i] = 1;
@@ -146,7 +148,7 @@ void free(void* pointer){
 }
 
 //Si no se encuentra un bloque que cumpla con lo requerido, se deberia hacer un sbrk()
-//para generar nuevo espacio. 
+//para generar nuevo espacio.
 dataBlock expandHeap(dataBlock* last, size_t size)
 {
   dataBlock block;
@@ -172,7 +174,7 @@ dataBlock expandHeap(dataBlock* last, size_t size)
   return block;
 }
 
-//Los bloques van a tener un bloque adelante y un bloque atras donde indican cuanto mide 
+//Los bloques van a tener un bloque adelante y un bloque atras donde indican cuanto mide
 //y si esta siendo utilizado o no.
 void *mymalloc(size_t size)
 {
@@ -180,7 +182,7 @@ void *mymalloc(size_t size)
 	//ToDo: allignment
 
 	//Tamano invalido
-	if (size <= 0) 
+	if (size <= 0)
 	{
 		return NULL;
 	}
@@ -189,7 +191,7 @@ void *mymalloc(size_t size)
 	if (!heapBase)
 	{
 		block = expandHeap(NULL, size);
-		if (!block) 
+		if (!block)
 			return NULL;
 		heapBase = block;
 	}
@@ -215,7 +217,7 @@ void *mymalloc(size_t size)
 }
 
 //Tiene que recorrer los bloques y ver cambiar el bit de "uso" recursivamente para adelante y para atras
-void myfree(void *pointer) 
+void myfree(void *pointer)
 {
 	//Se puede llamar con NULL por lo que lo verifico
 	if (!pointer) {
@@ -230,7 +232,7 @@ void myfree(void *pointer)
 
 //Asigna un espacio de memoria para que la aplicacion que lo necesita vaya utilizando para sus variables
 void *assignStack(){
-	return NULL;	
+	return NULL;
 }
 
 //Mueve el break point de heap correspondiente y devuelve el puntero al mismo

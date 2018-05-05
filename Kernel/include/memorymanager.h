@@ -9,11 +9,11 @@
 #define HEAP_START 0x400000
 #define HEAP_END 0x799999
 #define NUM_OF_PAGES ((HEAP_END - HEAP_START)/PAGE_SIZE)
-#define PAGE_SIZE 0x1000
+#define PAGE_SIZE 0x4000
 
 typedef struct bookBlockStruct * bookBlock;
 struct bookBlockStruct {
-	int owner; //Este es el  pid 
+	int owner; //Este es el  pid
 	void* base;
 	int brk; //Este puede ser otro tipo de dato para ahorrar memoria
 	bookBlock next;
