@@ -1,5 +1,5 @@
-#import "stdio.h"
-#import "stdLib.h"
+#include "stdio.h"
+#include "stdLib.h"
 
 int (*child_func)();
 

@@ -17,7 +17,7 @@ pid_t getPid(pid_t* pid){
     if(currentProcess == NULL)
         *pid = -1;
     *pid = currentProcess->pid;
-    return;
+    return 0;
 }
 
 process_t getCurrentProcess(){
@@ -92,21 +92,21 @@ uint64_t schedule(uint64_t* prevSBP)
     process_t nextProcess = getNextProcess();
 
     if(currentProcess == NULL || nextProcess == NULL)
-    {    
+    {
         // printString("One or zero processes.\n",255,255,255);
-        return prevSBP;
+        return (uint64_t)prevSBP;
     }
-    currentProcess->context->stackBasePointer = prevSBP;
+    currentProcess->context->stackBasePointer = (uint64_t) prevSBP;
     return nextProcess->context->stackBasePointer;
 }
 
 void initializeProcess(uint64_t* eip)
 {
     printString("Initializing Process\n",255,255,255);
-    process_t newProcess = malloc(256);
+    process_t newProcess = (process_t)malloc(256);
     newProcess->pid = getNewPid();
-    newProcess->context->stackBasePointer = malloc(256);
-    initialize_stack_frame(eip);
+    newProcess->context->stackBasePointer = (uint64_t)malloc(256);
+    initialize_stack_frame((uint64_t)eip);
     queueProcess(newProcess);
 }
 
@@ -115,12 +115,12 @@ void execute(void* eip)
     printString("Tried to initialize process.\n",0,0,0);
     process_t newProcess = (void*)0x1200000;
     newProcess->pid = 2;
-    newProcess->context->stackBasePointer = (void*)0x1000000;
-    initialize_stack_frame(eip);
+    newProcess->context->stackBasePointer = (uint64_t)0x1000000;
+    initialize_stack_frame((uint64_t)eip);
     queueProcess(newProcess);
 }
 
 void initializeProcessStackFrame(uint64_t* initialEIP)
 {
-    initialize_stack_frame(initialEIP);
+    initialize_stack_frame((uint64_t)initialEIP);
 }

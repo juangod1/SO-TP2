@@ -5,7 +5,7 @@
 #include "include/videoDriver.h"
 #include "include/lib.h"
 
-int mainTester()
+int IPCTester()
 {
   printString("Testing Semaphore List\n",0,255,255);
   semaphoreListTestMain();

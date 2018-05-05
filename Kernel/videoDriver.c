@@ -198,7 +198,7 @@ void newLine(){
 
 void shiftVideo()
 {
-	char * video = getVideoPix();
+	char * video = (char *) getVideoPix();
 	memcpy(video, video+3*SCREEN_WIDTH*16, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-16));
 	for(int i=0; i<3*16*SCREEN_WIDTH; i++)
 	{

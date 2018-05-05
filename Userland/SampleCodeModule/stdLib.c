@@ -113,13 +113,13 @@ void sysPaintPixel(int x, int y, char B, char G, char R) {
 void sysExecute(void* functionPointer)
 {
   sysPrintString("Entered sysExecute\n",0,0,0);
-  sysCall(7,functionPointer,0,0,0,0);
+  sysCall(7,(uint64_t)functionPointer,0,0,0,0);
 }
 
 int getPid()
 {
 
   int pid;
-  sysCall(8,&pid,0,0,0,0);
+  sysCall(8,(uint64_t)&pid,0,0,0,0);
   return pid;
 }

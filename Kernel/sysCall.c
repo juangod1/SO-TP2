@@ -3,6 +3,8 @@
 #include "time.h"
 #include "keyboardDriver.h"
 #include "schedulerTest.h"
+#include "include/schedulerTest.h"
+#include "include/IPCTester.h"
 #include "scheduler.h"
 
 void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
@@ -25,20 +27,20 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
     case 6:
         switch(rsi){
             case 0:
-                mainTester();
+                IPCTester();
                 schedulerTestRun();
                 break;
 	        case 1:
 	            schedulerTestRun();
 	            break;
 	        case 2:
-	            mainTester();
+	            IPCTester();
        	        break;
 	    }
 	    break;
     case 7:
       printString("Entered kernel side syscall\n",0,0,0);
-      execute(rsi);
+      execute((void *)rsi);
       break;
 
     case 8:

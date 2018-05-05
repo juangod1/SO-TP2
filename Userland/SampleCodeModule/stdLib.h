@@ -24,5 +24,6 @@ int subStrleng(const char * s, const char c);
 void sysPrintFloat(float num, int B, int G, int R);
 int getPid();
 void sysExecute(void* functionPointer);
+void sysTestSuite(int num);
 void sysCSD();
 #endif

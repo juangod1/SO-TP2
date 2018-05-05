@@ -16,4 +16,5 @@ int queueProcess(process_t process);
 void destroyProcessQueue();
 int getAmountOfProcesses();
 void listProcesses();
+void execute(void* eip);
 #endif //TP2_TEMPORARY_SCHEDULER_H

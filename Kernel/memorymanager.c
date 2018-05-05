@@ -1,5 +1,5 @@
 #include "memorymanager.h"
-void * heapBase = 0x400000; //Hay que verificar que tipo de dato conviene guardar el address
+void * heapBase = (void*)0x400000; //Hay que verificar que tipo de dato conviene guardar el address
 //Por el momento utilizo un entero para verificar un valor exacto ya que no se como hacer
 //para asegurarme que este espacio inicialize en null o 0, de esta forma puedo reducirlo a
 //un unico bit. Dejo 8 bytes para no perder la alineacion a palabra.
@@ -29,7 +29,7 @@ char pageStatusArray[NUM_OF_PAGES];
 
 void initPageDirArray(){
 	for(int i=0; i<NUM_OF_PAGES; i++){
-		pageDirArray[i] = myStorageBase + i * PAGE_SIZE;
+		pageDirArray[i] = (u_int64_t)(myStorageBase + i * PAGE_SIZE);
 		pageStatusArray[i]=0;
 	}
 }
@@ -92,7 +92,7 @@ void *malloc(size_t s){
 		int brk = bookedBlock->brk;
 		//Deberia verificar que tiene espacio en la pagina para la nueva magnitud
 		//Aumento el brk
-		if((brk + s) >= (bookedBlock->base+PAGE_SIZE)){//Se cae de la pagina
+		if((brk + s) >= (u_int64_t)(bookedBlock->base+PAGE_SIZE)){//Se cae de la pagina
 			return NULL;
 		}
 		bookedBlock->brk += s;
