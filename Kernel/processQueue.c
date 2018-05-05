@@ -138,10 +138,6 @@ void destroyQueue(){
         return;
 
     process_t temp;
-    /*for(i=0;i<queueSize;i++){
-        temp = poll(0);
-        freeProcessMemory(temp);
-    }*/
     while( (temp=poll(0)) != NULL)
         freeProcessMemory(temp);
 

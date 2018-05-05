@@ -3,6 +3,7 @@
 #include "contextSwitchDemo.h"
 #include <stdint.h>
 #include <sys/types.h>
+#include "shell.h"
 #define MAX_DIGITS 20
 
 extern int sysCall(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
@@ -14,11 +15,19 @@ void reset(char * string, int size){
 }
 
 
+int checkIfForeground(){
+  return 1;//getForegroundPID()==getPid();
+}
+
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
-  sysCall(4,ch,color_blue,color_green,color_red,0);
+  if(checkIfForeground())
+    sysCall(4,ch,color_blue,color_green,color_red,0);
 }
 
 void sysPrintString(char * string, int B, int G, int R){
+  if(!checkIfForeground())
+    return;
+
   int len = strleng(string);
   int i;
   for(i=0;i<len;i++){
@@ -47,6 +56,9 @@ int strleng(const char* s){
 }
 
 void sysPrintInt(int num, int B, int G, int R) {
+  if(!checkIfForeground())
+    return;
+
   int dig = countDigits(num);
   char numbers[MAX_DIGITS] = {};
   int count = 0;
@@ -68,6 +80,9 @@ void sysPrintInt(int num, int B, int G, int R) {
 }
 
 void sysPrintFloat(float num, int B, int G, int R) {
+  if(!checkIfForeground())
+    return;
+
   sysPrintInt((int)num, B, G, R);
   num -= (int)num;
   int aux;
@@ -108,7 +123,8 @@ void sysClear(){
 }
 
 void sysPaintPixel(int x, int y, char B, char G, char R) {
-  sysCall(5, x, y, B, G, R);
+  if(checkIfForeground())
+    sysCall(5, x, y, B, G, R);
 }
 
 void sysExecute(void* functionPointer)

@@ -1,6 +1,9 @@
 #ifndef SHELL_H
 #define SHELL_H
 
+#include "stdLib.h"
+
+#define MAX_PROCESSES 100
 #define MAX_WORD_LENGTH 124
 #define MAX_WORDS 32
 #define CR 255
@@ -20,7 +23,8 @@
 				help (optional)command      - Displays help instructions for command\n\
 				exit                        - Exits the shell\n\
 				opcode                      - Tests opcode exception\n\
-				test module                 - Executes Kernel test suite\n"
+				test module                 - Executes Kernel test suite\n\
+				foreground process_ID       - Sends process to foreground\n"
 
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
 #define DISPLAY_TIME_INS "Recieves no arguments. Prints current date and time.\n\
@@ -41,6 +45,7 @@
 #define EXIT_INS "Quits the shell.\n"
 #define OPCODE_INS "Creates opcode exception for testing purposes.\n"
 #define TEST_INS "Executes Kenel Testing Suite, the modules are: scheduler, ipc, all\n"
+#define FOREGROUND_INS "Sends requested process to foreground.\n"
 
 void startShell();
 int graph(char input[][MAX_WORD_LENGTH], int words);
@@ -51,5 +56,6 @@ int overflowGenerator(int n);
 int calculateVerifications(int words, char* input2, char* input3);
 int calculate(char* func, int param1, int param2);
 extern void opcodeGenerator();
+pid_t getForegroundPID();
 
 #endif

@@ -10,6 +10,14 @@ static int G = DG;
 static int B = DB;
 static int isRunning = 1;
 static int timeZone = -3;
+pid_t foregroundPID = 0;
+
+char * processNames[MAX_PROCESSES];
+int processes[MAX_PROCESSES][2];
+
+int foreground(pid_t pid){
+    foregroundPID = pid;
+}
 
 void startShell(){
 	sysPrintString("Shell initialized\n", CB, CG, CR);
@@ -21,7 +29,7 @@ void startShell(){
 	sysPrintString("$> ",CB,CG,CR);
 
 	while (isRunning) {
-
+		sysGetProcesses(processes,processNames);
 		sysGetChar(&ch);
 		if(counter<MAX_WORD_LENGTH || ch == '\n'|| ch == '\b'){
 
@@ -186,6 +194,9 @@ int callFunction(char * buffer) {
             else if(strcmp(input[1], "test") == 0){
                 sysPrintString(TEST_INS, B, G, R);
             }
+            else if(strcmp(input[1], "foreground") == 0){
+                sysPrintString(FOREGROUND_INS, B, G, R);
+            }
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
 			}
@@ -278,6 +289,15 @@ int callFunction(char * buffer) {
 		runContextSwitchDemo();
 		return 0;
 	}
+	else if(strcmp(input[0],"foreground") == 0) {
+		if(words != 2) {
+			sysPrintString("Wrong parameters: foreground receives one argument.\n", CB, CG, CR);
+			return 1;
+		}
+
+		foreground(input[1]);
+		return 0;
+	}
 	else {
 		sysPrintString("Wrong input\n", CB, CG, CR);
 
@@ -286,7 +306,6 @@ int callFunction(char * buffer) {
 
 	return 1;
 }
-
 
 int calculate(char* func, int param1, int param2){
 
@@ -364,4 +383,8 @@ int graph(char input[4][MAX_WORD_LENGTH], int words) {
 	graphMain(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
 	return 0;
 
+}
+
+pid_t getForegroundPID(){
+	return foregroundPID;
 }

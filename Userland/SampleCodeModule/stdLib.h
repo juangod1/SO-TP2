@@ -7,6 +7,8 @@
 #define IS_DIGIT(c) ((c - '0') >= 0 && (c - '0') <= 9)
 #define DECIMAL_PLACES 4
 
+typedef int pid_t;
+
 void reset(char * string, int size);
 int strleng(const char* s);
 void sysPrintString(char * string, int R, int G, int B);
