@@ -58,6 +58,9 @@ int main() {
 	resetScreenCoordinates();
   initPageDirArray();
 
+	//initializePostOffice();		//  Messaging system
+	//initializeTrafficControl();// Semaphore system
+
 	void (*module)();
 	module = sampleCodeModuleAddress;
 

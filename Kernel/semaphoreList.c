@@ -1,8 +1,22 @@
-	#include <stdlib.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "include/semaphoreList.h"
 #include "include/semaphoreProcessQueue.h"
 #include "include/semaphore.h"
+
+trafficControlPTR trafficControl;
+
+void initializeTrafficControl()
+{
+	trafficControl=malloc(sizeof(struct trafficControl_Struct));
+	trafficControl->semaphoreList=NULL;
+}
+
+void finalizeTrafficControl()
+{
+	totalListRemove(&(trafficControl->semaphoreList));
+	free(trafficControl);
+}
 
 
 int listContains(int key, listEntry * me_P)
@@ -74,7 +88,47 @@ int removelistEntry(listEntry * me_P)
 	free(*me_P);
 	(*me_P)=aux;
 	return 0;
+}
 
+listEntry * getListEntry(int key_P, listEntry * lE)
+{
+	if(lE==NULL || *lE ==NULL)
+	{
+		return NULL;
+	}
+	if((*lE)->key=key_P)
+	{
+		return lE;
+	}
+	return getListEntry(key_P, &((*lE)->next));
+}
+
+void wait(int key_P)
+{
+	listEntry * lE=getListEntry(key_P, &(trafficControl->semaphoreList));
+	if(lE!=NULL && (*lE)!=NULL)
+	{
+		taskRequest((*lE)->sem, getPid());
+	}
+}
+
+void signal(int key_P)
+{
+	listEntry * lE=getListEntry(key_P, &(trafficControl->semaphoreList));
+	if(lE!=NULL && (*lE)!=NULL)
+	{
+		taskFinished((*lE)->sem, getPid());
+	}
+}
+
+void stopSemaphore(int key_P)
+{
+	removeListEntryByKey(key_P, &(trafficControl->semaphoreList));
+}
+
+void startSemaphore(int key)
+{
+	createlistEntry(key, &(trafficControl->semaphoreList));
 }
 
 void totalListRemove(listEntry * me_P)
