@@ -2,6 +2,7 @@
 #include "messaging.h"
 #include "include/videoDriver.h"
 #include "include/memorymanager.h"
+#include "include/scheduler.h"
 
 #define MBKEYSIZE 5
 
@@ -65,6 +66,7 @@ void initializeMessageBox(messageBox * mB, char * key_P, size_t size)
   (*mB)->msg=NULL;
   (*mB)->msgSize=size;
   (*mB)->next=NULL;
+  (*mB)->blocked=NULL;
 
 }
 
@@ -77,6 +79,7 @@ void freeMessageBox(messageBox * mB)
   recursiveFinalizeMessage(&((*mB)->msg));
   messageBox aux = (*mB)->next;
   (*mB)->next=NULL;
+  totalQueueRemove(&((*mB)->blocked));
   free((*mB)->key);
   free(*mB);
   (*mB)=aux;
@@ -172,19 +175,28 @@ void recursiveFinalizeMessage(message *mL)
 
 
 
-void sendMessageRec(message * mL, size_t size, void * messageContent)
+void sendMessageRec(message * mL, size_t size, void * messageContent, messageBox * mB)
 {
   if((*mL)==NULL)
   {
     initializeMessage(mL, messageContent, size);
+    if((*mB)->blocked!=NULL)
+    {
+      pid_t pid = (pid_t)processQueueRemove(&((*mB)->blocked));
+      wakeProcess(pid);
+    }
     return;
   }
-  sendMessageRec(&((*mL)->next),size,messageContent);
+  sendMessageRec(&((*mL)->next),size,messageContent, mB);
 }
 
-void recieveMessageRec(message * mL, size_t size, void *buffer)
+void recieveMessageRec(message * mL, size_t size, void *buffer, messageBox * mB)
 {
-  if(mL==NULL || (*mL)==NULL) return;//
+  if(mL==NULL || (*mL)==NULL)
+  {
+    processQueueAdd(getPid(),&((*mB)->blocked));
+    sleepProcess(getPid());
+  }
   message aux = (*mL)->next;
   memcpy(buffer, (*mL)->messageBody, size);
   finalizeMessage(mL);
@@ -203,12 +215,12 @@ void sendMessage(mbd_t descriptor, void * messageContent)
 {
   messageBox * mB = getMessageBoxRec(descriptor->key, postOffice->msgBox, descriptor->size);
   if(mB==NULL || *mB==NULL) return;
-  sendMessageRec(&((*mB)->msg), (*mB)->msgSize, messageContent);
+  sendMessageRec(&((*mB)->msg), (*mB)->msgSize, messageContent, mB);
 }
 
 void recieveMessage(mbd_t descriptor, void * buffer)
 {
   messageBox * mB = getMessageBoxRec(descriptor->key, postOffice->msgBox, descriptor->size);
   if(mB==NULL || *mB==NULL) return;
-  recieveMessageRec(&((*mB)->msg),(*mB)->msgSize,  buffer);
+  recieveMessageRec(&((*mB)->msg),(*mB)->msgSize,  buffer, mB);
 }

@@ -2,6 +2,7 @@
 #define MESSAGING_H
 
 #include "lib.h"
+#include "semaphoreProcessQueue.h"
 
 typedef struct mbd_t_Struct * mbd_t;
 struct mbd_t_Struct
@@ -24,6 +25,7 @@ struct messageBoxStruct
   message msg;
   size_t msgSize;
   messageBox next;
+  queueEntry blocked;
 };
 
 typedef struct postOfficeStruct * postOfficePTR;
@@ -53,8 +55,8 @@ void initializeMessage(message * m, void * messageContent, size_t messageSize);
 void finalizeMessage(message * m);
 void recursiveFinalizeMessage(message *mL);
 
-void sendMessageRec(message * mL, size_t size, void * messageContent);
-void recieveMessageRec(message * mL, size_t size, void *buffer);
+void sendMessageRec(message * mL, size_t size, void * messageContent, messageBox * mB);
+void recieveMessageRec(message * mL, size_t size, void *buffer, messageBox * mB);
 
 //THESE ARE THE ONLY FUNCTIONS WHICH CAN BE USED FROM USERLAND
 void finalizeMessageBox(mbd_t descriptor);

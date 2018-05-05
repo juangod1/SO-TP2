@@ -3,6 +3,7 @@
 #include "include/messagingTest.h"
 #include "include/lib.h"
 #include "include/memorymanager.h"
+#include "include/scheduler.h"
 
 char * global_MB_key;
 message global_message;

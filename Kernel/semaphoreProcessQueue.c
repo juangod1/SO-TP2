@@ -40,7 +40,7 @@ int processQueueRemove(queueEntry * q)
 
 void totalQueueRemove(queueEntry * q)
 {
-	if((*q)==NULL)
+	if(q==NULL || (*q)==NULL)
 	{
 			return;
 	}

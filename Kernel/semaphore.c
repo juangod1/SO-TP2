@@ -2,6 +2,7 @@
 #include "include/lib.h"
 #include "include/memorymanager.h"
 #include "include/semaphoreProcessQueue.h"
+#include "include/scheduler.h"
 
 extern int semaphoreCheck(void * ptr);
 
@@ -23,7 +24,7 @@ void semaphoreFinalization(semaphore * sem)
   while(processQueueSize(&((*sem)->processQueue))>0)
   {
     pid=processQueueRemove(&((*sem)->processQueue));
-    //schedulerResume(pid);
+    wakeProcess(pid);
   }
   totalQueueRemove(&((*sem)->processQueue));
   free((*sem));
@@ -39,7 +40,7 @@ int taskRequest(semaphore sem, int pid) //eventually will have to ask pid type
     return 0;
   }
   sem->value--;
-  //schedulerWait(pid)
+  sleepProcess(pid);
   processQueueAdd(pid, &(sem->processQueue));
   return 0;
 }
@@ -50,6 +51,6 @@ void taskFinished(semaphore sem, int pid) //eventually will have to ask for pid 
   if(sem->value <1)
   {
     int newProcess=processQueueRemove(&(sem->processQueue));
-    //schedulerResume(pid)
+    wakeProcess(pid);
   }
 }
