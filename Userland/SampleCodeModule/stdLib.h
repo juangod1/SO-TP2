@@ -4,6 +4,14 @@
 #include <stdint.h>
 #include <sys/types.h>
 
+typedef struct mbd_t_Struct * mbd_t;
+struct mbd_t_Struct
+{
+  size_t size;
+  void * key;
+};
+
+
 #define IS_DIGIT(c) ((c - '0') >= 0 && (c - '0') <= 9)
 #define DECIMAL_PLACES 4
 

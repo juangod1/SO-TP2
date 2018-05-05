@@ -45,8 +45,29 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
     case 8:
       getPid((pid_t*)rsi);
       break;
-      case 9:
-          listProcesses(rsi, rdx);
-          break;
+    case 9:
+      listProcesses(rsi, rdx);
+      break;
+    case 10:
+      sendMessage(rdx, rcx);
+      break;
+    case 11:
+      recieveMessage(rdx, rcx);
+      break;
+    case 12:
+      finalizeMessageBox(rdx);
+      break;
+    case 13:
+      wait(rdx);
+      break;
+    case 14:
+      signal(rdx);
+      break;
+    case 15:
+      startSemaphore(rdx);
+      break;
+    case 16:
+      stopSemaphore(rdx);
+      break;
   }
 }

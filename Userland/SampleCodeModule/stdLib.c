@@ -143,3 +143,38 @@ int getPid()
 void sysGetProcesses(pid_t ** buffer, char ** namesBuffer){
   sysCall(9,buffer,namesBuffer,0,0,0);
 }
+
+void sendMessage(mbd_t descriptor, void * messageContent)
+{
+  sysCall(10,descriptor,messageContent,0,0,0);
+}
+
+void recieveMessage(mbd_t descriptor, void * buffer)
+{
+  sysCall(11,descriptor,buffer,0,0,0);
+}
+
+void finalizeMessageBox(mbd_t descriptor)
+{
+  sysCall(12,descriptor,0,0,0,0);
+}
+
+void wait(int key)
+{
+  sysCall(13,key,0,0,0,0);
+}
+
+void signal(int key)
+{
+  sysCall(14,key,0,0,0,0);
+}
+
+void startSemaphore(int key)
+{
+  sysCall(15,key,0,0,0,0);
+}
+
+void stopSemaphore(int key)
+{
+  sysCall(16,key,0,0,0,0);
+}
