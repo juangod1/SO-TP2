@@ -108,7 +108,7 @@ void whenSleepingProcess10(){
     sleepProcess(10);
 }
 
-void thenNextProcessHasCertainPID(pid_t pid){
+process_t thenNextProcessHasCertainPID(pid_t pid){
     t1 = getNextProcess();
     if(t1->pid != pid){
         printString("Expected PID: ",0,0,255);
@@ -117,8 +117,10 @@ void thenNextProcessHasCertainPID(pid_t pid){
         printInt(t1->pid,0,0,255);
         printString("\n",0,0,255);
     }
-    else
+    else {
         ok();
+        return t1;
+    }
 }
 
 void givenAProcessWithPID10(){
@@ -192,6 +194,33 @@ void given100QueuedProcesses(){
     }
 }
 
+void given2Processes(){
+    given3Processes();
+    freeProcessMemory(p3);
+}
+
+void whenQueueing2Processes(){
+    queueProcess(p1);
+    queueProcess(p2);
+}
+
+void sequentialQueueTest(){
+    printString("Testing Sequential Queues Test\n",0,255,255);
+
+    given2Processes();
+    whenQueueing2Processes();
+
+    process_t t;
+    int i;
+    for(i=0;i<10;i++){
+        t = thenNextProcessHasCertainPID(2);
+        queueProcess(t);
+    }
+
+    whenDestroyingQueue();
+    thenQueueIsEmpty();
+}
+
 void stressTest100Processes(){
     printString("Testing Stress Test\n",0,255,255);
 
@@ -205,4 +234,5 @@ void schedulerTestRun(){
     checkSleepTest();
     queueDestructionTest();
     stressTest100Processes();
+    //sequentialQueueTest();
 }
