@@ -5,7 +5,7 @@
 
 static unsigned char ** video_start = (unsigned char**)0x0005C28;
 static unsigned int current_x = 0;
-static unsigned int current_y = SCREEN_HEIGHT-16;
+static unsigned int current_y = SCREEN_HEIGHT-PIXELS_PER_LINE;
 
 unsigned char * getVideoPix(){
 	return *video_start;
@@ -34,16 +34,16 @@ int boundedPixel(int x, int y) {
 }
 
 void paintBackGround(){
-	for(int i=0; i<SCREEN_WIDTH; i+=8){
-		for(int j=0; j<SCREEN_HEIGHT; j+=16){
+	for(int i=0; i<SCREEN_WIDTH; i+=PIXELS_PER_CHARSPACE){
+		for(int j=0; j<SCREEN_HEIGHT; j+=PIXELS_PER_LINE){
 			paintCharSpace(i,j,BG_B,BG_G,BG_R);
 		}
 	}
 }
 
 void paintCharSpace(int current_x, int current_y, char B, char G, char R){
-	for(int i=0; i<8; i++){
-		for(int j=0; j<16; j++){
+	for(int i=0; i<PIXELS_PER_CHARSPACE; i++){
+		for(int j=0; j<PIXELS_PER_LINE; j++){
 			paintPixel(current_x+i, current_y+j, B, G, R);
 		}
 	}
@@ -78,8 +78,8 @@ void writeChar(char c, int B, int G, int R){
 		int x_counter;
 		int y_counter;
 
-		for(y_counter = 0;y_counter<16;y_counter++){
-			for(x_counter = 0;x_counter<8;x_counter++){
+		for(y_counter = 0;y_counter<PIXELS_PER_LINE;y_counter++){
+			for(x_counter = 0;x_counter<PIXELS_PER_CHARSPACE;x_counter++){
 
 				bitmap_aux = bitmap[y_counter];
 				bitmap_aux >>= 8-x_counter;
@@ -95,18 +95,18 @@ void writeChar(char c, int B, int G, int R){
 	}
 }
 void backSpace(){
-	if(current_x > 3*8){
-		current_x-=8;
+	if(current_x > 3*PIXELS_PER_CHARSPACE){
+		current_x-=PIXELS_PER_CHARSPACE;
 		paintCharSpace(current_x, current_y, BG_B, BG_G, BG_R);
 	}
 }
 void checkLine(){
 	if(current_x>=SCREEN_WIDTH){
 		current_x=0;
-		current_y+=16;
+		current_y+=PIXELS_PER_LINE;
 		if(current_y>=SCREEN_HEIGHT){
-			current_y-=16;
-			shiftVideo();
+			current_y-=PIXELS_PER_LINE;
+			shiftVideo(PIXELS_PER_LINE);
 		}
 	}
 }
@@ -172,8 +172,8 @@ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 	return digits;
 }
 void clearScreen(){
-	for(int i=0; i<SCREEN_WIDTH; i+=8){
-		for(int j=0; j<SCREEN_HEIGHT; j+=16){
+	for(int i=0; i<SCREEN_WIDTH; i+=PIXELS_PER_CHARSPACE){
+		for(int j=0; j<SCREEN_HEIGHT; j+=PIXELS_PER_LINE){
 			paintCharSpace(i,j,BG_B,BG_G,BG_R);
 		}
 	}
@@ -189,29 +189,29 @@ int strleng(const char *str){
 
 void newLine(){
 	current_x=0;
-	current_y+=16;
+	current_y+=PIXELS_PER_LINE;
 	if(current_y>=SCREEN_HEIGHT){
-		current_y-=16;
-		shiftVideo();
+		current_y-=PIXELS_PER_LINE;
+		shiftVideo(PIXELS_PER_LINE);
 	}
 }
 
-void shiftVideo()
+void shiftVideo(int lines)
 {
 	char * video = (char *) getVideoPix();
-	memcpy(video, video+3*SCREEN_WIDTH*16, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-16));
-	for(int i=0; i<3*16*SCREEN_WIDTH; i++)
+	memcpy(video, video+3*SCREEN_WIDTH*lines, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-lines));
+	for(int i=0; i<3*lines*SCREEN_WIDTH; i++)
 	{
 		switch(i%2)
 		{
 			case 0:
-				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16))=BG_B;
+				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-lines))=BG_B;
 			break;
 			case 1:
-				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16))=BG_G;
+				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-lines))=BG_G;
 			break;
 			case 2:
-				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-16))=BG_R;
+				*(video+i+3*SCREEN_WIDTH*(SCREEN_HEIGHT-lines))=BG_R;
 			break;
 			default:
 			break;
