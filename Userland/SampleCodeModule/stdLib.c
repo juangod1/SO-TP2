@@ -2,6 +2,7 @@
 #include "mathLib.h"
 #include "contextSwitchDemo.h"
 #include <stdint.h>
+#include <sys/types.h>
 #define MAX_DIGITS 20
 
 extern int sysCall(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
@@ -118,8 +119,11 @@ void sysExecute(void* functionPointer)
 
 int getPid()
 {
-
   int pid;
   sysCall(8,(uint64_t)&pid,0,0,0,0);
   return pid;
+}
+
+void sysGetProcesses(pid_t ** buffer, char ** namesBuffer){
+  sysCall(9,buffer,namesBuffer,0,0,0);
 }

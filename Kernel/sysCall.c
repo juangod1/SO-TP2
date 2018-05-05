@@ -42,10 +42,11 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       printString("Entered kernel side syscall\n",0,0,0);
       execute((void *)rsi);
       break;
-
     case 8:
       getPid((pid_t*)rsi);
       break;
-
+      case 9:
+          listProcesses(rsi, rdx);
+          break;
   }
 }

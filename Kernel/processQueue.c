@@ -118,22 +118,17 @@ process_t peekByPID(pid_t pid){
     return tmp->process;
 }
 
-void listQueue(){
-    if(queueSize==0){
-        printString("Queue is empty.\n",0,255,255);
+void listQueue(pid_t ** buffer, char ** namesBuffer){
+    if(queueSize==0)
         return;
-    }
 
     int i;
     node tmp=first;
-    printString("POSITION    PID    SLEEP\n",0,255,255);
     for(i=0;i<queueSize;i++) {
-        printInt(i+1,0,255,255);
-        printString("          ",0,0,0);
-        printInt(tmp->process->pid,0,255,255);
-        printString("          ",0,0,0);
-        printInt(tmp->process->sleeps,0,255,255);
-        printString("\n",0,0,0);
+        buffer[i][0] = tmp->process->pid;
+        buffer[i][1] = tmp->process->sleeps;
+        memcpy(namesBuffer[i],tmp->process->name,strleng(tmp->process->name));
+
         tmp = tmp->tail;
     }
 }

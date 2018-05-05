@@ -2,6 +2,7 @@
 #define STDLIB_H_
 
 #include <stdint.h>
+#include <sys/types.h>
 
 #define IS_DIGIT(c) ((c - '0') >= 0 && (c - '0') <= 9)
 #define DECIMAL_PLACES 4
@@ -26,4 +27,5 @@ int getPid();
 void sysExecute(void* functionPointer);
 void sysTestSuite(int num);
 void sysCSD();
+void sysGetProcesses(pid_t ** buffer, char ** namesBuffer);
 #endif
