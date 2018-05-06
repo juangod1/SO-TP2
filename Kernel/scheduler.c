@@ -83,7 +83,7 @@ void destroyProcessQueue(){
     destroyQueue();
 }
 
-void* schedule(void* prevSBP)
+void* schedule(void* prevSP)
 {
     //printString("Timer Tick\n",255,255,255);
     // printInt(getAmountOfProcesses(),255,255,255);
@@ -91,8 +91,7 @@ void* schedule(void* prevSBP)
     process_t currentProcess = getCurrentProcess();
     if(currentProcess == NULL)
     {
-        // printString("One or zero processes.\n",255,255,255);
-        return prevSBP;
+        return prevSP;
     }
     else
     {
@@ -100,8 +99,8 @@ void* schedule(void* prevSBP)
         queueProcess(currentProcess);
     }
     process_t nextProcess = getNextProcess();
-    currentProcess->context->stackBasePointer = prevSBP;
-    return nextProcess->context->stackBasePointer;
+    currentProcess->context->stackPointer = prevSP;
+    return nextProcess->context->stackPointer;
 }
 
 void execute(void* eip, char** nameBuffer)
@@ -113,8 +112,10 @@ void execute(void* eip, char** nameBuffer)
     newProcess->name = malloc(256);
     memcpy(newProcess->name, nameBuffer,256);
     void* sbp = malloc(1024);
-    newProcess->context->stackBasePointer = sbp;
+    newProcess->context = malloc(1024);
+    newProcess->context->stackPointer = sbp;
     initialize_stack_frame(eip,sbp);
     queueProcess(newProcess);
+    printString("Queued process.\n", 100, 200, 200);
     printQueue();
 }

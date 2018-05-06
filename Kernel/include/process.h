@@ -10,7 +10,7 @@
 
 typedef struct process_context_CDT * process_context;
 struct process_context_CDT {
-    uint64_t stackBasePointer;
+    void* stackPointer;
     // registros etc
 };
 

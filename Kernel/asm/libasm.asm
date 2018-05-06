@@ -64,7 +64,7 @@ cpuVendor:
 	pop rbp
 	ret
 
-initialize_stack_frame:
+initialize_stack_frame_mein:
 	mov rsp, rdx
 	mov rax, rdi
 	push rax
@@ -72,15 +72,13 @@ initialize_stack_frame:
 	PUSHAQ
 	ret
 
-
-initialize_stack_frame_lucas:
-	pop rbx
+initialize_stack_frame:
 	mov r10, rsp
 	mov rsp, rdx
 	push rdi
 	push 0x216 
 	PUSHAQ
-	push rbx
+	mov rsp, r10
 	ret
 
 get_eip:
