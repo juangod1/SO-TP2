@@ -4,6 +4,7 @@
 #include "plotLib.h"
 #include "mathLib.h"
 #include "contextSwitchDemo.h"
+#include "prodConsProblem.h"
 
 static int R = DR;
 static int G = DG;
@@ -191,12 +192,12 @@ int callFunction(char * buffer) {
 			else if(strcmp(input[1], "opcode") == 0){
 				sysPrintString(OPCODE_INS, B, G, R);
 			}
-            else if(strcmp(input[1], "test") == 0){
-                sysPrintString(TEST_INS, B, G, R);
-            }
-            else if(strcmp(input[1], "foreground") == 0){
-                sysPrintString(FOREGROUND_INS, B, G, R);
-            }
+      else if(strcmp(input[1], "test") == 0){
+        sysPrintString(TEST_INS, B, G, R);
+      }
+      else if(strcmp(input[1], "foreground") == 0){
+        sysPrintString(FOREGROUND_INS, B, G, R);
+      }
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
 			}
@@ -298,6 +299,17 @@ int callFunction(char * buffer) {
 		foreground(input[1]);
 		return 0;
 	}
+	else if(strcmp(input[0],"prodConsDemo") == 0) {
+    if(words!=2 || !isNum(input[1]))
+    {
+			sysPrintString("Wrong parameters: prodConsDemo receives one integer argument.\n", CB, CG, CR);
+			return 1;
+    }else
+    {
+      prodConsDemo(toInt(input[1]));
+      return 0;
+    }
+  }
 	else {
 		sysPrintString("Wrong input\n", CB, CG, CR);
 

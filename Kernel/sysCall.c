@@ -6,6 +6,8 @@
 #include "include/schedulerTest.h"
 #include "include/IPCTester.h"
 #include "scheduler.h"
+#include "include/semaphoreList.h"
+#include "include/messaging.h"
 
 void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
   switch(rdi){
@@ -49,25 +51,25 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       listProcesses(rsi, rdx);
       break;
     case 10:
-      sendMessage(rsi, rdx);
+      sendMessage((mbd_t)rsi, (void *)rdx);
       break;
     case 11:
-      recieveMessage(rsi, rdx);
+      recieveMessage((mbd_t)rsi, (void *)rdx);
       break;
     case 12:
-      finalizeMessageBox(rsi);
+      finalizeMessageBox((mbd_t)rsi);
       break;
     case 13:
-      wait(rsi);
+      wait((int)rsi);
       break;
     case 14:
-      signal(rsi);
+      signal((int)rsi);
       break;
     case 15:
-      startSemaphore(rsi,rdx);
+      startSemaphore((int)rsi,rdx);
       break;
     case 16:
-      stopSemaphore(rsi);
+      stopSemaphore((int)rsi);
       break;
   }
 }

@@ -3,6 +3,7 @@
 #include "include/semaphoreList.h"
 #include "include/semaphoreProcessQueue.h"
 #include "include/semaphore.h"
+#include "include/scheduler.h"
 
 trafficControlPTR trafficControl;
 
@@ -96,7 +97,7 @@ listEntry * getListEntry(int key_P, listEntry * lE)
 	{
 		return NULL;
 	}
-	if((*lE)->key=key_P)
+	if((*lE)->key==key_P)
 	{
 		return lE;
 	}

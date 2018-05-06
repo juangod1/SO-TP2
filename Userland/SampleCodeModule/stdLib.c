@@ -141,42 +141,42 @@ int getPid()
 }
 
 void sysGetProcesses(pid_t ** buffer, char ** namesBuffer){
-  sysCall(9,buffer,namesBuffer,0,0,0);
+  sysCall(9,(uint64_t)buffer,(uint64_t)namesBuffer,0,0,0);
 }
 
 void sendMessage(mbd_t descriptor, void * messageContent)
 {
-  sysCall(10,descriptor,messageContent,0,0,0);
+  sysCall(10,(uint64_t)descriptor,(uint64_t)messageContent,0,0,0);
 }
 
 void recieveMessage(mbd_t descriptor, void * buffer)
 {
-  sysCall(11,descriptor,buffer,0,0,0);
+  sysCall((uint64_t)11,(uint64_t)descriptor,(uint64_t)buffer,0,0,0);
 }
 
 void finalizeMessageBox(mbd_t descriptor)
 {
-  sysCall(12,descriptor,0,0,0,0);
+  sysCall((uint64_t)12,(uint64_t)descriptor,0,0,0,0);
 }
 
 void semWait(int key)
 {
-  sysCall(13,key,0,0,0,0);
+  sysCall((uint64_t)13,(uint64_t)key,0,0,0,0);
 }
 
 void semSignal(int key)
 {
-  sysCall(14,key,0,0,0,0);
+  sysCall((uint64_t)14,(uint64_t)key,0,0,0,0);
 }
 
 void semStart(int key, int value)
 {
-  sysCall(15,key,value,0,0,0);
+  sysCall((uint64_t)15,(uint64_t)key,(uint64_t)value,0,0,0);
 }
 
 void semStop(int key)
 {
-  sysCall(16,key,0,0,0,0);
+  sysCall((uint64_t)16,(uint64_t)key,0,0,0,0);
 }
 
 

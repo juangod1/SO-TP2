@@ -39,4 +39,13 @@ void sysTestSuite(int num);
 void sysCSD();
 void sysGetProcesses(pid_t ** buffer, char ** namesBuffer);
 void listProcesses();
+
+
+void semStop(int key);
+void semStart(int key, int value);
+void semSignal(int key);
+void semWait(int key);
+void finalizeMessageBox(mbd_t descriptor);
+void recieveMessage(mbd_t descriptor, void * buffer);
+void sendMessage(mbd_t descriptor, void * messageContent);
 #endif

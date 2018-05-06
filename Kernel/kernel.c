@@ -7,6 +7,8 @@
 #include "stdio.h"
 #include "memorymanager.h"
 #include "include/schedulerTest.h"
+#include "include/messaging.h"
+#include "include/semaphoreList.h"
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -58,8 +60,8 @@ int main() {
 	resetScreenCoordinates();
   initPageDirArray();
 
-	//initializePostOffice();		//  Messaging system
-	//initializeTrafficControl();// Semaphore system
+	initializePostOffice();		//  Messaging system
+	initializeTrafficControl();// Semaphore system
 
 	void (*module)();
 	module = sampleCodeModuleAddress;
