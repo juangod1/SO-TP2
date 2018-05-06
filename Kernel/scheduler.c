@@ -86,22 +86,29 @@ void destroyProcessQueue(){
 
 void * schedule(void* prevSP)
 {
-    //printString("Timer Tick\n",255,255,255);
-    // printInt(getAmountOfProcesses(),255,255,255);
-    // printString("\n",0,0,0);
-    process_t currentProcess = getCurrentProcess();
-    if(currentProcess == NULL)
+    process_t prevProcess = getCurrentProcess();
+    process_t nextProcess = getNextProcess();
+
+    if(nextProcess == NULL)
     {
+        printString("NextProcess is null.\n", 100, 200, 200);
+        if(prevProcess != NULL)
+            currentProcess->context->stackPointer = prevSP;
         return prevSP;
+    }
+    if(prevProcess == NULL)
+    {
+        printString("First process to run.\n",100,200,200);
+        queueProcess(nextProcess);
+        printString("Queued next process.\n",100,200,200);
+        return nextProcess->context->stackPointer;
     }
     else
     {
-        printString("Queued current process.\n",255,200,200);
-        queueProcess(currentProcess);
+        currentProcess->context->stackPointer = prevSP;
+        queueProcess(nextProcess);
+        return nextProcess->context->stackPointer;
     }
-    process_t nextProcess = getNextProcess();
-    currentProcess->context->stackPointer = prevSP;
-    return nextProcess->context->stackPointer;
 }
 
 void execute(void* eip, char * nameBuffer)
