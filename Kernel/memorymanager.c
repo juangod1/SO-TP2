@@ -136,6 +136,27 @@ void * popNewPage(){
 	return (void*) pageDirArray[i];
 }
 
+//Recive el pid del proceso y busca en el libro su pagina correspondiente y la libera.
+void dropPage(int id){
+	if(heapBookBase == NULL)
+		return;//Book no inicializado
+	bookBlock current = heapBookBase;
+	while(current->owner != id){
+		if(current->next == NULL){
+			return;//No se encontro una pagina asociada al proceso
+		}
+		current = current->next;
+	}
+	int i = 0;
+	u_int64_t dir =(u_int64_t) current->base;
+	while(pageDirArray[i] != dir){
+		i++;
+	}
+	//Ya se que siempre encuentra el valor porque de esa lista salio.
+	pageStatusArray[i]=0;//Libero
+	//Se le podria agregar un codigo de error en el retorno.
+}
+
 dataBlock getDataBlock(void *pointer) {
   return (dataBlock)pointer - 1;
 }

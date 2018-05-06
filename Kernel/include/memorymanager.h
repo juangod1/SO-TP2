@@ -34,6 +34,7 @@ void initPageDirArray();
 void* mm_malloc(size_t s);
 void mm_free();
 void * popNewPage();
+void dropPage(int id);
 bookBlock searchBookedBlock(int id);
 
 //Public functions
