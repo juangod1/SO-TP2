@@ -2,6 +2,7 @@
 #include "videoDriver.h"
 #include "include/lib.h"
 #include "font.h"
+#include "testLib.h"
 
 static unsigned char ** video_start = (unsigned char**)0x0005C28;
 static unsigned int current_x = 0;
@@ -28,8 +29,8 @@ void printString( const char* string, int B, int G, int R){
 
 void perror(const char * string)
 {
-	printString(string,0,0,255);
-	printString("\n",0,0,255);
+	printString(string,TB_FAIL,TG_FAIL,TR_FAIL);
+	printString("\n",TB_FAIL,TG_FAIL,TR_FAIL);
 }
 
 void printReg(char* s){

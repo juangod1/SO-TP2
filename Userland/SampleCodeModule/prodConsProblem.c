@@ -9,33 +9,32 @@ void prodConsDemo(int value)
   semStart(SEM_MUTEX_KEY,1);
   semStart(SEM_OVERFLOW_KEY,value);
   semStart(SEM_UNDERFLOW_KEY,0);
-  int exitFlag=0; char input=0;
-  char str[2];
+  int exitFlag=0;
+  char input=0;
   sysPrintString(" 1. Producer\n 2. Consumer\n 3. Exit\n",255,255,0);
   while(!exitFlag)
   {
     sysGetChar(&input);
-    str[0]=input;
-    str[1]=0;
-    sysPrintString(str,255,255,2);
-    switch(input)
+    if(input== '1')
     {
-      case '1':
-        sysPrintString("Generated a Producer!\n",255,255,0);
-        sysExecute(producer, "Producer");
-      break;
-      case '2':
-        sysPrintString("Generated a Consumer!\n",255,255,0);
-        sysExecute(consumer, "Consumer");
-      break;
-      case '3':
-        exitFlag=1;
-      break;
-      case 0:
-      break;
-      default:
+      sysPrintString("Generated a Producer!\n",255,255,0);
+      sysExecute(producer, "Producer");
+    }
+    else if(input=='2')
+    {
+      sysPrintString("Generated a Consumer!\n",255,255,0);
+      sysExecute(consumer, "Consumer");
+    }
+    else if(input=='3')
+    {
+      exitFlag=1;
+    }
+    else
+    {
+      if(input!=0)
+      {
         sysPrintString("Wrong input!\n",255,255,0);
-      break;
+      }
     }
   }
   semStop(SEM_MUTEX_KEY);

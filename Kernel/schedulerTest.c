@@ -112,11 +112,12 @@ void whenSleepingProcess10(){
 process_t thenNextProcessHasCertainPID(pid_t pid){
     t1 = getNextProcess();
     if(t1->pid != pid){
-        printString("Expected PID: ",0,0,255);
-        printInt(pid,0,0,255);
-        printString(", Received: ",0,0,255);
-        printInt(t1->pid,0,0,255);
-        printString("\n",0,0,255);
+        fail("");
+        printString("Expected PID: ",TB_FAIL,TG_FAIL,TR_FAIL);
+        printInt(pid,TB_FAIL,TG_FAIL,TR_FAIL);
+        printString(", Received: ",TB_FAIL,TG_FAIL,TR_FAIL);
+        printInt(t1->pid,TB_FAIL,TG_FAIL,TR_FAIL);
+        printString("\n",TB_FAIL,TG_FAIL,TR_FAIL);
         return t1;
     }
     else {
@@ -143,7 +144,7 @@ void whenDestroyingQueue(){
 }
 
 void add3ProcessesTest(){
-    printString("Testing 3 Processes Test\n",0,255,255);
+    printString("Testing 3 Processes Test\n",TB,TG,TR);
 
     given3Processes();
 
@@ -159,7 +160,7 @@ void add3ProcessesTest(){
 
 void checkSleepTest(){
 
-    printString("Testing Sleep Test\n",0,255,255);
+    printString("Testing Sleep Test\n",TB,TG,TR);
 
     given3Processes();
     givenAProcessWithPID10();
@@ -177,7 +178,7 @@ void checkSleepTest(){
 }
 
 void queueDestructionTest(){
-    printString("Testing Queue Destruction Test\n",0,255,255);
+    printString("Testing Queue Destruction Test\n",TB,TG,TR);
 
     givenAProcessWithPID10();
     given3OtherProcesses();
@@ -207,7 +208,7 @@ void whenQueueing2Processes(){
 }
 
 void sequentialQueueTest(){
-    printString("Testing Sequential Queues Test\n",0,255,255);
+    printString("Testing Sequential Queues Test\n",TB,TG,TR);
 
     given2Processes();
     whenQueueing2Processes();
@@ -224,7 +225,7 @@ void sequentialQueueTest(){
 }
 
 void stressTest100Processes(){
-    printString("Testing Stress Test\n",0,255,255);
+    printString("Testing Stress Test\n",TB,TG,TR);
 
     given100QueuedProcesses();
     whenDestroyingQueue();

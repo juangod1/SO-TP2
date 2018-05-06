@@ -40,12 +40,12 @@ void thenSuccess()
 
 void ok()
 {
-    printString("    Ok!\n",0,255,0);
+    printString("    Ok!\n",TB_SUCCESS,TG_SUCCESS,TR_SUCCESS);
 }
 
 void fail(char * errorMsg)
 {
-    printString("    Failed\n",0,0,255);
+    printString("    Failed\n",TB_FAIL,TG_FAIL,TR_FAIL);
     perror(errorMsg);
 }
 
