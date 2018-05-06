@@ -90,15 +90,14 @@ picSlaveMask:
 
 
 ;8254 Timer (Timer Tick)
-_irq00Handler:
+_irq00Handler: 
 	PUSHAQ
-	mov rdi,rsp
-	;optionally change to kernel stack here for security reasons.
-	call schedule 
-	mov rsp, rax
-	POPAQ
+	mov rdi,rsp ;rsp of previous process
+	call schedule  
+	mov rsp, rax ;set rsp to next process
 	mov al, 20h
 	out 20h, al
+	POPAQ
 	iretq
 
 ;Keyboard
@@ -147,8 +146,23 @@ haltcpu:
 SECTION .bss
 	aux resq 1
 
-;no puedo backupear el ip en nasm, 
-;vamos a tener que ver como solucionarlo
+%macro popaq 0
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rsi
+    pop rdi
+    pop rbp
+    pop rdx
+    pop rcx
+    pop rbx
+%endmacro
+
 %macro POPAQ 0
 	pop rax
 	pop rbx
@@ -169,7 +183,22 @@ SECTION .bss
 	pop gs
 %endmacro
 
-
+%macro pushaq 0
+    push rbx
+    push rcx
+    push rdx
+    push rbp
+    push rdi
+    push rsi
+    push r8
+    push r9
+    push r10
+    push r11
+    push r12
+    push r13
+    push r14
+    push r15
+%endmacro
 
 %macro PUSHAQ 0
 	push gs
@@ -194,12 +223,12 @@ SECTION .bss
 
 
 _tick_handler:
-	PUSHAQ
+	pushaq
 	mov rdi,rsp
 	;optionally change to kernel stack here for security reasons.
 	call schedule 
 	mov rsp, rax
-	POPAQ
+	popaq
 	mov al, 20h
 	out 20h, al
 	iretq

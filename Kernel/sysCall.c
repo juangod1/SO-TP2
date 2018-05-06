@@ -40,7 +40,7 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
 	    break;
     case 7:
       printString("Entered kernel side syscall\n",0,0,0);
-      execute((void *)rsi);
+      execute((void *)rsi, (char**)rcx);
       break;
     case 8:
       getPid((pid_t*)rsi);

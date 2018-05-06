@@ -6,7 +6,7 @@
 #include "include/processQueue.h"
 #include "include/videoDriver.h"
 
-void initialize_stack_frame(uint64_t initialBSP);
+void initialize_stack_frame(void* rip, void* rbp);
 uint64_t* get_eip();
 
 uint64_t kernelTableAddress = 0x0; //placeholder
@@ -83,44 +83,38 @@ void destroyProcessQueue(){
     destroyQueue();
 }
 
-uint64_t schedule(uint64_t* prevSBP)
+void* schedule(void* prevSBP)
 {
-    // printString("Number of processes scheduled:",255,255,255);
+    //printString("Timer Tick\n",255,255,255);
     // printInt(getAmountOfProcesses(),255,255,255);
     // printString("\n",0,0,0);
     process_t currentProcess = getCurrentProcess();
-    process_t nextProcess = getNextProcess();
-
-    if(currentProcess == NULL || nextProcess == NULL)
+    if(currentProcess == NULL)
     {
         // printString("One or zero processes.\n",255,255,255);
-        return (uint64_t)prevSBP;
+        return prevSBP;
     }
-    currentProcess->context->stackBasePointer = (uint64_t) prevSBP;
+    else
+    {
+        printString("Queued current process.\n",255,200,200);
+        queueProcess(currentProcess);
+    }
+    process_t nextProcess = getNextProcess();
+    currentProcess->context->stackBasePointer = prevSBP;
     return nextProcess->context->stackBasePointer;
 }
 
-void initializeProcess(uint64_t* eip)
+void execute(void* eip, char** nameBuffer)
 {
-    printString("Initializing Process\n",255,255,255);
-    process_t newProcess = (process_t)malloc(256);
-    newProcess->pid = getNewPid();
-    newProcess->context->stackBasePointer = (uint64_t)malloc(256);
-    initialize_stack_frame((uint64_t)eip);
+    printString("Tried to initialize process.\n",100,200,200);
+    printQueue();
+    process_t newProcess = malloc(256);
+    newProcess->pid = 3;
+    newProcess->name = malloc(256);
+    memcpy(newProcess->name, nameBuffer,256);
+    void* sbp = malloc(1024);
+    newProcess->context->stackBasePointer = sbp;
+    initialize_stack_frame(eip,sbp);
     queueProcess(newProcess);
-}
-
-void execute(void* eip)
-{
-    printString("Tried to initialize process.\n",0,0,0);
-    process_t newProcess = (void*)0x1200000;
-    newProcess->pid = 2;
-    newProcess->context->stackBasePointer = (uint64_t)0x1000000;
-    initialize_stack_frame((uint64_t)eip);
-    queueProcess(newProcess);
-}
-
-void initializeProcessStackFrame(uint64_t* initialEIP)
-{
-    initialize_stack_frame((uint64_t)initialEIP);
+    printQueue();
 }
