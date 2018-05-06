@@ -142,11 +142,13 @@ void printQueue() { // FOR DEBUGGING
     int i;
     node tmp=first;
     for(i=0;i<queueSize;i++) {
-        printString("PID    SLEEPS\n",255,255,255);
+        printString("PID    SLEEPS    NAME\n",255,255,255);
         printInt(tmp->process->pid,255,255,255);
         printString("       ",255,255,255);
         printInt(tmp->process->sleeps,255,255,255);
-        printString("\n",0,0,0);
+        printString("      ",255,255,255);
+        printString(tmp->process->name,255,255,255);
+        printString("\n",255,255,255);
 
         tmp = tmp->tail;
     }

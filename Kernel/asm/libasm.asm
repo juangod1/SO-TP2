@@ -73,12 +73,14 @@ initialize_stack_frame_mein:
 	ret
 
 initialize_stack_frame:
+    pop r9
 	mov r10, rsp
 	mov rsp, rdx
 	push rdi
 	push 0x216 
 	PUSHAQ
 	mov rsp, r10
+	push r9
 	ret
 
 get_eip:

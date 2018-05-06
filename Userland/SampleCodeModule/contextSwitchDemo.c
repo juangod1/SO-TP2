@@ -18,7 +18,7 @@ void runContextSwitchDemo()
     sysPrintString("Hello, I am the parent process.\n",0,255,255);
     char* name2 = "secondProcess";
     child_func = &childProcessFunction;
-    sysExecute(child_func, &name2);
+    sysExecute(child_func, name2);
 }
 
 

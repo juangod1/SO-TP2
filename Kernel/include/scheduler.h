@@ -7,6 +7,9 @@
 
 #include "process.h"
 
+#define MAX_PROCESS_NAME_LENGTH 20
+#define PROCESS_STACK_SIZE 2048
+
 pid_t getPid();
 process_t getCurrentProcess();
 int sleepProcess(pid_t pid);
@@ -16,5 +19,5 @@ int queueProcess(process_t process);
 void destroyProcessQueue();
 int getAmountOfProcesses();
 void listProcesses();
-void execute(void* eip, char** nameBuffer);
+void execute(void* eip, char* nameBuffer);
 #endif //TP2_TEMPORARY_SCHEDULER_H

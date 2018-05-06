@@ -5,6 +5,7 @@
 #include "include/memorymanager.h"
 #include "include/processQueue.h"
 #include "include/videoDriver.h"
+#include "scheduler.h"
 
 void initialize_stack_frame(void* rip, void* rbp);
 uint64_t* get_eip();
@@ -83,7 +84,7 @@ void destroyProcessQueue(){
     destroyQueue();
 }
 
-void* schedule(void* prevSP)
+void * schedule(void* prevSP)
 {
     //printString("Timer Tick\n",255,255,255);
     // printInt(getAmountOfProcesses(),255,255,255);
@@ -103,16 +104,17 @@ void* schedule(void* prevSP)
     return nextProcess->context->stackPointer;
 }
 
-void execute(void* eip, char** nameBuffer)
+void execute(void* eip, char * nameBuffer)
 {
     printString("Tried to initialize process.\n",100,200,200);
+    printString(nameBuffer,100,200,200);
     printQueue();
-    process_t newProcess = malloc(256);
+    process_t newProcess = malloc(sizeof(struct process_t_CDT));
     newProcess->pid = 3;
-    newProcess->name = malloc(256);
-    memcpy(newProcess->name, nameBuffer,256);
-    void* sbp = malloc(1024);
-    newProcess->context = malloc(1024);
+    newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
+    memcpy(newProcess->name, nameBuffer,MAX_PROCESS_NAME_LENGTH);
+    void* sbp = malloc(PROCESS_STACK_SIZE);
+    newProcess->context = malloc(sizeof(struct process_context_CDT));
     newProcess->context->stackPointer = sbp;
     initialize_stack_frame(eip,sbp);
     queueProcess(newProcess);
