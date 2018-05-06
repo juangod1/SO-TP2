@@ -4,16 +4,17 @@
 #include "include/messagingTest.h"
 #include "include/videoDriver.h"
 #include "include/lib.h"
+#include "include/testLib.h"
 
 int IPCTester()
 {
-  printString("Testing Semaphore List\n",0,255,255);
+  printString("Testing Semaphore List\n",TB,TG,TR);
   semaphoreListTestMain();
-  printString("Testing Semaphore Process Queue\n",0,255,255);
+  printString("Testing Semaphore Process Queue\n",TB,TG,TR);
   processQueueTestMain();
-  printString("Testing Semaphore\n",0,255,255);
+  printString("Testing Semaphore\n",TB,TG,TR);
   semaphoreTestMain();
-  printString("Testing Messaging\n",0,255,255);
+  printString("Testing Messaging\n",TB,TG,TR);
   messagingTestMain();
   return 0;
 }

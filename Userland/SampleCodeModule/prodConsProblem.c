@@ -1,6 +1,6 @@
 #include "prodConsProblem.h"
 #include "stdLib.h"
-
+#include "shell.h"
 
 int sharedInt=0;
 
@@ -11,18 +11,18 @@ void prodConsDemo(int value)
   semStart(SEM_UNDERFLOW_KEY,0);
   int exitFlag=0;
   char input=0;
-  sysPrintString(" 1. Producer\n 2. Consumer\n 3. Exit\n",255,255,0);
+  sysPrintString(" 1. Producer\n 2. Consumer\n 3. Exit\n",CB,CG,CR);
   while(!exitFlag)
   {
     sysGetChar(&input);
     if(input== '1')
     {
-      sysPrintString("Generated a Producer!\n",255,255,0);
+      sysPrintString("Generated a Producer!\n",CB,CG,CR);
       sysExecute(producer, "Producer");
     }
     else if(input=='2')
     {
-      sysPrintString("Generated a Consumer!\n",255,255,0);
+      sysPrintString("Generated a Consumer!\n",CB,CG,CR);
       sysExecute(consumer, "Consumer");
     }
     else if(input=='3')
@@ -33,7 +33,7 @@ void prodConsDemo(int value)
     {
       if(input!=0)
       {
-        sysPrintString("Wrong input!\n",255,255,0);
+        sysPrintString("Wrong input!\n",CB,CG,CR);
       }
     }
   }
@@ -47,7 +47,7 @@ void producer()
   semWait(SEM_OVERFLOW_KEY);
   semWait(SEM_MUTEX_KEY);
   sharedInt++;
-  sysPrintInt(sharedInt, 255,255,0);
+  sysPrintInt(sharedInt,DB,DG,DR);
   semSignal(SEM_UNDERFLOW_KEY);
   semSignal(SEM_MUTEX_KEY);
 }
@@ -56,7 +56,7 @@ void consumer()
 {
   semWait(SEM_UNDERFLOW_KEY);
   semWait(SEM_MUTEX_KEY);
-  sysPrintInt(sharedInt, 255,255,0);
+  sysPrintInt(sharedInt,DB,DG,DR);
   sharedInt--;
   semSignal(SEM_OVERFLOW_KEY);
   semSignal(SEM_MUTEX_KEY);

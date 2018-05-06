@@ -129,7 +129,6 @@ void sysPaintPixel(int x, int y, char B, char G, char R) {
 
 void sysExecute(void* functionPointer, char* name)
 {
-  sysPrintString("Entered sysExecute\n",0,0,0);
   sysCall(7,(uint64_t)functionPointer,(uint64_t)name,0,0,0);
 }
 

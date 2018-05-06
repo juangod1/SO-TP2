@@ -18,11 +18,10 @@
 
 void clearScreen();
 void printString(const char* string, int R, int G, int B);
-void printReg(char* s);
 int strleng(const char *str);
 int countDigits(int num);
 void printInt(int num, int R, int G, int B);
-void printHex(uint64_t num);
+void printHex(uint64_t num, int B, int G, int R);
 uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
 void newLine();
 void readInput(char * buffer);

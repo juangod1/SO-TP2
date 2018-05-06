@@ -33,10 +33,6 @@ void perror(const char * string)
 	printString("\n",TB_FAIL,TG_FAIL,TR_FAIL);
 }
 
-void printReg(char* s){
-	printString(s,0,155,255);
-}
-
 int boundedPixel(int x, int y) {
 	return (x >= 0) && (x <= SCREEN_WIDTH) && (y >= 0) && (y <= SCREEN_HEIGHT);
 }
@@ -142,10 +138,10 @@ void printInt(int num, int B, int G, int R){
 
 		printString(numbers,B,G,R);
 }
-void printHex(uint64_t num){
+void printHex(uint64_t num, int B, int G, int R){
 	static char buffer[64] = { '0' };
 	uintToBase(num,buffer,16);
-	printString(buffer,0,155,255);
+	printString(buffer,B,G,R);
 }
 uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 {

@@ -3,6 +3,10 @@
 #include "stdlib.h"
 #include <stdint.h>
 
+#define EB 0
+#define EG 155
+#define ER 255
+
 void exceptionDispatcher(uint64_t exception, uint64_t* rsp) {
 
 	switch(exception){
@@ -21,32 +25,32 @@ void exceptionDispatcher(uint64_t exception, uint64_t* rsp) {
 }
 
 void zero_division(uint64_t* rsp) {
-	printString("Error: division by zero\n",0,155,255);
+	printString("Error: division by zero\n",EB,EG,ER);
 	printRegs(rsp);
 }
 
 void overflow(uint64_t* rsp){
-	printString("Error: overflow\n",0,155,255);
+	printString("Error: overflow\n",EB,EG,ER);
 	printRegs(rsp);
 }
 
 void opcode(uint64_t* rsp){
-	printString("Error: invalid opcode exception\n",0,155,255);
+	printString("Error: invalid opcode exception\n",EB,EG,ER);
 	printRegs(rsp);
 }
 
 void generalProtection(uint64_t* rsp){
-	printString("Error: general protection exception\n",0,155,255);
+	printString("Error: general protection exception\n",EB,EG,ER);
 	printRegs(rsp);
 }
 
 void printRegs(uint64_t*rsp){
 	for(int i = 0 ; i < 16 ; i++){
 		if(i%5==0){
-			printString("\n",0,155,255);
+			printString("\n",EB,EG,ER);
 		}
-		printString(registers[i],0,155,255);
-		printHex(rsp[i]);
+		printString(registers[i],EB,EG,ER);
+		printHex(rsp[i],EB,EG,ER);
 	}
-	printString("\n",0,155,255);
+	printString("\n",EB,EG,ER);
 }
