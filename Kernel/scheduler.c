@@ -116,15 +116,17 @@ void execute(void* eip, char * nameBuffer)
     printString("Tried to initialize process.\n",100,200,200);
     printString(nameBuffer,100,200,200);
     printQueue();
+
     process_t newProcess = malloc(sizeof(struct process_t_CDT));
     newProcess->pid = 3;
     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
-    memcpy(newProcess->name, nameBuffer,MAX_PROCESS_NAME_LENGTH);
+    memcpy(newProcess->name, nameBuffer,strleng(nameBuffer));
     void* sbp = malloc(PROCESS_STACK_SIZE);
     newProcess->context = malloc(sizeof(struct process_context_CDT));
     newProcess->context->stackPointer = sbp;
+
     initialize_stack_frame(eip,sbp);
-    queueProcess(newProcess);
-    printString("Queued process.\n", 100, 200, 200);
+    if(queueProcess(newProcess)>=0)
+    printString("Queued process correctly.\n", 100, 200, 200);
     printQueue();
 }
