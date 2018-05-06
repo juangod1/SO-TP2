@@ -58,7 +58,7 @@ int main() {
   load_idt();
   paintBackGround();
 	resetScreenCoordinates();
-  initPageDirArray();
+  initMemoryManager();
 
 	initializePostOffice();		//  Messaging system
 	initializeTrafficControl();// Semaphore system

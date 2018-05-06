@@ -31,7 +31,7 @@ int initMemoryManager(){
 	initPageDirArray();
 	//Levanto la primer pagina del book para mi. Como yo conozco esa direccion, ya la utilizo para guardar las cosas.
 	bookBlock newBookBlock = (bookBlock) HEAP_START;
-	newBookBlock->owner = -1;
+	newBookBlock->owner = 123;
 	newBookBlock->brk = BBLOCK_SIZE; //Como esto esta escrito en la pagina que hace referencia, ya esta corrido.
 	newBookBlock->base = popNewPage();
 	newBookBlock->next = NULL;

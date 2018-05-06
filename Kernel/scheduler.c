@@ -91,7 +91,7 @@ void * schedule(void* prevSP)
 
     if(nextProcess == NULL) // QUEUE IS EMPTY
     {
-        printString("NextProcess is null.\n", 100, 200, 200);
+        //printString("NextProcess is null.\n", 100, 200, 200);
         return prevSP;
     }
     if(prevProcess == NULL) // FIRST PROCESS CASE

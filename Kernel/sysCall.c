@@ -4,6 +4,7 @@
 #include "keyboardDriver.h"
 #include "schedulerTest.h"
 #include "include/schedulerTest.h"
+#include "include/memoryManagerTest.h"
 #include "include/IPCTester.h"
 #include "scheduler.h"
 #include "include/semaphoreList.h"
@@ -38,6 +39,8 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
 	        case 2:
 	            IPCTester();
        	        break;
+          case 3:
+              mmTester();
 	    }
 	    break;
     case 7:
