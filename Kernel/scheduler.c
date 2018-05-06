@@ -89,14 +89,12 @@ void * schedule(void* prevSP)
     process_t prevProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
 
-    if(nextProcess == NULL)
+    if(nextProcess == NULL) // QUEUE IS EMPTY
     {
         printString("NextProcess is null.\n", 100, 200, 200);
-        if(prevProcess != NULL)
-            currentProcess->context->stackPointer = prevSP;
         return prevSP;
     }
-    if(prevProcess == NULL)
+    if(prevProcess == NULL) // FIRST PROCESS CASE
     {
         printString("First process to run.\n",100,200,200);
         queueProcess(nextProcess);
@@ -105,7 +103,7 @@ void * schedule(void* prevSP)
     }
     else
     {
-        currentProcess->context->stackPointer = prevSP;
+        prevProcess->context->stackPointer = prevSP;
         queueProcess(nextProcess);
         return nextProcess->context->stackPointer;
     }
