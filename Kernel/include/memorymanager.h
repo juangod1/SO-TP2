@@ -4,11 +4,13 @@
 #include <assert.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "scheduler.h"
 
 #define HEAP_START 0x400000
 #define HEAP_END 0x799999
 #define NUM_OF_PAGES ((HEAP_END - HEAP_START)/PAGE_SIZE)
 #define PAGE_SIZE 0x4000
+
 
 typedef struct bookBlockStruct * bookBlock;
 struct bookBlockStruct {
@@ -25,10 +27,29 @@ struct dataBlockStruct {
 	int free;
 };
 
+#define DBLOCK_SIZE (sizeof(struct dataBlockStruct))
+#define BBLOCK_SIZE (sizeof(struct bookBlockStruct))
+
+//Memory manager handling functions
+int initMemoryManager();
 void initPageDirArray();
+void* mm_malloc(size_t s);
+void mm_free();
+void * popNewPage();
+bookBlock searchBookedBlock(int id);
+
+//Public functions
 void * malloc(size_t size);
 void free(void *pointer);
 
-#define BLOCK_SIZE (sizeof(struct dataBlockStruct))
+//Internal page functions
+dataBlock getDataBlock(void *pointer);
+dataBlock searchFreeBlock(dataBlock *last, size_t size);
+dataBlock expandHeap(dataBlock* last, size_t size);
+
+//N2H
+void *mymalloc(size_t size);
+void myfree(void *pointer);
+void *sbrk(size_t s);
 
 #endif
