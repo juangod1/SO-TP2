@@ -50,7 +50,7 @@ void taskFinished(semaphore sem, int pid) //eventually will have to ask for pid 
   sem->value++;
   if(sem->value <1)
   {
-    int newProcess=processQueueRemove(&(sem->processQueue));
-    wakeProcess(pid);
+    pid_t newProcess=processQueueRemove(&(sem->processQueue));
+    wakeProcess(newProcess);
   }
 }

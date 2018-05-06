@@ -1,9 +1,7 @@
 #ifndef MEMORYMANAGER_H
 #define MEMORYMANAGER_H
 
-#include <assert.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include "scheduler.h"
 
 #define HEAP_START 0x400000

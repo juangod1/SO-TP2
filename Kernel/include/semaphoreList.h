@@ -38,4 +38,6 @@ void startSemaphore(int key, int value);
 void stopSemaphore(int key_P);
 
 
+void initializeTrafficControl();
+
 #endif

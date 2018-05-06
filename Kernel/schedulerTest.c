@@ -117,6 +117,7 @@ process_t thenNextProcessHasCertainPID(pid_t pid){
         printString(", Received: ",0,0,255);
         printInt(t1->pid,0,0,255);
         printString("\n",0,0,255);
+        return t1;
     }
     else {
         ok();

@@ -30,7 +30,7 @@ void startShell(){
 	sysPrintString("$> ",CB,CG,CR);
 
 	while (isRunning) {
-		sysGetProcesses(processes,processNames);
+		sysGetProcesses((pid_t **)processes,processNames);
 		sysGetChar(&ch);
 		if(counter<MAX_WORD_LENGTH || ch == '\n'|| ch == '\b'){
 

@@ -1,9 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "include/semaphoreList.h"
 #include "include/semaphoreProcessQueue.h"
 #include "include/semaphore.h"
 #include "include/scheduler.h"
+#include "include/memorymanager.h"
 
 trafficControlPTR trafficControl;
 

@@ -18,7 +18,7 @@ typedef struct process_t_CDT * process_t;
 struct process_t_CDT {
     pid_t pid;
     char sleeps;
-    const char * name;
+    char * name;
     process_context context;
 };
 

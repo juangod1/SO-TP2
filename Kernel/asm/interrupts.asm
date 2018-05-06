@@ -1,4 +1,3 @@
-
 GLOBAL _cli
 GLOBAL _sti
 GLOBAL picMasterMask
@@ -49,7 +48,7 @@ SECTION .text
 	mov rsi, rsp ; second parameter
 
 	call exceptionDispatcher
-	
+
 	popState
 
 	mov qword [rsp],0x400000
@@ -90,10 +89,10 @@ picSlaveMask:
 
 
 ;8254 Timer (Timer Tick)
-_irq00Handler: 
+_irq00Handler:
 	PUSHAQ
 	mov rdi,rsp ;rsp of previous process
-	call schedule  
+	call schedule
 	mov rsp, rax ;set rsp to next process
 	mov al, 20h
 	out 20h, al
@@ -141,10 +140,6 @@ haltcpu:
 	hlt
 	ret
 
-
-
-SECTION .bss
-	aux resq 1
 
 %macro popaq 0
     pop r15
@@ -226,9 +221,13 @@ _tick_handler:
 	pushaq
 	mov rdi,rsp
 	;optionally change to kernel stack here for security reasons.
-	call schedule 
+	call schedule
 	mov rsp, rax
 	popaq
 	mov al, 20h
 	out 20h, al
 	iretq
+
+
+SECTION .bss
+	aux resq 1

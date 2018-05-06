@@ -37,6 +37,7 @@ void backSpace();
 void shiftVideo(int lines);
 void paintBackGround();
 void perror(const char * string);
+void resetScreenCoordinates();
 
 
 #endif

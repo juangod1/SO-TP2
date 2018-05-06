@@ -6,14 +6,14 @@
 
 void shellWrapper();
 
-int main() 
+int main()
 {
 	sysPrintString("Entered codeModule main.\n",0,0,0);
 	char* name = "shell";
 	//sysTestSuite(1);
 	// startShell();
 	void (*shell_ptr)() = &shellWrapper;
-	sysExecute(shell_ptr, &name);
+	sysExecute(shell_ptr, name);
 	return 1;
 }
 
