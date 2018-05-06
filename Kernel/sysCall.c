@@ -49,25 +49,25 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       listProcesses(rsi, rdx);
       break;
     case 10:
-      sendMessage(rdx, rcx);
+      sendMessage(rsi, rdx);
       break;
     case 11:
-      recieveMessage(rdx, rcx);
+      recieveMessage(rsi, rdx);
       break;
     case 12:
-      finalizeMessageBox(rdx);
+      finalizeMessageBox(rsi);
       break;
     case 13:
-      wait(rdx);
+      wait(rsi);
       break;
     case 14:
-      signal(rdx);
+      signal(rsi);
       break;
     case 15:
-      startSemaphore(rdx);
+      startSemaphore(rsi,rdx);
       break;
     case 16:
-      stopSemaphore(rdx);
+      stopSemaphore(rsi);
       break;
   }
 }

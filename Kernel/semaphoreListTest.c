@@ -7,10 +7,11 @@ listEntry testinglistEntry=NULL;
 int global_key = 3;
 int global_different_key = 4;
 int global_distinct_key = 5;
+int global_value=1;
 
 void static whenAddingAnElement()
 {
-	createlistEntry(global_key, &testinglistEntry);
+	createlistEntry(global_key, global_value, &testinglistEntry);
 }
 void static thenElementIsAdded()
 {
@@ -49,7 +50,7 @@ void thenItemisRemoved()
 
 void givenAPreviousEqualElement()
 {
-	createlistEntry(global_key,&testinglistEntry);
+	createlistEntry(global_key, global_value, &testinglistEntry);
 }
 
 void thenThereIsOnlyOneElement()
@@ -66,7 +67,7 @@ void thenThereIsOnlyOneElement()
 
 void givenAPreviousDifferentElement()
 {
-	createlistEntry(global_different_key, &testinglistEntry);
+	createlistEntry(global_different_key, global_value, &testinglistEntry);
 }
 
 void thenThereIsTwoElements()
@@ -82,9 +83,9 @@ void thenThereIsTwoElements()
 }
 void givenThreeDifferentElements()
 {
-	createlistEntry(global_key, &testinglistEntry);
-	createlistEntry(global_different_key, &testinglistEntry);
-	createlistEntry(global_distinct_key, &testinglistEntry);
+	createlistEntry(global_key, global_value, &testinglistEntry);
+	createlistEntry(global_different_key, global_value, &testinglistEntry);
+	createlistEntry(global_distinct_key, global_value, &testinglistEntry);
 }
 void thenTheRemovedElementIsRemoved()
 {

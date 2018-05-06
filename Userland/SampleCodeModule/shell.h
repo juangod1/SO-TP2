@@ -54,7 +54,7 @@ int callFunction(char * buffer);
 int echo(char input[][MAX_WORD_LENGTH], int words);
 int clear(int words);
 int overflowGenerator(int n);
-int calculateVerifications(int words, char* input2, char* input3);
+int calculateVerifications(int words, char* input1, char* input2, char* input3);
 int calculate(char* func, int param1, int param2);
 extern void opcodeGenerator();
 pid_t getForegroundPID();

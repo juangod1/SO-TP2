@@ -41,7 +41,7 @@ int listSize(listEntry * me_P)
 	return 1 + listSize(&((*me_P)->next));
 }
 
-int createlistEntry(int key_P, listEntry * me_P)
+int createlistEntry(int key_P, int value_P, listEntry * me_P)
 {
 	if((*me_P)==NULL)
 	{
@@ -50,7 +50,7 @@ int createlistEntry(int key_P, listEntry * me_P)
 		(*me_P)->next=NULL;
 
 		(*me_P)->sem=malloc(sizeof(struct semStruct));
-		(*me_P)->sem->value=1;
+		(*me_P)->sem->value=value_P;
 		(*me_P)->sem->processQueue=NULL;
 		return 0;
 	}
@@ -58,7 +58,7 @@ int createlistEntry(int key_P, listEntry * me_P)
 	{
 		return 1;
 	}
-	return createlistEntry(key_P, &((*me_P)->next));
+	return createlistEntry(key_P, value_P,&((*me_P)->next));
 }
 
 int removeListEntryByKey(int key_P, listEntry * me_P)
@@ -126,9 +126,9 @@ void stopSemaphore(int key_P)
 	removeListEntryByKey(key_P, &(trafficControl->semaphoreList));
 }
 
-void startSemaphore(int key)
+void startSemaphore(int key, int value)
 {
-	createlistEntry(key, &(trafficControl->semaphoreList));
+	createlistEntry(key,value,&(trafficControl->semaphoreList));
 }
 
 void totalListRemove(listEntry * me_P)

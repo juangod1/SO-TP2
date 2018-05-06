@@ -141,7 +141,7 @@ int callFunction(char * buffer) {
 		return 0;
 	}
 	else if (strcmp(input[0], "calculate") == 0) {
-		int ver = calculateVerifications(words, input[2], input[3]);
+		int ver = calculateVerifications(words, input[1], input[2], input[3]);
 
 
 		if (ver) {
@@ -271,7 +271,7 @@ int callFunction(char * buffer) {
 			sysPrintString("Wrong parameters: test receives one argument.\n", CB, CG, CR);
 			return 1;
 		}
-		
+
 		if(strcmp(input[1],"scheduler") == 0)
 		    sysTestSuite(1);
 		else if (strcmp(input[1],"ipc") == 0)
@@ -307,6 +307,19 @@ int callFunction(char * buffer) {
 	return 1;
 }
 
+int verifyOperation(char * op)
+{
+  char * operationsName[4] = {"add", "subtract", "multiply", "divide"};
+  for (int i = 0; i < 4; ++i)
+  {
+    if (strcmp(op, operationsName[i]) == 0)
+    {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 int calculate(char* func, int param1, int param2){
 
 	int (*operations[4]) (int x, int y);
@@ -327,8 +340,8 @@ int calculate(char* func, int param1, int param2){
 	return 0;
 }
 
-int calculateVerifications(int words, char* input2, char* input3){
-	if(isNum(input2)==2 || isNum(input3)==2){
+int calculateVerifications(int words, char* input1, char* input2, char* input3){
+	if(verifyOperation(input1)==0 || isNum(input2)==2 || isNum(input3)==2){
 		sysPrintString("Wrong parameters for calculate: Numbers must be integer\n", CB, CG, CR);
 		return 0;
 	}

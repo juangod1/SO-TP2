@@ -159,22 +159,22 @@ void finalizeMessageBox(mbd_t descriptor)
   sysCall(12,descriptor,0,0,0,0);
 }
 
-void wait(int key)
+void semWait(int key)
 {
   sysCall(13,key,0,0,0,0);
 }
 
-void signal(int key)
+void semSignal(int key)
 {
   sysCall(14,key,0,0,0,0);
 }
 
-void startSemaphore(int key)
+void semStart(int key, int value)
 {
-  sysCall(15,key,0,0,0,0);
+  sysCall(15,key,value,0,0,0);
 }
 
-void stopSemaphore(int key)
+void semStop(int key)
 {
   sysCall(16,key,0,0,0,0);
 }
