@@ -5,6 +5,5 @@
 #include "include/memorymanager.h"
 
 void freeProcessMemory(process_t process) {
-    free(process->context);
     free(process);
 }

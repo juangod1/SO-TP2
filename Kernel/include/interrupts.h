@@ -1,8 +1,8 @@
  /*
- *   interrupts.h
+ *  interrupts.h
  *
  *  Created on: Apr 18, 2010
- *      Author: anizzomc
+ *  Author: anizzomc
  */
 
 #ifndef INTERRUPS_H_
