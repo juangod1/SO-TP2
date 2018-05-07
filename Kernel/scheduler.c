@@ -139,7 +139,7 @@ void execute(void* eip, char * nameBuffer)
     if(newProcess == NULL){
         printString("No space for process.\n", 0, 0, 255);
     }
-    newProcess->pid = 3;
+    newProcess->pid = getNewPid();
     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
     if(newProcess->name == NULL){
         printString("No space for process.\n", 0, 0, 255);

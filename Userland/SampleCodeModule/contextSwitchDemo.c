@@ -32,7 +32,7 @@ void runContextSwitchDemo()
     // sysExecute(child_func, name2);
     char* loop1Name = "loop1";
     //void (*loop1)() = loop1;
-    sysExecute((void*)loop1,loop1Name);
+    sysExecute(loop1,loop1Name);
     while(1){
         sysPrintString("In the parent loop\n", 0, 0, 255);
     }
@@ -42,7 +42,7 @@ void loop1(){
     sysPrintString("Entered loop 1.\n",255,0,255);
     char* loop2Name = "loop2";
     //void(*loop2)() = loop2;
-    sysExecute((void *)loop2, loop2Name);
+    sysExecute(loop2, loop2Name);
     while(1){
         sysPrintString("In the first loop\n",0,255,0);
     }
