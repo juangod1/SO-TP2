@@ -10,9 +10,6 @@ void shellWrapper();
 int main()
 {
 	char* name = "shell";
-	//sysTestSuite(1);
-	// startShell();
-	//void (*shell_ptr)() = shellWrapper;
 	sysExecute((void*)startShell, &name);
 	return 1;
 }

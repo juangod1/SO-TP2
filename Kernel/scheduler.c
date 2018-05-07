@@ -10,9 +10,8 @@
 void* initialize_stack_frame(void* rip, void* rbp);
 uint64_t* get_eip();
 
-uint64_t kernelTableAddress = 0x0; //placeholder
 process_t currentProcess = NULL;
-pid_t lastPid;
+pid_t lastPid=-1;
 
 pid_t getPid(){
     if(currentProcess == NULL)
@@ -147,7 +146,7 @@ void execute(void* eip, char * nameBuffer)
     process_t newProcess = malloc(sizeof(struct process_t_CDT));
     //printInt(newProcess, 0,255,0);
     printString("a\n", 255, 255, 255);
-    newProcess->pid = 3;
+    newProcess->pid = getNewPid();
     printString("b\n", 255, 255, 255);
     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
     printString("c\n", 255, 255, 255);

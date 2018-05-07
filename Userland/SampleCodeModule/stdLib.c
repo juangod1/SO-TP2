@@ -16,12 +16,20 @@ void reset(char * string, int size){
 
 
 int checkIfForeground(){
-  return 1;//getForegroundPID()==getPid();
+  return 1;//getForegroundPID()==getPid()?1:0;
 }
 
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
   if(checkIfForeground())
     sysCall(4,ch,color_blue,color_green,color_red,0);
+}
+
+void DEBUGPrintString(char * string, int B, int G, int R){
+    int len = strleng(string);
+    int i;
+    for(i=0;i<len;i++){
+        sysWriteChar(string[i], B, G, R);
+    }
 }
 
 void sysPrintString(char * string, int B, int G, int R){
@@ -77,6 +85,27 @@ void sysPrintInt(int num, int B, int G, int R) {
   numbers[dig] = '\0';
 
   sysPrintString(numbers, B, G, R);
+}
+
+void DEBUGPrintInt(int num, int B, int G, int R) {
+    int dig = countDigits(num);
+    char numbers[MAX_DIGITS] = {};
+    int count = 0;
+    int remainder;
+
+    if (num < 0) {
+        sysWriteChar('-', B, G, R);
+    }
+
+    while (count != dig) {
+        remainder = absInt(num % 10);
+        numbers[dig - 1 - count++] = remainder + 48;
+        num /= 10;
+    }
+
+    numbers[dig] = '\0';
+
+    sysPrintString(numbers, B, G, R);
 }
 
 void sysPrintFloat(float num, int B, int G, int R) {

@@ -30,6 +30,7 @@ void startShell(){
 	sysPrintString("$> ",CB,CG,CR);
 
 	while (isRunning) {
+	    checkPipePrint();
 		sysGetProcesses((pid_t **)processes,processNames);
 		sysGetChar(&ch);
 		if(counter<MAX_WORD_LENGTH || ch == '\n'|| ch == '\b'){
@@ -43,7 +44,7 @@ void startShell(){
 			if (ch == '\n') {
 				reset(lastString,strleng(lastString));
 				copy(lastString,string,strleng(string)-1);
-				callFunction(string);
+				callFunction(string,0);
 				if(isRunning) sysPrintString("$> ",CB,CG,CR);
 				reset(string,strleng(string));
 				counter=0;
@@ -70,7 +71,7 @@ void startShell(){
 	}
 }
 
-int callFunction(char * buffer) {
+int callFunction(char * buffer, int backgroundflag) {
 	if (buffer == NULL){
 		return 1;
 	}
@@ -205,6 +206,9 @@ int callFunction(char * buffer) {
       else if(strcmp(input[1], "prodConsDemo") == 0){
         sysPrintString(PRODCONS_INS, B, G, R);
       }
+            else if(strcmp(input[1], "background") == 0){
+                sysPrintString(BACKGROUND_INS, B, G, R);
+            }
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
 			}
@@ -308,6 +312,15 @@ int callFunction(char * buffer) {
 		foreground(input[1]);
 		return 0;
 	}
+    else if(strcmp(input[0],"background") == 0) {
+        if(words != 2) {
+            sysPrintString("Wrong parameters: background receives one argument.\n", CB, CG, CR);
+            return 1;
+        }
+
+        callFunction(input[1],1);
+        return 0;
+    }
 	else if(strcmp(input[0],"prodConsDemo") == 0) {
     if(words!=2 || !isNum(input[1]))
     {
@@ -421,4 +434,22 @@ int graph(char input[4][MAX_WORD_LENGTH], int words) {
 
 pid_t getForegroundPID(){
 	return foregroundPID;
+}
+
+char pipeBuffer[256]={0};
+
+void pipeToShell(char * message, pid_t pid){
+    int i=0;
+    while(*(message+i) && i<256) *(pipeBuffer + i) = message[i++];
+    while(i++<256) *(pipeBuffer + i) = 0;
+}
+
+void checkPipePrint(){
+    if(*pipeBuffer){
+        sysPrintString("\n",255,255,255);
+        sysPrintString(pipeBuffer,255,255,255);
+        sysPrintString("\n",255,255,255);
+        int i=0;
+        while(i++<256) *(pipeBuffer + i) = 0;
+    }
 }

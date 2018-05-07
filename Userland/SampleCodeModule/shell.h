@@ -49,13 +49,14 @@
 #define OPCODE_INS "Creates opcode exception for testing purposes.\n"
 #define TEST_INS "Executes Kenel Testing Suite, the modules are: scheduler, ipc, all\n"
 #define FOREGROUND_INS "Sends requested process to foreground.\n"
+#define BACKGROUND_INS "Receives one argument, runs program argument in background. Shell programs can't be run in background. "
 #define PRODCONS_INS "Parameter 'size' determines the size of the testing buffer\n\
 											Once inside consumer and producer processes can be instantiated\n\
 											with the '1' and '2' keys"
 
 void startShell();
 int graph(char input[][MAX_WORD_LENGTH], int words);
-int callFunction(char * buffer);
+int callFunction(char * buffer, int backgroundFlag);
 int echo(char input[][MAX_WORD_LENGTH], int words);
 int clear(int words);
 int overflowGenerator(int n);
