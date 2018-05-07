@@ -40,6 +40,7 @@ int initMemoryManager(){
 		return 1;
 	}
 	myHeapInfo = newBookBlock;
+	heapBookBase = newBookBlock;
 	myBookLastPage = newBookBlock;//Simplemente para que el primer bloque del heapbook quede conectado a este, aunque este nunca se use.
 	return 0;
 }
@@ -70,30 +71,38 @@ void mm_free(){
 //Malloc otorga un espacio de memoria de x bytes
 void *malloc(size_t s){
 	bookBlock bookedBlock = searchBookedBlock(getPid());
+	int pid = getPid();
 	if(bookedBlock == NULL){
 		//No encontro ninguna pagina almacenada, hay que crear una nueva
+		printString("1a",0,0,255);
 		if(s >= PAGE_SIZE){//Pide mas de una pagina
 			return NULL;
 		}
+		printString("1b",0,0,255);
 		bookBlock newBookBlock = mm_malloc(BBLOCK_SIZE);
+		printString("1c",0,0,255);
 		if(newBookBlock == NULL){
 			//No hay mas espacio para storage
 			return NULL;
 		}
+		printString("1d",0,0,255);
 		newBookBlock->owner = getPid();
 		newBookBlock->brk = s; //Ya se sabe que no va a caer afuera de la pagina.
 		newBookBlock->base = popNewPage();
 		newBookBlock->next = NULL;
+		printString("1e",0,0,255);
 		if(newBookBlock->base == NULL){
 			//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
 			//Deberia hacer mm_free(newBookBlock)
 			return NULL;
 		}
+		printString("1f",0,0,255);
 		myBookLastPage->next = newBookBlock;//Conecto el anterior
 		myBookLastPage = newBookBlock;//Cambio el ultimo bloque
 		if(heapBookBase == NULL){
 			heapBookBase = newBookBlock;
 		}
+		printString("1g",0,0,255);
 		return newBookBlock->base;
 	}
 	else{
@@ -114,6 +123,7 @@ bookBlock searchBookedBlock(int id){
 	bookBlock current = heapBookBase;
 	while(current->owner != id){
 		if(current->next == NULL){
+			printString("Esta funcion es una mierda\n",0,0,255);
 			//No se encontro una pagina asociada al proceso
 			return NULL;
 		}

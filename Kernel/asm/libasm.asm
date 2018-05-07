@@ -23,7 +23,7 @@ section .text
 	push rax
 %endmacro
 
-%macro pushaq 0
+%macro pushaqlite 0
     push rbx
     push rcx
     push rdx
@@ -74,11 +74,18 @@ initialize_stack_frame_mein:
 
 initialize_stack_frame:
 	pop rbx
-	mov rsp, rdx
-	push rdi
-	push 0x216 
-	PUSHAQ
-	push rbx
+	mov rcx, rsp 
+	mov rsp, rsi
+	push 0x00 
+	push rsi 
+	push 0x206 
+	push 0x08 
+	push rdi 
+	push 0x0 
+	pushaqlite
+	mov rax, rsp
+	mov rsp, rcx
+	push rbx 
 	ret
 
 get_eip:

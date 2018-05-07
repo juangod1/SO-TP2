@@ -66,7 +66,10 @@ int main() {
 	void (*module)();
 
 	module = sampleCodeModuleAddress;
-
+	printString("hallo\n",255,255,255);
 	module();
+	while(1){
+		printString("lmao\n",255,255,255);
+	}
 	return 0;
 }

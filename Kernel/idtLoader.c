@@ -22,12 +22,19 @@ DESCR_INT * idt = (DESCR_INT *) 0;	// IDT de 255 entradas
 
 static void setup_IDT_entry (int index, uint64_t offset);
 
+
+void hang(){
+  printString("double fault", 0,2,255);
+  while(1);
+}
+
 void load_idt() {
   _cli();
 
   setup_IDT_entry(0x00, (uint64_t)&_divideByZeroHandler); // Divide by zero exception
   setup_IDT_entry(0x04, (uint64_t)&_overflowHandler); // Overflow exception
   setup_IDT_entry(0x06, (uint64_t)&_opcodeHandler); // Invalid opcode exception
+  //setup_IDT_entry(0x08, (uint64_t)&hang); // Double fault
   setup_IDT_entry(0x13, (uint64_t)&_generalProtection); // Invalid general protection exception 
   setup_IDT_entry(0x20, (uint64_t)&_irq00Handler);
   setup_IDT_entry(0x21, (uint64_t)&_irq01Handler); //Keyboard
