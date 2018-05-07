@@ -7,7 +7,7 @@
 #define HEAP_START 0x400000
 #define HEAP_END 0x799999
 #define NUM_OF_PAGES ((HEAP_END - HEAP_START)/PAGE_SIZE)
-#define PAGE_SIZE 0x4000
+#define PAGE_SIZE 0xF000
 
 
 typedef struct bookBlockStruct * bookBlock;
@@ -36,6 +36,9 @@ void mm_free();
 void * popNewPage();
 void dropPage(int id);
 bookBlock searchBookedBlock(int id);
+void mmShow();
+void pbShow();
+void *sysmalloc(size_t s);
 
 //Public functions
 void * malloc(size_t size);

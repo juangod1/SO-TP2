@@ -92,13 +92,13 @@ void * schedule(void* prevSP)
 {
     process_t prevProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
-    
+
     //dumpStackAndHalt(prevSP + sizeof(uint64_t));
     //processorWait(10000000);
 
     if(nextProcess == NULL) // QUEUE IS EMPTY
     {
-        printString("nextProcess is null\n",255,0,0);
+        //printString("nextProcess is null\n",255,0,0);
         return prevSP;
     }
     if(prevProcess == NULL) // FIRST PROCESS CASE
@@ -149,7 +149,7 @@ void execute(void* eip, char * nameBuffer)
     void* sp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
     if(sp == NULL){
         printString("No space for process.\n", 0, 0, 255);
-        free(newProcess);   
+        free(newProcess);
     }
     void* temp = initialize_stack_frame(eip, sp);
     newProcess->stackPointer = temp;

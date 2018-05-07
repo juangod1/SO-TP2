@@ -9,11 +9,7 @@ void shellWrapper();
 
 int main()
 {
-	char* name = "shell";
-	char ** buff;
-	sysMalloc(buff,6);
-	memcpy(*buff,name,6);
-	sysExecute((void*)startShell, *buff);
+	startShell();
 	return 1;
 }
 

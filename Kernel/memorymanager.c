@@ -7,6 +7,7 @@ void * heapBase = (void*)0x400000; //Hay que verificar que tipo de dato conviene
 
 
 bookBlock myHeapInfo = NULL;//Hoja del memory manager
+bookBlock myKernelBook = NULL;//Hoja del kernel
 bookBlock heapBookBase =  NULL;//Primer hoja del libro
 bookBlock myBookLastPage = NULL;//Ultima hoja del libro
 
@@ -28,20 +29,40 @@ char pageStatusArray[NUM_OF_PAGES];
 
 //Inicializar mi heap y variables de entorno. Devuelve 1 cuando hay error, 0 cuando fue exitoso.
 int initMemoryManager(){
+	printString("Initializing memory manager... \n",255,255,255);
 	initPageDirArray();
 	//Levanto la primer pagina del book para mi. Como yo conozco esa direccion, ya la utilizo para guardar las cosas.
 	bookBlock newBookBlock = (bookBlock) HEAP_START;
-	newBookBlock->owner = 123;
+	newBookBlock->owner = 0;
 	newBookBlock->brk = BBLOCK_SIZE; //Como esto esta escrito en la pagina que hace referencia, ya esta corrido.
 	newBookBlock->base = popNewPage();
 	newBookBlock->next = NULL;
 	if(newBookBlock->base == NULL){
-		//Esto no deberia pasar porque es el primer proceso.
+		//Esto no deberia pasar porque es el primera hoja.
 		return 1;
 	}
 	myHeapInfo = newBookBlock;
+
+	bookBlock newKernelBookBlock = (bookBlock) mm_malloc(BBLOCK_SIZE);
+	newKernelBookBlock->owner = 1;//ID del newKernelBookBlock
+	newKernelBookBlock->brk = DBLOCK_SIZE;
+	newKernelBookBlock->base = popNewPage();
+	newKernelBookBlock->next = NULL;
+
+	if(newKernelBookBlock->base == NULL){
+		//Esto no deberia pasar porque es la segunda hoja.
+		return 1;
+	}
+	dataBlock firstDataBlock = (dataBlock) newKernelBookBlock->base;
+	firstDataBlock->size=0;
+	firstDataBlock->next=NULL;
+	firstDataBlock->free=0;
+
+	myKernelBook = newKernelBookBlock;
+	newBookBlock->next = newKernelBookBlock;
+
 	heapBookBase = newBookBlock;
-	myBookLastPage = newBookBlock;//Simplemente para que el primer bloque del heapbook quede conectado a este, aunque este nunca se use.
+	myBookLastPage = newKernelBookBlock;//Simplemente para que el primer bloque del heapbook quede conectado a este, aunque este nunca se use.
 	return 0;
 }
 
@@ -67,13 +88,47 @@ void* mm_malloc(size_t s){
 void mm_free(){
 }
 
+void * malloc(size_t s){
+	dataBlock freeBlock = searchFreeBlock((dataBlock)myKernelBook->base, s);//Busca un bloque que cumpla con los requisitos
+	if(freeBlock == NULL){//No hay bloque libre entonces tengo que mover el brk.
+		//Al encontrarla me guardo el break anterior
+		int brk = myKernelBook->brk;
+		//Deberia verificar que tiene espacio en la pagina para la nueva magnitud
+		//Aumento el brk
+		if((brk + s + DBLOCK_SIZE) >= PAGE_SIZE){//Se cae de la pagina
+			printString("Fallo malloc\n",0,0,255);
+			return 0x1500000;
+		}
+		myKernelBook->brk = (brk +s+DBLOCK_SIZE);
+		//Armo el nuevo dataBlock
+		dataBlock newDataBlock =(dataBlock)(myKernelBook->base + brk);
+		newDataBlock->size = s;
+		newDataBlock->next = NULL;
+		newDataBlock->free = 0;
+
+		//Por el momento uso esta funcion para buscar al ultimo bloque. Cambiando la struct se puede hacer mas eficiente
+		dataBlock lastDataBlock = getLastDataBlock((dataBlock) myKernelBook->base);
+		lastDataBlock->next = newDataBlock;
+		//printString("Nuevo bloque kernel\n",255,255,255);
+		return (newDataBlock+1);
+	} else {
+		//printString("Reusa un bloque\n",255,255,255);
+		freeBlock->free=0;
+		return (freeBlock+1);
+	}
+}
+
+
 //Metodos de parciales
 //Malloc otorga un espacio de memoria de x bytes
-void *malloc(size_t s){
-	bookBlock bookedBlock = searchBookedBlock(getPid());
+void *sysmalloc(size_t s){
+	int pid = getPid();
+	//if(pid == -1)
+	//int pid = 3;
+	bookBlock bookedBlock = searchBookedBlock(pid);
 	if(bookedBlock == NULL){
 		//No encontro ninguna pagina almacenada, hay que crear una nueva
-		if(s +DBLOCK_SIZE >= PAGE_SIZE){//Pide mas de una pagina contando el bloque de dato
+		if((s + DBLOCK_SIZE) >= PAGE_SIZE){//Pide mas de una pagina contando el bloque de dato
 			return NULL;
 		}
 		bookBlock newBookBlock = mm_malloc(BBLOCK_SIZE);
@@ -81,7 +136,7 @@ void *malloc(size_t s){
 			//No hay mas espacio para storage
 			return NULL;
 		}
-		newBookBlock->owner = getPid();
+		newBookBlock->owner = pid;
 		newBookBlock->brk = DBLOCK_SIZE + s; //Ya se sabe que no va a caer afuera de la pagina.
 		newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
 		newBookBlock->next = NULL;
@@ -92,6 +147,9 @@ void *malloc(size_t s){
 		}
 		//Cargo el dataBlock
 		dataBlock newDataBlock = (dataBlock) newBookBlock->base;
+		printInt(pid,255,255,255);
+		printString("Hola\n", 255,255,255);
+		printInt(s,255,255,255);
 		newDataBlock->size = s;
 		newDataBlock->next = NULL;
 		newDataBlock->free = 0;
@@ -99,9 +157,6 @@ void *malloc(size_t s){
 		//Modifico los punteros de mi libro
 		myBookLastPage->next = newBookBlock;//Conecto el anterior
 		myBookLastPage = newBookBlock;//Cambio el ultimo bloque
-		if(heapBookBase == NULL){
-			heapBookBase = newBookBlock;
-		}
 		return (newDataBlock+1);//Le devuelvo el espacio realmente libre.
 	}
 	else{
@@ -114,9 +169,9 @@ void *malloc(size_t s){
 			if((brk + s + DBLOCK_SIZE) >= PAGE_SIZE){//Se cae de la pagina
 				return NULL;
 			}
-			bookedBlock->brk += (s+DBLOCK_SIZE);
+			bookedBlock->brk = (brk +s+DBLOCK_SIZE);
 			//Armo el nuevo dataBlock
-			dataBlock newDataBlock = bookedBlock->base + brk;
+			dataBlock newDataBlock =(dataBlock)(bookedBlock->base + brk);
 			newDataBlock->size = s;
 			newDataBlock->next = NULL;
 			newDataBlock->free = 0;
@@ -124,9 +179,9 @@ void *malloc(size_t s){
 			//Por el momento uso esta funcion para buscar al ultimo bloque. Cambiando la struct se puede hacer mas eficiente
 			dataBlock lastDataBlock = getLastDataBlock((dataBlock) bookedBlock->base);
 			lastDataBlock->next = newDataBlock;
-			return (newDataBlock+1);
+			return (newDataBlock+DBLOCK_SIZE);
 		} else {
-			return (freeBlock +1);
+			return (freeBlock +DBLOCK_SIZE);
 		}
 	}
 }
@@ -134,6 +189,8 @@ void *malloc(size_t s){
 //Tiene que recorrer los bloques y ver cambiar el bit de "uso" recursivamente para adelante y para atras
 void free(void *pointer)
 {
+	//printString("Alguien hizo free\n", 255,255,255);
+	//printInt(getPid(),255,255,255);
 	//Se puede llamar con NULL por lo que lo verifico
 	if (pointer == NULL) {
 	return;
@@ -214,10 +271,40 @@ dataBlock getLastDataBlock(dataBlock first){
 dataBlock searchFreeBlock(dataBlock start, size_t size)
 {
   dataBlock current = start;
-  while (current!=NULL && !(current->free && current->size >= size)) {
-    current = current->next;
+  while (current!=NULL) {
+		if(current->free && (current->size >= size))
+			return current;
+		current = current->next;
   }
   return current;
+}
+
+void mmShow(){
+	bookBlock current = heapBookBase;
+	printString("Showing Heap Book. PID --> Base\n");
+	while(current!=NULL){
+		printInt(current->owner,255,255,255);
+		printString(" --> ");
+		printHex((u_int64_t)current->base,255,255,255);
+		printString("\n",255,255,255);
+		if(current->owner != 0){
+			printString("Showing Blocks. Size --> Status\n");
+			pbShow((dataBlock)current->base);
+		}
+		current = current->next;
+		printString("--- \n");
+	}
+}
+
+void pbShow(dataBlock first){
+	dataBlock current = first;
+	while(current != NULL){
+		printInt(current->size,255,255,255);
+		printString(" --> ");
+		printInt((u_int64_t)current->free,255,255,255);
+		printString("\n",255,255,255);
+		current = current -> next;
+	}
 }
 
 

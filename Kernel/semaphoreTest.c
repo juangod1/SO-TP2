@@ -157,16 +157,16 @@ void setSemaphoreConditionsBackToNormal()
 
 void semaphoreTestMain()
 {
-  //printString("Testing semaphore initialization\n",0,0,255);
+  printString("Testing semaphore initialization\n",0,0,255);
   semaphoreInitializationTest();
 	setSemaphoreConditionsBackToNormal();
-  //printString("Testing semaphore finalization\n",0,0,255);
+  printString("Testing semaphore finalization\n",0,0,255);
   semaphoreFinalizationTest();
 	setSemaphoreConditionsBackToNormal();
-  //printString("Testing task request\n",0,0,255);
+  printString("Testing task request\n",0,0,255);
   taskRequestTest();
 	setSemaphoreConditionsBackToNormal();
-  //printString("Testing double task request\n",0,0,255);
+  printString("Testing double task request\n",0,0,255);
   twoTasksRequestTest();
 	setSemaphoreConditionsBackToNormal();
 }
