@@ -76,11 +76,11 @@ initialize_stack_frame:
 	pop rbx
 	mov rcx, rsp 
 	mov rsp, rsi
-	push 0x00 
+	push 0x0
 	push rsi 
-	push 0x206 
+	push 0x202 
 	push 0x08 
-	push rdi 
+	push rdi
 	push 0x0 
 	pushaqlite
 	mov rax, rsp

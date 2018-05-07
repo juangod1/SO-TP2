@@ -19,16 +19,10 @@ process_t t1;
 void given3Processes(){
     p1 = malloc(sizeof(struct process_t_CDT));
     if(p1==NULL) perror("Malloc returned NULL.");
-    p1->context = malloc(sizeof(struct process_context_CDT));
-    if(p1->context==NULL) perror("Malloc returned NULL.");
     p2 = malloc(sizeof(struct process_t_CDT));
     if(p2==NULL) perror("Malloc returned NULL.");
-    p2->context = malloc(sizeof(struct process_context_CDT));
-    if(p2->context==NULL) perror("Malloc returned NULL.");
     p3 = malloc(sizeof(struct process_t_CDT));
     if(p3==NULL) perror("Malloc returned NULL.");
-    p3->context = malloc(sizeof(struct process_context_CDT));
-    if(p3->context==NULL) perror("Malloc returned NULL.");
 
     p1->pid = 2;
     p2->pid = 2;
@@ -41,16 +35,10 @@ void given3Processes(){
 void given3OtherProcesses(){
     p4 = malloc(sizeof(struct process_t_CDT));
     if(p4==NULL) perror("Malloc returned NULL.");
-    p4->context = malloc(sizeof(struct process_context_CDT));
-    if(p4->context==NULL) perror("Malloc returned NULL.");
     p5 = malloc(sizeof(struct process_t_CDT));
     if(p5==NULL) perror("Malloc returned NULL.");
-    p5->context = malloc(sizeof(struct process_context_CDT));
-    if(p5->context==NULL) perror("Malloc returned NULL.");
     p6 = malloc(sizeof(struct process_t_CDT));
     if(p6==NULL) perror("Malloc returned NULL.");
-    p6->context = malloc(sizeof(struct process_context_CDT));
-    if(p6->context==NULL) perror("Malloc returned NULL.");
 
     p4->pid = 2;
     p5->pid = 2;
@@ -129,8 +117,6 @@ process_t thenNextProcessHasCertainPID(pid_t pid){
 void givenAProcessWithPID10(){
     p10 = malloc(sizeof(struct process_t_CDT));
     if(p10==NULL) perror("Malloc returned NULL.");
-    p10->context = malloc(sizeof(struct process_context_CDT));
-    if(p10->context==NULL) perror("Malloc returned NULL.");
     p10->pid = 10;
     p10->sleeps=0;
 }

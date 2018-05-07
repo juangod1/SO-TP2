@@ -6,6 +6,7 @@
 #include "include/processQueue.h"
 #include "include/videoDriver.h"
 #include "scheduler.h"
+#include "include/debugging.h"
 
 void* initialize_stack_frame(void* rip, void* rbp);
 uint64_t* get_eip();
@@ -91,82 +92,71 @@ void debug()
 
 void * schedule(void* prevSP)
 {
-    /*printString("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n",255,0,0);
-    uint64_t * curr = (uint64_t *)prevSP;
-    printInt(curr, 0,255,0);
-    printString("\n",255,0,0);
-    for(uint64_t i = 0; i < 30; i++){
-        printInt(curr[i], 255,255,255);
-        printString("\n",255,0,0);
-    }
-    printString("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n",255,0,0);
-    
-        while(1);*/
     process_t prevProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
     
+    //dumpStackAndHalt(prevSP + sizeof(uint64_t));
+    //processorWait(10000000);
 
     if(nextProcess == NULL) // QUEUE IS EMPTY
     {
+        printString("nextProcess is null\n",255,0,0);
         return prevSP;
     }
     if(prevProcess == NULL) // FIRST PROCESS CASE
     {
-        //printString("load first\n",255,0,0);
+        printString("prevProcess is null but next process is not null\n",255,0,0);
         queueProcess(nextProcess);
-        //printString("dequeued succ\n",255,0,0);
-        /*uint64_t * curr = (uint64_t *)nextProcess->context->stackPointer;
-        printInt(curr, 0,255,0);
-        printString("\n",255,0,0);
-        printInt(nextProcess, 0,255,0);
-        printString("\n",255,0,0);
-        printInt(nextProcess->context, 0,255,0);
-        printString("\n",255,0,0);
-        for(uint64_t i = 0; i < 30; i++){
-            printInt(curr[i], 255,255,255);
-            printString("\n",255,0,0);
-        }*/
-        return nextProcess->context->stackPointer;
+        printString("NextProcess name: ", 0, 255, 0);
+        printString(nextProcess->name, 0, 255, 0);
+        printString("\n", 0, 0, 0);
+        return nextProcess->stackPointer;
     }
     else
     {
-        //printString("ignore sched\n",255,0,0);
-        //return prevSP;
-        prevProcess->context->stackPointer = prevSP;
-        queueProcess(nextProcess);
-        return nextProcess->context->stackPointer;
+        printString("Prev and next processes are not null.\n",255,0,0);
+        printString("PrevProcess name: ",0,255,0);
+        printString(prevProcess->name,0,255,0);
+        printString("\n",0,0,0);
+        printString("NextProcess name: ",0,255,0);
+        printString(nextProcess->name,0,255,0);
+        printString("\n",0,0,0);
+        prevProcess->stackPointer = prevSP;
+        queueProcess(currentProcess);
+        return nextProcess->stackPointer;
     }
 }
 
 void execute(void* eip, char * nameBuffer)
 {
-    printString("Tried to initialize process.\n",100,200,200);
+    printString("Tried to initialize process: ",100,200,200);
     printString(nameBuffer,100,200,200);
-    printQueue();
+    printString("\n",0,0,0);
+    //printQueue();
 
     process_t newProcess = malloc(sizeof(struct process_t_CDT));
-    //printInt(newProcess, 0,255,0);
-    printString("a\n", 255, 255, 255);
+    if(newProcess == NULL){
+        printString("No space for process.\n", 0, 0, 255);
+    }
     newProcess->pid = 3;
-    printString("b\n", 255, 255, 255);
     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
-    printString("c\n", 255, 255, 255);
+    if(newProcess->name == NULL){
+        printString("No space for process.\n", 0, 0, 255);
+        free(newProcess);
+    }
     memcpy(newProcess->name, nameBuffer,strleng(nameBuffer));
-    printString("d\n", 255, 255, 255);
-    void* sbp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
-    printInt((uint64_t) sbp, 0,255,255);
-    printInt((uint64_t) eip, 0,255,255);
-    printString("e\n", 255, 255, 255);
-    newProcess->context = malloc(sizeof(struct process_context_CDT));
-    //printInt((uint64_t) newProcess->context, 255,0,0);
-    //printInt((uint64_t) malloc(1), 255,0,0);
-    printString("f\n", 255, 255, 255);
-    void* temp = initialize_stack_frame(eip, sbp);
-    newProcess->context->stackPointer = temp;
-    //printInt((uint64_t) temp, 255,255,0);
-    //printInt((uint64_t) newProcess->context->stackPointer, 255,0,0);
-    printString("g\n",255,255,255);
+    void* sp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
+    if(sp == NULL){
+        printString("No space for process.\n", 0, 0, 255);
+        free(newProcess);   
+    }
+    void* temp = initialize_stack_frame(eip, sp);
+    newProcess->stackPointer = temp;
     if(queueProcess(newProcess)>=0)
         printString("Queued process correctly.\n", 100, 200, 200);
+    else{
+        printString("Cannot quque process, not enough memory",0,0,255);
+    }
+    printString("This is the state of the queue: \n",255,255,255);
     printQueue();
 }

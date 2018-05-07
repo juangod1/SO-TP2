@@ -13,7 +13,7 @@ int main()
 	//sysTestSuite(1);
 	// startShell();
 	//void (*shell_ptr)() = shellWrapper;
-	sysExecute((void*)startShell, &name);
+	sysExecute((void*)runContextSwitchDemo, name);
 	return 1;
 }
 
