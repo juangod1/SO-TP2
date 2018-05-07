@@ -135,7 +135,7 @@ void sysGetChar(char * ch){
 }
 
 void sysExit(){
-    syscall(18,0,0,0,0,0);
+    sysCall(18,0,0,0,0,0);
 }
 
 void sysTestSuite(int num){
