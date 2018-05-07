@@ -40,7 +40,6 @@ int initMemoryManager(){
 		return 1;
 	}
 	myHeapInfo = newBookBlock;
-	heapBookBase = newBookBlock;
 	myBookLastPage = newBookBlock;//Simplemente para que el primer bloque del heapbook quede conectado a este, aunque este nunca se use.
 	return 0;
 }
@@ -71,59 +70,85 @@ void mm_free(){
 //Malloc otorga un espacio de memoria de x bytes
 void *malloc(size_t s){
 	bookBlock bookedBlock = searchBookedBlock(getPid());
-	int pid = getPid();
 	if(bookedBlock == NULL){
 		//No encontro ninguna pagina almacenada, hay que crear una nueva
-		printString("1a",0,0,255);
-		if(s >= PAGE_SIZE){//Pide mas de una pagina
+		if(s +DBLOCK_SIZE >= PAGE_SIZE){//Pide mas de una pagina contando el bloque de dato
 			return NULL;
 		}
-		printString("1b",0,0,255);
 		bookBlock newBookBlock = mm_malloc(BBLOCK_SIZE);
-		printString("1c",0,0,255);
 		if(newBookBlock == NULL){
 			//No hay mas espacio para storage
 			return NULL;
 		}
-		printString("1d",0,0,255);
 		newBookBlock->owner = getPid();
-		newBookBlock->brk = s; //Ya se sabe que no va a caer afuera de la pagina.
-		newBookBlock->base = popNewPage();
+		newBookBlock->brk = DBLOCK_SIZE + s; //Ya se sabe que no va a caer afuera de la pagina.
+		newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
 		newBookBlock->next = NULL;
-		printString("1e",0,0,255);
 		if(newBookBlock->base == NULL){
 			//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
 			//Deberia hacer mm_free(newBookBlock)
 			return NULL;
 		}
-		printString("1f",0,0,255);
+		//Cargo el dataBlock
+		dataBlock newDataBlock = (dataBlock) newBookBlock->base;
+		newDataBlock->size = s;
+		newDataBlock->next = NULL;
+		newDataBlock->free = 0;
+
+		//Modifico los punteros de mi libro
 		myBookLastPage->next = newBookBlock;//Conecto el anterior
 		myBookLastPage = newBookBlock;//Cambio el ultimo bloque
 		if(heapBookBase == NULL){
 			heapBookBase = newBookBlock;
 		}
-		printString("1g",0,0,255);
-		return newBookBlock->base;
+		return (newDataBlock+1);//Le devuelvo el espacio realmente libre.
 	}
 	else{
-		//Al encontrarla me guardo el break anterior
-		int brk = bookedBlock->brk;
-		//Deberia verificar que tiene espacio en la pagina para la nueva magnitud
-		//Aumento el brk
-		if((brk + s) >= PAGE_SIZE){//Se cae de la pagina
-			return NULL;
+		dataBlock freeBlock = searchFreeBlock((dataBlock)bookedBlock->base, s);//Busca un bloque que cumpla con los requisitos
+		if(freeBlock == NULL){//No hay bloque libre entonces tengo que mover el brk.
+			//Al encontrarla me guardo el break anterior
+			int brk = bookedBlock->brk;
+			//Deberia verificar que tiene espacio en la pagina para la nueva magnitud
+			//Aumento el brk
+			if((brk + s + DBLOCK_SIZE) >= PAGE_SIZE){//Se cae de la pagina
+				return NULL;
+			}
+			bookedBlock->brk += (s+DBLOCK_SIZE);
+			//Armo el nuevo dataBlock
+			dataBlock newDataBlock = bookedBlock->base + brk;
+			newDataBlock->size = s;
+			newDataBlock->next = NULL;
+			newDataBlock->free = 0;
+
+			//Por el momento uso esta funcion para buscar al ultimo bloque. Cambiando la struct se puede hacer mas eficiente
+			dataBlock lastDataBlock = getLastDataBlock((dataBlock) bookedBlock->base);
+			lastDataBlock->next = newDataBlock;
+			return (newDataBlock+1);
+		} else {
+			return (freeBlock +1);
 		}
-		bookedBlock->brk += s;
-		//Devuelvo el puntero a la pagina sumado el brk anterior
-		return (bookedBlock->base) + brk;
 	}
 }
 
+//Tiene que recorrer los bloques y ver cambiar el bit de "uso" recursivamente para adelante y para atras
+void free(void *pointer)
+{
+	//Se puede llamar con NULL por lo que lo verifico
+	if (pointer == NULL) {
+	return;
+	}
+
+	// TODO: una vez que genero los splits, tengo que hacer un metodo que pueda reunir los bloques
+	dataBlock oldDataBlock = getDataBlock(pointer);
+	//assert(blockSpace->free == 0);
+	oldDataBlock->free = 1;
+}
+
+//Busca la pgaina del libro para un pid
 bookBlock searchBookedBlock(int id){
 	bookBlock current = heapBookBase;
 	while(current->owner != id){
 		if(current->next == NULL){
-			printString("Esta funcion es una mierda\n",0,0,255);
 			//No se encontro una pagina asociada al proceso
 			return NULL;
 		}
@@ -132,6 +157,7 @@ bookBlock searchBookedBlock(int id){
 	return current;
 }
 
+//Devuelve la primer pagina libre que encuentra
 void * popNewPage(){
 	//Tiene que verificar que le queda stock de paginas para asignar y manejarse como un stack
 	//Recorre el array de estados para verificar hojas, luego la marca como ocupada y la devuelve.
@@ -167,53 +193,34 @@ void dropPage(int id){
 	//Se le podria agregar un codigo de error en el retorno.
 }
 
+/*A partir de aca es la implementacion completa*/
+
 dataBlock getDataBlock(void *pointer) {
   return (dataBlock)pointer - 1;
 }
 
-//Con este metodo se recorren los headers de cada bloque buscando que uno que cumpla con lo requerido
-dataBlock searchFreeBlock(dataBlock *last, size_t size)
+
+//Busca el ultimo bloque de la cadena. Faltan checkeos de errores
+dataBlock getLastDataBlock(dataBlock first){
+	dataBlock current = first;
+	while(current->next != NULL){
+		current = current->next;
+	}
+	return current;
+}
+
+//Se recorren los headers de cada bloque buscando que uno que cumpla con lo requerido
+dataBlock searchFreeBlock(dataBlock start, size_t size)
 {
-  dataBlock current = (dataBlock)heapBase;
+  dataBlock current = start;
   while (current!=NULL && !(current->free && current->size >= size)) {
-    *last = current;
     current = current->next;
   }
   return current;
 }
 
-//Free temporalmente deshabilitado
-void free(void* pointer){
-}
 
-//Si no se encuentra un bloque que cumpla con lo requerido, se deberia hacer un sbrk()
-//para generar nuevo espacio.
-dataBlock expandHeap(dataBlock* last, size_t size)
-{
-  dataBlock block;
-  //Me devuelve el puntero a la base del heap
-  block = sbrk(0);
-
-  //Verifica que lo que estoy pidiendo va a entrar en mi nuevo heap.
-  void *newBlock = sbrk(size + DBLOCK_SIZE);
-  //assert((void*)block == newBlock);
-
-  //Si no alcanza el espacio
-  if (newBlock == (void*) -1) {
-    return NULL;
-  }
-
-  //Siempre que no sea el primer llamado, quiero conectar mi nuevo bloque a la cadena.
-  if (*last) {
-    (*last)->next = block;
-  }
-  block->size = size;
-  block->next = NULL;
-  block->free = 0;
-  return block;
-}
-
-//Los bloques van a tener un bloque adelante y un bloque atras donde indican cuanto mide
+/*//Los bloques van a tener un bloque adelante y un bloque atras donde indican cuanto mide
 //y si esta siendo utilizado o no.
 void *mymalloc(size_t size)
 {
@@ -255,21 +262,38 @@ void *mymalloc(size_t size)
 	return(block+1);
 }
 
-//Tiene que recorrer los bloques y ver cambiar el bit de "uso" recursivamente para adelante y para atras
-void myfree(void *pointer)
-{
-	//Se puede llamar con NULL por lo que lo verifico
-	if (!pointer) {
-	return;
-	}
 
-	// TODO: una vez que genero los splits, tengo que hacer un metodo que pueda reunir los bloques
-	dataBlock blockSpace = getDataBlock(pointer);
-	//assert(blockSpace->free == 0);
-	blockSpace->free = 1;
+
+
+//Si no se encuentra un bloque que cumpla con lo requerido, se deberia hacer un sbrk()
+//para generar nuevo espacio.
+dataBlock expandHeap(dataBlock* last, size_t size)
+{
+  dataBlock block;
+  //Me devuelve el puntero a la base del heap
+  block = sbrk(0);
+
+  //Verifica que lo que estoy pidiendo va a entrar en mi nuevo heap.
+  void *newBlock = sbrk(size + DBLOCK_SIZE);
+  //assert((void*)block == newBlock);
+
+  //Si no alcanza el espacio
+  if (newBlock == (void*) -1) {
+    return NULL;
+  }
+
+  //Siempre que no sea el primer llamado, quiero conectar mi nuevo bloque a la cadena.
+  if (*last) {
+    (*last)->next = block;
+  }
+  block->size = size;
+  block->next = NULL;
+  block->free = 0;
+  return block;
 }
 
 //Mueve el break point de heap correspondiente y devuelve el puntero al mismo
 void *sbrk(size_t s){
 	return NULL;
 }
+*/

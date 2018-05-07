@@ -43,12 +43,12 @@ void free(void *pointer);
 
 //Internal page functions
 dataBlock getDataBlock(void *pointer);
-dataBlock searchFreeBlock(dataBlock *last, size_t size);
-dataBlock expandHeap(dataBlock* last, size_t size);
+dataBlock getLastDataBlock(dataBlock first);
+dataBlock searchFreeBlock(dataBlock last, size_t size);
 
 //N2H
 void *mymalloc(size_t size);
-void myfree(void *pointer);
+dataBlock expandHeap(dataBlock* last, size_t size);
 void *sbrk(size_t s);
 
 #endif

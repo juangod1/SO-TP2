@@ -2,14 +2,20 @@
 bookBlock mmBlock;
 size_t size;
 char* var;
+char* s1;
+char* s2;
+char* mem1;
 
 void mmTester(){
   printString("Testing memory manager\n----------------------\n",255,0,0);
 
   testSuccessfullInit();
   testNoMallocBefore();
-  testMaxSize();
-  testMaxMinusOneSize();
+  //testConsistentDualMalloc();
+  testFree();
+  //testMaxSize();
+  //testMaxMinusOneSize();
+
   /*
   printInt(mmBlock->owner,255,255,255);
   printInt(getPid(),255,255,255);
@@ -68,11 +74,36 @@ void testMaxSize(){
   thenVarIsNull();
 }
 
+void testFree(){
+  printString("Testing free --> ",255,255,255);
+  givenTwoStringsSameSize();
+  whenAllocatingOne();
+  thenSaveAddressAndFreeFirst();
+  whenAllocatingSecond();
+  thenCheckFirstAdressIsEqualToSecond();
+}
+
 void testMaxMinusOneSize(){
   printString("Testing max minus one size --> ",255,255,255);
   givenMaxMinusOneSize();
   whenMallocSize();
   thenVarIsNotNull();
+}
+
+void testConsistentDualMalloc(){
+  printString("Testing consistent dual malloc --> ",255,255,255);
+  givenTwoStrings();
+  whenMallocSizeOfBothStrings();
+  whenWrittenBothStrings();
+  thenCheckStringsAreConsistent();
+}
+
+void givenTwoStrings(){
+
+}
+
+void givenTwoStringsSameSize(){
+
 }
 
 void givenAMemoryAddressBase(){
@@ -87,8 +118,41 @@ void givenMaxMinusOneSize(){
   size = 16383;
 }
 
+void whenAllocatingOne(){
+  //Ya se aloco en el test anterior
+  s1 = malloc(5);
+}
+
+void whenAllocatingSecond(){
+  //Ya se aloco en el test anterior
+  s2 = malloc(5);
+}
+
 void whenMallocSize(){
   var = malloc(size);
+}
+
+void whenMallocSizeOfBothStrings(){
+  s1 = (char*) malloc(5);
+  s2 = (char*) malloc(5);
+}
+
+void whenWrittenBothStrings(){
+  s1 = "pablo";
+  s2 = "joaco";
+}
+
+void thenSaveAddressAndFreeFirst(){
+  mem1 = s1;
+  free(s1);
+}
+
+void thenCheckFirstAdressIsEqualToSecond(){
+  if(mem1 == s2){
+    thenOk();
+  } else {
+    thenFailed();
+  }
 }
 
 void thenCheckMainBlockPid(){
@@ -117,6 +181,14 @@ void thenVarIsNotNull(){
 
 void thenCheckFirstBookBlockNull(){
   if(mmBlock->next == NULL){
+    thenOk();
+  } else {
+    thenFailed();
+  }
+}
+
+void thenCheckStringsAreConsistent(){
+  if((strcmp(s1,"pablo") == 0) && (strcmp(s2,"joaco") == 0)){
     thenOk();
   } else {
     thenFailed();
