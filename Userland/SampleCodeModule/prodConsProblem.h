@@ -2,7 +2,7 @@
 #define PRODCONSPROBLEM_H
 
 
-void prodConsDemo(int value);
+void prodConsDemo();
 void producer();
 void consumer();
 

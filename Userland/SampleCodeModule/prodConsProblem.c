@@ -4,10 +4,10 @@
 
 int sharedInt=0;
 
-void prodConsDemo(int value)
+void prodConsDemo()
 {
   semStart(SEM_MUTEX_KEY,1);
-  semStart(SEM_OVERFLOW_KEY,value);
+  semStart(SEM_OVERFLOW_KEY,1);
   semStart(SEM_UNDERFLOW_KEY,0);
   int exitFlag=0;
   char input=0;

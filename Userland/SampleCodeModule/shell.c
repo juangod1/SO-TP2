@@ -323,13 +323,13 @@ int callFunction(char * buffer, int backgroundflag) {
         return 0;
     }
 	else if(strcmp(input[0],"prodConsDemo") == 0) {
-    if(words!=2 || !isNum(input[1]))
+    if(words!=1)
     {
-			sysPrintString("Wrong parameters: prodConsDemo receives one integer argument.\n", CB, CG, CR);
+			sysPrintString("No extra parameters for prodConsDemo.\n", CB, CG, CR);
 			return 1;
     }else
     {
-      prodConsDemo(toInt(input[1]));
+      prodConsDemo();
       return 0;
     }
   }

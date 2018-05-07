@@ -38,8 +38,10 @@ int taskRequest(semaphore sem, int pid) //eventually will have to ask pid type
 
   if(semaphoreCheck(&(sem->value)))
   {
+    printString("SemaphoreCheck returns true!\n",0,255,0);
     return 0;
   }
+    printString("SemaphoreCheck returns false!\n",0,0,255);
   sem->value--;
   sleepProcess(pid);
   processQueueAdd(pid, &(sem->processQueue));
