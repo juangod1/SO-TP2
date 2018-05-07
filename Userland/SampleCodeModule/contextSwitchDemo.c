@@ -39,10 +39,9 @@ void runContextSwitchDemo()
 }
 
 void loop1(){
-    sysPrintString("Entered loop 1.\n",0,255,255);
+    sysPrintString("Entered loop 1.\n",255,0,255);
     char* loop2Name = "loop2";
     //void(*loop2)() = loop2;
-    processorWait(1000000);
     sysExecute((void *)loop2, loop2Name);
     while(1){
         sysPrintString("In the first loop\n",0,255,0);
@@ -51,7 +50,6 @@ void loop1(){
 
 void loop2(){
     sysPrintString("Entered loop 2.\n", 0, 255, 255);
-    processorWait(1000000);
     while(1){
         sysPrintString("In the second loop\n",255,0,255);
     }

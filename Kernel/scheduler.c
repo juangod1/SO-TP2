@@ -114,15 +114,18 @@ void * schedule(void* prevSP)
     }
     else
     {
-        printString("Prev and next processes are not null.\n",255,0,0);
-        printString("PrevProcess name: ",0,255,0);
-        printString(prevProcess->name,0,255,0);
-        printString("\n",0,0,0);
+        // printString("Prev and next processes are not null.\n",255,0,0);
+        // printString("PrevProcess name: ",0,255,0);
+        // printString(prevProcess->name,0,255,0);
+        // printString("\n",0,0,0);
+        // printString("NextProcess name: ",0,255,0);
+        // printString(nextProcess->name,0,255,0);
+        // printString("\n",0,0,0);
+        prevProcess->stackPointer = prevSP;
+        queueProcess(nextProcess);
         printString("NextProcess name: ",0,255,0);
         printString(nextProcess->name,0,255,0);
         printString("\n",0,0,0);
-        prevProcess->stackPointer = prevSP;
-        queueProcess(currentProcess);
         return nextProcess->stackPointer;
     }
 }
