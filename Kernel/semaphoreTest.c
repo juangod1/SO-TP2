@@ -8,6 +8,7 @@
 
 semaphore global_semaphore;
 int global_pid;
+int global_semaphore_value=1;
 
 void givenAnEmptySemaphore()
 {
@@ -21,12 +22,12 @@ void givenAPRocessPid()
 
 void givenAnInitializedSemaphore()
 {
-  semaphoreInitialization(&global_semaphore);
+  semaphoreInitialization(&global_semaphore,global_semaphore_value);
 }
 
 void whenSemaphoreIsInitialized()
 {
-  semaphoreInitialization(&global_semaphore);
+  semaphoreInitialization(&global_semaphore,global_semaphore_value);
 }
 
 void whenSemaphoreIsFinalized()
