@@ -193,7 +193,10 @@ void queueDestructionTest(){
 void given100QueuedProcesses(){
     int i = 0;
     for (i=0;i<100;i++){
-        queueProcess(malloc(sizeof(struct process_t_CDT)));
+        void * p = malloc(sizeof(struct process_t_CDT));
+        if (p==NULL)
+            perror("Malloc returned NULL.\n");
+        queueProcess(p);
     }
 }
 

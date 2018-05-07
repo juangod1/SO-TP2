@@ -108,7 +108,9 @@ process_t peekByPID(pid_t pid){
         return NULL;
 
     node tmp = first;
-    while(tmp->process->pid != pid) {
+
+    int count=queueSize;
+    while(count-- != 0 && tmp->process->pid != pid) {
         if(tmp->tail==NULL)
             return NULL;
 
@@ -141,8 +143,8 @@ void printQueue() { // FOR DEBUGGING
 
     int i;
     node tmp=first;
+    printString("PID    SLEEPS    NAME\n",255,255,255);
     for(i=0;i<queueSize;i++) {
-        printString("PID    SLEEPS    NAME\n",255,255,255);
         printInt(tmp->process->pid,255,255,255);
         printString("       ",255,255,255);
         printInt(tmp->process->sleeps,255,255,255);

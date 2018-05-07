@@ -31,7 +31,6 @@ int sleepProcess(pid_t pid){
 
     if(find->sleeps)
         return 1;
-
     find->sleeps = 1;
     return 0;
 }
