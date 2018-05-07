@@ -8,6 +8,30 @@ static unsigned char ** video_start = (unsigned char**)0x0005C28;
 static unsigned int current_x = 0;
 static unsigned int current_y = 0;
 
+void swapScreenColors(int oB, int oG, int oR, int nB, int nG, int nR)
+{
+	for(int i=0; i<SCREEN_WIDTH; i+=1){
+		for(int j=0; j<SCREEN_HEIGHT; j+=1){
+			if(isPixelColor(i,j,oB,oG,oR))
+			{
+				paintPixel(i,j,nB,nG,nR);
+			}
+		}
+	}
+	resetScreenCoordinates();
+}
+
+int isPixelColor(int x, int y, int B, int G, int R)
+{
+	//Could check if boundedPixel() but might be a lot of work for little purpose since this is read only.
+	unsigned char * pixel_address;
+	pixel_address = getVideoPix() + 3*(x + y*SCREEN_WIDTH);
+	if(*pixel_address==B && *(pixel_address+1)==G && *(pixel_address+2)==R)
+	{
+		return 1;
+	}
+	return 0;
+}
 
 void resetScreenCoordinates()
 {

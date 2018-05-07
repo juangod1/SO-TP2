@@ -14,7 +14,8 @@
 #define DG 255
 #define DB 255
 #define NULL ((void*)0)
-#define helpIns "echo arguments ...         - Prints arguments\n\
+#define helpIns "\
+				echo arguments ...          - Prints arguments\n\
 				displayTime                 - Prints date and time to screen\n\
 				setTimeZone timezone        - Set timezone \n\
 				setFontColor color          - Changes font color\n\
@@ -25,7 +26,8 @@
 				exit                        - Exits the shell\n\
 				opcode                      - Tests opcode exception\n\
 				test module                 - Executes Kernel test suite\n\
-				foreground process_ID       - Sends process to foreground\n"
+				foreground process_ID       - Sends process to foreground\n\
+				prodConsDemo size           - Executes a demo of the Producer Consumer Problem\n"
 
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
 #define DISPLAY_TIME_INS "Recieves no arguments. Prints current date and time.\n\
@@ -47,6 +49,9 @@
 #define OPCODE_INS "Creates opcode exception for testing purposes.\n"
 #define TEST_INS "Executes Kenel Testing Suite, the modules are: scheduler, ipc, all\n"
 #define FOREGROUND_INS "Sends requested process to foreground.\n"
+#define PRODCONS_INS "Parameter 'size' determines the size of the testing buffer\n\
+											Once inside consumer and producer processes can be instantiated\n\
+											with the '1' and '2' keys"
 
 void startShell();
 int graph(char input[][MAX_WORD_LENGTH], int words);

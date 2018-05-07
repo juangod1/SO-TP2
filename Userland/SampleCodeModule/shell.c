@@ -103,21 +103,25 @@ int callFunction(char * buffer) {
 			return 1;
 		}
 		if (strcmp(input[1], "red") == 0){
+      //sysChangeScreenColors(B,G,R,255,0,0);
 			R=255;
 			B=0;
 			G=0;
 		}
 		else if (strcmp(input[1], "green") == 0){
+      //sysChangeScreenColors(B,G,R,0,255,0);
 			R=0;
 			B=0;
 			G=255;
 		}
 		else if (strcmp(input[1], "blue") == 0){
+      //sysChangeScreenColors(B,G,R,0,0,255);
 			R=0;
 			B=255;
 			G=0;
 		}
 		else if (strcmp(input[1], "default") == 0){
+      //sysChangeScreenColors(B,G,R,DB,DG,DR);
 			R=DR;
 			B=DB;
 			G=DG;
@@ -197,6 +201,9 @@ int callFunction(char * buffer) {
       }
       else if(strcmp(input[1], "foreground") == 0){
         sysPrintString(FOREGROUND_INS, B, G, R);
+      }
+      else if(strcmp(input[1], "prodConsDemo") == 0){
+        sysPrintString(PRODCONS_INS, B, G, R);
       }
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
