@@ -10,7 +10,7 @@ struct semStruct
 	queueEntry processQueue;
 };
 
-void semaphoreInitialization(semaphore * sem);
+void semaphoreInitialization(semaphore * sem, int value);
 int taskRequest(semaphore sem, int pid);
 void taskFinished(semaphore sem, int pid);
 void semaphoreFinalization(semaphore * sem);

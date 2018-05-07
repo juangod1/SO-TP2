@@ -49,9 +49,7 @@ int createlistEntry(int key_P, int value_P, listEntry * me_P)
 		(*me_P)->key=key_P;
 		(*me_P)->next=NULL;
 
-		(*me_P)->sem=malloc(sizeof(struct semStruct));
-		(*me_P)->sem->value=value_P;
-		(*me_P)->sem->processQueue=NULL;
+		semaphoreInitialization(&((*me_P)->sem), value_P);
 		return 0;
 	}
 	if((*me_P)->key==key_P)

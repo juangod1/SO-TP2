@@ -6,10 +6,11 @@
 
 extern int semaphoreCheck(void * ptr);
 
-void semaphoreInitialization(semaphore * sem)
+void semaphoreInitialization(semaphore * sem, int value)
 {
+  int realValue = (value<=0)?0:1;
   (*sem) = malloc(sizeof(struct semStruct));
-  (*sem)->value=1;
+  (*sem)->value=realValue;
   (*sem)->processQueue=NULL;
   return;
 }
