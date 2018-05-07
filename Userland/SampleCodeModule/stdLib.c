@@ -134,6 +134,10 @@ void sysGetChar(char * ch){
   sysCall(2,(uint64_t)ch,0,0,0,0);
 }
 
+void sysExit(){
+    syscall(18,0,0,0,0,0);
+}
+
 void sysTestSuite(int num){
     sysCall(6,(uint64_t)num,0,0,0,0);
 }

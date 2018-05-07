@@ -76,5 +76,8 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       case 17:
           *((void **)rsi) = malloc(rdx);
           break;
+      case 18:
+          //exit();
+          break;
   }
 }
