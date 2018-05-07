@@ -58,8 +58,8 @@ int getAmountOfProcesses(){
    return getQueueSize();
 }
 
-void listProcesses(pid_t ** buffer, char ** namesBuffer){
-    listQueue(buffer,namesBuffer);
+void listProcesses(pid_t ** buffer, char ** namesBuffer, int processNum[1]){
+    listQueue(buffer,namesBuffer,processNum);
 }
 
 int queueProcess(process_t process){
@@ -138,33 +138,21 @@ void * schedule(void* prevSP)
 
 void execute(void* eip, char * nameBuffer)
 {
-    printString("Tried to initialize process.\n",100,200,200);
+    printString("Initializing process ",100,200,200);
     printString(nameBuffer,100,200,200);
-    printQueue();
+    printString("\n",0,0,0);
 
     process_t newProcess = malloc(sizeof(struct process_t_CDT));
-    //printInt(newProcess, 0,255,0);
-    printString("a\n", 255, 255, 255);
     newProcess->pid = getNewPid();
-    printString("b\n", 255, 255, 255);
     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
-    printString("c\n", 255, 255, 255);
     memcpy(newProcess->name, nameBuffer,strleng(nameBuffer));
-    printString("d\n", 255, 255, 255);
     void* sbp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
-    printInt((uint64_t) sbp, 0,255,255);
-    printInt((uint64_t) eip, 0,255,255);
-    printString("e\n", 255, 255, 255);
     newProcess->context = malloc(sizeof(struct process_context_CDT));
-    //printInt((uint64_t) newProcess->context, 255,0,0);
-    //printInt((uint64_t) malloc(1), 255,0,0);
-    printString("f\n", 255, 255, 255);
     void* temp = initialize_stack_frame(eip, sbp);
     newProcess->context->stackPointer = temp;
-    //printInt((uint64_t) temp, 255,255,0);
-    //printInt((uint64_t) newProcess->context->stackPointer, 255,0,0);
-    printString("g\n",255,255,255);
-    if(queueProcess(newProcess)>=0)
-        printString("Queued process correctly.\n", 100, 200, 200);
+    if(queueProcess(newProcess)<0)
+        perror("Process queueing error.");
+
+    printString("Process list:\n",200,200,10);
     printQueue();
 }

@@ -168,8 +168,12 @@ int getPid()
   return pid;
 }
 
-void sysGetProcesses(pid_t ** buffer, char ** namesBuffer){
-  sysCall(9,(uint64_t)buffer,(uint64_t)namesBuffer,0,0,0);
+void sysGetProcesses(pid_t ** buffer, char ** namesBuffer, int amount[1]){
+  sysCall(9,(uint64_t)buffer,(uint64_t)namesBuffer,amount,0,0);
+}
+
+void sysMalloc(void ** buff, size_t size){
+    sysCall(17,buff,size,0,0,0);
 }
 
 void sendMessage(mbd_t descriptor, void * messageContent)
@@ -207,20 +211,41 @@ void semStop(int key)
   sysCall((uint64_t)16,(uint64_t)key,0,0,0,0);
 }
 
+void * memcpy(void * destination, const void * source, uint64_t length)
+{
+    /*
+    * memcpy does not support overlapping buffers, so always do it
+    * forwards. (Don't change this without adjusting memmove.)
+    *
+    * For speedy copying, optimize the common case where both pointers
+    * and the length are word-aligned, and copy word-at-a-time instead
+    * of byte-at-a-time. Otherwise, copy by bytes.
+    *
+    * The alignment logic below should be portable. We rely on
+    * the compiler to be reasonably intelligent about optimizing
+    * the divides and modulos out. Fortunately, it is.
+    */
+    uint64_t i;
 
-void listProcesses(){
-  int buffer[MAX_PROCESSES][2]={};
-  int names[MAX_PROCESSES][MAX_PROCESS_NAME_LENGTH]={};
-  sysGetProcesses(buffer,names);
+    if ((uint64_t)destination % sizeof(uint32_t) == 0 &&
+        (uint64_t)source % sizeof(uint32_t) == 0 &&
+        length % sizeof(uint32_t) == 0)
+    {
+        uint32_t *d = (uint32_t *) destination;
+        const uint32_t *s = (const uint32_t *)source;
 
-  sysPrintString("PID    NAME        SLEEPS\n",255,255,255);
-  int i;
-  for(i=0;i<MAX_PROCESSES;i++){
-    sysPrintInt(buffer[i][0],255,255,255);
-    sysPrintString("            ",255,255,255);
-    sysPrintString(names[i],255,255,255);
-    sysPrintString("            ",255,255,255);
-    sysPrintInt(buffer[i][1],255,255,255);
-    sysPrintString("\n",0,0,0);
-  }
+        for (i = 0; i < length / sizeof(uint32_t); i++)
+            d[i] = s[i];
+    }
+    else
+    {
+        uint8_t * d = (uint8_t*)destination;
+        const uint8_t * s = (const uint8_t*)source;
+
+        for (i = 0; i < length; i++)
+            d[i] = s[i];
+    }
+
+    return destination;
 }
+

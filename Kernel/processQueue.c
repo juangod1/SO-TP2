@@ -120,7 +120,7 @@ process_t peekByPID(pid_t pid){
     return tmp->process;
 }
 
-void listQueue(pid_t ** buffer, char ** namesBuffer){
+void listQueue(pid_t ** buffer, char ** namesBuffer, int processNum[1]){
     if(queueSize==0)
         return;
 
@@ -133,6 +133,7 @@ void listQueue(pid_t ** buffer, char ** namesBuffer){
 
         tmp = tmp->tail;
     }
+    processNum[0]=queueSize;
 }
 
 void printQueue() { // FOR DEBUGGING

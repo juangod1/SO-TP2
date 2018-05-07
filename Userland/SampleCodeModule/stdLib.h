@@ -26,6 +26,8 @@ void sysGetTime(int * buffer);
 void sysNewLine();
 void sysReadInput(char * buffer);
 void sysClear();
+void * memcpy(void * destination, const void * source, uint64_t length);
+void sysMalloc(void ** buff, size_t size);
 int countDigits(int num);
 void sysPaintPixel(int x, int y, char R, char G, char B);
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red);
@@ -37,9 +39,7 @@ int getPid();
 void sysExecute(void* functionPointer, char * name);
 void sysTestSuite(int num);
 void sysCSD();
-void sysGetProcesses(pid_t ** buffer, char ** namesBuffer);
-void listProcesses();
-
+void sysGetProcesses(pid_t ** buffer, char ** namesBuffer, int amount[1]);
 
 void semStop(int key);
 void semStart(int key, int value);

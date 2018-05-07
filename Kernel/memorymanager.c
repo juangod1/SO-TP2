@@ -40,6 +40,7 @@ int initMemoryManager(){
 		return 1;
 	}
 	myHeapInfo = newBookBlock;
+	heapBookBase = newBookBlock;
 	myBookLastPage = newBookBlock;//Simplemente para que el primer bloque del heapbook quede conectado a este, aunque este nunca se use.
 	return 0;
 }

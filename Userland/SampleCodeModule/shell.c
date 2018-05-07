@@ -15,6 +15,7 @@ pid_t foregroundPID = 0;
 
 char * processNames[MAX_PROCESSES];
 int processes[MAX_PROCESSES][2];
+int processesAmount[1];
 
 int foreground(pid_t pid){
     foregroundPID = pid;
@@ -30,8 +31,8 @@ void startShell(){
 	sysPrintString("$> ",CB,CG,CR);
 
 	while (isRunning) {
-	    checkPipePrint();
-		sysGetProcesses((pid_t **)processes,processNames);
+	    checkPipePrint(); // check if background processes wanted to print to shell
+		sysGetProcesses((pid_t **)processes,processNames,processesAmount);
 		sysGetChar(&ch);
 		if(counter<MAX_WORD_LENGTH || ch == '\n'|| ch == '\b'){
 
@@ -332,6 +333,16 @@ int callFunction(char * buffer, int backgroundflag) {
       return 0;
     }
   }
+    else if(strcmp(input[0],"ps") == 0) {
+        if(words!=1)
+        {
+            sysPrintString("Wrong parameters: ps receives no arguments.\n", CB, CG, CR);
+            return 1;
+        }
+        listProcesses();
+        return 0;
+
+    }
 	else {
 		sysPrintString("Wrong input\n", CB, CG, CR);
 
@@ -451,5 +462,21 @@ void checkPipePrint(){
         sysPrintString("\n",255,255,255);
         int i=0;
         while(i++<256) *(pipeBuffer + i) = 0;
+    }
+}
+
+
+void listProcesses(){
+    sysGetProcesses(processes,processNames,processesAmount);
+
+    sysPrintString("PID      SLEEPS      NAME\n",255,255,255);
+    int i;
+    for(i=0;i<processesAmount[0];i++){
+        sysPrintInt(processes[i][0],255,255,255);
+        sysPrintString("        ",255,255,255);
+        sysPrintInt(processes[i][1],255,255,255);
+        sysPrintString("        ",255,255,255);
+        sysPrintString(processNames[i],255,255,255);
+        sysPrintString("\n",0,0,0);
     }
 }

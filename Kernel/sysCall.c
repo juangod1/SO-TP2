@@ -50,7 +50,7 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       getPid((pid_t*)rsi);
       break;
     case 9:
-      listProcesses(rsi, rdx);
+      listProcesses(rsi, rdx, rcx);
       break;
     case 10:
       sendMessage((mbd_t)rsi, (void *)rdx);
@@ -73,5 +73,8 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
     case 16:
       stopSemaphore((int)rsi);
       break;
+      case 17:
+          *((void **)rsi) = malloc(rdx);
+          break;
   }
 }

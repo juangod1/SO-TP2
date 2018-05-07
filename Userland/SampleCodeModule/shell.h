@@ -3,7 +3,7 @@
 
 #include "stdLib.h"
 
-#define MAX_PROCESSES 6
+#define MAX_PROCESSES 256
 #define MAX_PROCESS_NAME_LENGTH 20
 #define MAX_WORD_LENGTH 124
 #define MAX_WORDS 32
@@ -27,7 +27,8 @@
 				opcode                      - Tests opcode exception\n\
 				test module                 - Executes Kernel test suite\n\
 				foreground process_ID       - Sends process to foreground\n\
-				prodConsDemo size           - Executes a demo of the Producer Consumer Problem\n"
+				prodConsDemo size           - Executes a demo of the Producer Consumer Problem\n\
+ps                          - Lists running processes.\n"
 
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
 #define DISPLAY_TIME_INS "Recieves no arguments. Prints current date and time.\n\
