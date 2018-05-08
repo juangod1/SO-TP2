@@ -12,7 +12,8 @@ void r();
 
 int main()
 {
-	sysExecute(startShell,"Shell");
+	//sysExecute(startShell,"Shell");
+	startShell();
 	return 1;
 }
 

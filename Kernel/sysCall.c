@@ -73,11 +73,17 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
     case 16:
       stopSemaphore((int)rsi);
       break;
-      case 17:
-          *((void **)rsi) = malloc(rdx);
-          break;
-      case 18:
-          exit();
-          break;
+    case 17:
+        *((void **)rsi) = malloc(rdx);
+        break;
+    case 18:
+        exit();
+        break;
+    case 19:
+      getMyHeapBase((dataBlock *) rsi);
+      break;
+    case 20:
+      expandHeap((dataBlock *) rsi, rdx);
+      break;
   }
 }
