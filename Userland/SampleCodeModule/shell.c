@@ -26,6 +26,7 @@ void backgroundProcessRun(){
 }
 
 int foreground(pid_t pid){
+    //DEBUGPrintInt(pid,100,100,100);
     foregroundPID = pid;
 }
 
@@ -317,7 +318,7 @@ int callFunction(char * buffer, int backgroundflag) {
 			return 1;
 		}
 
-		foreground(input[1]);
+		foreground(toInt(input[1]));
 		return 0;
 	}
     else if(strcmp(input[0],"background") == 0) {
