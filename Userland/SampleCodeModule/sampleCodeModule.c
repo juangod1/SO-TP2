@@ -7,17 +7,33 @@
 
 void shellWrapper();
 
+void b();
+void r();
+
 int main()
 {
-	char* name = "shell";
+	/*char* name = "shell";
 	char ** buff;
 	sysMalloc(buff,6);
 	memcpy(*buff,name,6);
-	sysExecute((void*)startShell, *buff);
+	sysExecute((void*)startShell, *buff);*/
+
+	sysExecute(b,"bluu");
 	return 1;
 }
 
 void shellWrapper()
 {
 	startShell();
+}
+
+void b(){
+    sysExecute(r,"reddy");
+    while(1)
+        sysPrintString("b",255,0,0);
+}
+
+void r(){
+    while(1)
+        sysPrintString("r",0,0,255);
 }

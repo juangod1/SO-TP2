@@ -139,7 +139,7 @@ void execute(void* eip, char * nameBuffer)
     if(newProcess == NULL){
         printString("No space for process.\n", 0, 0, 255);
     }
-    newProcess->pid = 3;
+    newProcess->pid = getNewPid();
     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
     if(newProcess->name == NULL){
         printString("No space for process.\n", 0, 0, 255);
@@ -149,7 +149,7 @@ void execute(void* eip, char * nameBuffer)
     void* sp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
     if(sp == NULL){
         printString("No space for process.\n", 0, 0, 255);
-        free(newProcess);   
+        free(newProcess);
     }
     void* temp = initialize_stack_frame(eip, sp);
     newProcess->stackPointer = temp;
