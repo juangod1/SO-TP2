@@ -9,7 +9,7 @@ void * heapBase = (void*)0x400000; //Hay que verificar que tipo de dato conviene
 bookBlock myHeapInfo = NULL;//Hoja del memory manager
 bookBlock myKernelBook = NULL;//Hoja del kernel
 bookBlock heapBookBase =  NULL;//Primer hoja del libro
-bookBlock myBookLastPage = NULL;//Ultima hoja del libro
+bookBlock myBookLastPage = NULL;;//Ultima hoja del libro
 
 //Tengo que tener un array con todas las direcciones de las paginas y de ahi voy sacandolas
 //y volviendolas a poner. Al volverlas a poner las tengo que poner en 0 nuevamente
