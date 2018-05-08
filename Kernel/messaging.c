@@ -20,7 +20,7 @@ void initializePostOffice()
   }
   postOffice=malloc(sizeof(struct postOfficeStruct));
   postOffice->msgBox=malloc(sizeof(void *));
-  *(postOffice->msgBox)=NULL;
+  postOffice->msgBox=NULL;
 }
 
 void finalizePostOffice()
@@ -29,7 +29,7 @@ void finalizePostOffice()
   {
     return;
   }
-  recursiveFinalizeMessageBox(postOffice->msgBox);
+  recursiveFinalizeMessageBox(&(postOffice->msgBox));
   free(postOffice->msgBox);
   postOffice->msgBox=NULL;
   free(postOffice);
@@ -42,7 +42,7 @@ int postOfficeSize()
   {
     return 0;
   }
-  return postOfficeSizeRec(postOffice->msgBox);
+  return postOfficeSizeRec(&(postOffice->msgBox));
 }
 
 int postOfficeSizeRec(messageBox * mB)
@@ -112,7 +112,7 @@ messageBox * findMessageBox(char * key_P, messageBox * mB)
 
 int messageBoxSize(mbd_t descriptor)
 {
-  messageBox * mB = getMessageBoxRec(descriptor->key, postOffice->msgBox, descriptor->size, descriptor->block);
+  messageBox * mB = getMessageBoxRec(descriptor->key, &(postOffice->msgBox), descriptor->size, descriptor->block);
   if(mB==NULL || (*mB)==NULL) return 0;
   return recMessageSize(&((*mB)->msg));
 }
@@ -127,7 +127,7 @@ int recMessageSize(message * mL)
 
 messageBox getMessageBox(char * key_P, size_t messageSize,char block_P)
 {
-  return *(getMessageBoxRec(key_P, postOffice->msgBox, messageSize, block_P));
+  return *(getMessageBoxRec(key_P, &(postOffice->msgBox), messageSize, block_P));
 }
 
 messageBox * getMessageBoxRec(char * key_P, messageBox * mB, size_t messageSize, char block_P)
@@ -210,20 +210,20 @@ void recieveMessageRec(message * mL, size_t size, void *buffer, messageBox * mB)
 
 void finalizeMessageBox(mbd_t descriptor)
 {
-  messageBox * del = findMessageBox(descriptor->key, postOffice->msgBox);
+  messageBox * del = findMessageBox(descriptor->key, &(postOffice->msgBox));
   if(del!=NULL)  freeMessageBox(del);
 }
 
 void sendMessage(mbd_t descriptor, void * messageContent)
 {
-  messageBox * mB = getMessageBoxRec(descriptor->key, postOffice->msgBox, descriptor->size, descriptor->block);
+  messageBox * mB = getMessageBoxRec(descriptor->key, &(postOffice->msgBox), descriptor->size, descriptor->block);
   if(mB==NULL || *mB==NULL) return;
   sendMessageRec(&((*mB)->msg), (*mB)->msgSize, messageContent, mB);
 }
 
 void recieveMessage(mbd_t descriptor, void * buffer)
 {
-  messageBox * mB = getMessageBoxRec(descriptor->key, postOffice->msgBox, descriptor->size, descriptor->block);
+  messageBox * mB = getMessageBoxRec(descriptor->key, &(postOffice->msgBox), descriptor->size, descriptor->block);
   if(mB==NULL || *mB==NULL) return;
   recieveMessageRec(&((*mB)->msg),(*mB)->msgSize,  buffer, mB);
 }

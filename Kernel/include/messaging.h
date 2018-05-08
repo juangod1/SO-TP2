@@ -33,7 +33,7 @@ struct messageBoxStruct
 typedef struct postOfficeStruct * postOfficePTR;
 struct postOfficeStruct
 {
-  messageBox * msgBox;
+  messageBox msgBox;
 };
 
 void initializePostOffice();
