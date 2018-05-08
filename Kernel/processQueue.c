@@ -169,3 +169,17 @@ void destroyQueue(){
     last=NULL;
     queueSize = 0;
 }
+
+void removeLast()
+{
+    node tmp = first;
+    node prev = NULL;
+    if(queueSize==0 || tmp == NULL)
+        return;
+    while(tmp->tail != NULL){
+        prev = tmp;
+        tmp = tmp->tail;
+    }
+    prev->tail = NULL;
+    free(tmp);
+}
