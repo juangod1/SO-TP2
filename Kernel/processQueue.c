@@ -124,20 +124,20 @@ process_t peekByPID(pid_t pid){
     return tmp->process;
 }
 
-void listQueue(pid_t ** buffer, char ** namesBuffer, int processNum[1]){
+void listQueue(pid_t * processesPID, int * processesSleep, char ** processesNames, int * processesAmount){
     if(queueSize==0)
         return;
 
     int i;
     node tmp=first;
     for(i=0;i<queueSize;i++) {
-        buffer[i][0] = tmp->process->pid;
-        buffer[i][1] = tmp->process->sleeps;
-        memcpy(namesBuffer[i],tmp->process->name,strleng(tmp->process->name));
+        processesPID[i] = tmp->process->pid;
+        processesSleep[i] = tmp->process->sleeps;
+        memcpy(processesNames[i],tmp->process->name,strleng(tmp->process->name));
 
         tmp = tmp->tail;
     }
-    processNum[0]=queueSize;
+    processesAmount[0]=queueSize;
 }
 
 void printQueue() { // FOR DEBUGGING

@@ -13,8 +13,9 @@ static int isRunning = 1;
 static int timeZone = -3;
 pid_t foregroundPID = 0;
 
-char processNames[MAX_PROCESSES][MAX_PROCESS_NAME_LENGTH];
-int processes[MAX_PROCESSES][2];
+char * processNames[MAX_PROCESSES];
+int processesSleep[MAX_PROCESSES];
+pid_t processesPID[MAX_PROCESSES];
 int processesAmount[1];
 
 mbd_t mbdescriptor;
@@ -38,10 +39,10 @@ void startShell(){
 	sysPrintString("$> ",CB,CG,CR);
 
 	while (isRunning) {
-	    //checkShellBox(); // check if background processes wanted to print to shell
-		sysGetProcesses((pid_t **)processes,processNames,processesAmount);
+		if(checkIfForeground())
 		sysGetChar(&ch);
 		if(counter<MAX_WORD_LENGTH || ch == '\n'|| ch == '\b'){
+		    if(checkIfForeground())
 			sysWriteChar(ch, B, G, R);
 
 
@@ -492,14 +493,14 @@ mbd_t getShellBoxDescriptor(){
 }
 
 void listProcesses(){
-    sysGetProcesses(processes,processNames,processesAmount);
+    sysGetProcesses(processesPID,processesSleep,processNames,processesAmount);
 
     sysPrintString("PID      SLEEPS      NAME\n",255,255,255);
     int i;
     for(i=0;i<processesAmount[0];i++){
-        sysPrintInt(processes[i][0],255,255,255);
+        sysPrintInt(processesPID[i],255,255,255);
         sysPrintString("        ",255,255,255);
-        sysPrintInt(processes[i][1],255,255,255);
+        sysPrintInt(processesSleep[i],255,255,255);
         sysPrintString("        ",255,255,255);
         sysPrintString(processNames[i],255,255,255);
         sysPrintString("\n",0,0,0);

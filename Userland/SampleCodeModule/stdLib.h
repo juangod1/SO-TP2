@@ -54,8 +54,8 @@ int getPid();
 void sysExecute(void* functionPointer, char * name);
 void sysTestSuite(int num);
 void sysCSD();
-void sysGetProcesses(pid_t ** buffer, char ** namesBuffer, int amount[1]);
-
+void sysGetProcesses(pid_t * processesPID, int * processesSleep, char ** processesNames, int * processesAmount);
+int checkIfForeground();
 void semStop(int key);
 void semStart(int key, int value);
 void semSignal(int key);

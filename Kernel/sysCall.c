@@ -50,7 +50,7 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
         *((pid_t*)rsi) = getPid();
       break;
     case 9:
-      listProcesses(rsi, rdx, rcx);
+      listProcesses(rsi, rdx, rcx, r8);
       break;
     case 10:
       sendMessage((mbd_t)rsi, (void *)rdx);
