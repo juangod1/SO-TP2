@@ -10,9 +10,10 @@ void mmTester(){
   printString("Testing memory manager\n----------------------\n",255,0,0);
 
   testSuccessfullInit();
-  testNoMallocBefore();
+  showStructure();
+  //testNoMallocBefore();
   //testConsistentDualMalloc();
-  testFree();
+  //testFree();
   //testMaxSize();
   //testMaxMinusOneSize();
 
@@ -156,7 +157,7 @@ void thenCheckFirstAdressIsEqualToSecond(){
 }
 
 void thenCheckMainBlockPid(){
-  if(mmBlock->owner == 123){
+  if(mmBlock->owner == 0){
     thenOk();
   }else{
     thenFailed();
@@ -195,6 +196,9 @@ void thenCheckStringsAreConsistent(){
   }
 }
 
+void showStructure(){
+  mmShow();
+}
 
 
 void thenOk(){

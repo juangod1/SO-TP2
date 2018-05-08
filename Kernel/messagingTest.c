@@ -61,6 +61,7 @@ void thenMessageBoxIsRemoved()
   }
   else
   {
+    printInt(postOfficeSize(),0,255,255);
     fail("Expected postOffice size equal to one, found different number\n");
   }
 }
@@ -134,12 +135,20 @@ void messageAdditionTest()
 
 void messageReadTest()
 {
+  printString("mr2\n",255,255,255);
   givenAnInitializedPostOffice();
+  printString("mr3\n",255,255,255);
   givenACorrectDescriptor();
+  printString("mr4\n",255,255,255);
   givenAMessage();
+  printString("mr5\n",255,255,255);
+
   givenAMessageAdded();
+  printString("mr6\n",255,255,255);
   whenReadingFromMessageBox();
+  printString("mr7\n",255,255,255);
   thenMessageBoxIsEmpty();
+  printString("mr8\n",255,255,255);
   thenMessageReadIsSame();
 }
 
@@ -256,23 +265,28 @@ void thenPostOfficeSizeIsAHundred()
 
 void messagingTestMain()
 {
-  //printString("Testing message addition --> ",TB,TG,TR);
+  printString("Testing message addition --> ",TB,TG,TR);
   messageAdditionTest();
   finalizePostOffice();
-  //printString("Testing message reception --> ",TB,TG,TR);
+  free(global_MB_descriptor);
+  printString("Testing message reception --> ",TB,TG,TR);
   messageReadTest();
   finalizePostOffice();
+  free(global_MB_descriptor);
   free(global_buffer);
-  //printString("Test deletion in a different order of messageBox --> ",TB,TG,TR);
+  printString("Test deletion in a different order of messageBox --> ",TB,TG,TR);
   deletionInDifferentOrderTest();
   finalizePostOffice();
-  //printString("Test non existing message box deletion --> ",TB,TG,TR);
+  free(global_MB_descriptor);
+  printString("Test non existing message box deletion --> ",TB,TG,TR);
   nonExistingKeyDeletion();
   finalizePostOffice();
-  //printString("Test a hundred additions --> ",TB,TG,TR);
+  free(global_MB_descriptor);
+  printString("Test a hundred additions --> ",TB,TG,TR);
   hundredAdditionsTest();
   finalizePostOffice();
-  //printString("Test a hundred messageBox additions --> ",TB,TG,TR);
+  free(global_MB_descriptor);
+  printString("Test a hundred messageBox additions --> ",TB,TG,TR);
   hundredMessageBoxAdditionsTest();
   finalizePostOffice();
   free(global_MB_descriptor);

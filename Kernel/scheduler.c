@@ -92,13 +92,13 @@ void * schedule(void* prevSP)
 {
     process_t prevProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
-    
+
     //dumpStackAndHalt(prevSP + sizeof(uint64_t));
     //processorWait(10000000);
 
     if(nextProcess == NULL) // QUEUE IS EMPTY
     {
-        printString("nextProcess is null\n",255,0,0);
+        //printString("nextProcess is null\n",255,0,0);
         return prevSP;
     }
     queueProcess(nextProcess);
