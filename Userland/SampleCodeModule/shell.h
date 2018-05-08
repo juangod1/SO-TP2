@@ -29,7 +29,9 @@
 				test module                 - Executes Kernel test suite\n\
 				foreground process_ID       - Sends process to foreground\n\
 				prodConsDemo size           - Executes a demo of the Producer Consumer Problem\n\
-ps                          - Lists running processes.\n"
+ps                          - Lists running processes.\n\
+testBackgroundProcess       - Creates a test background process, use foreground command to see.\n"
+
 
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
 #define DISPLAY_TIME_INS "Recieves no arguments. Prints current date and time.\n\

@@ -21,8 +21,16 @@ int processesAmount[1];
 mbd_t mbdescriptor;
 
 void backgroundProcessRun(){
-    while(1)
-        sysPrintString("hello\n",200,175,43);
+    int i,j,k;
+    while(1) {
+        for (i=1;i<256;i=i+30) {
+            for (j=1;j<256;j=j+30) {
+                for (k=1;k<256;k=k+30) {
+                    sysPrintString("Hello, i am a background process. Enjoy the RGB magic.\n", i, j, k);
+                }
+            }
+        }
+    }
 }
 
 int foreground(pid_t pid){
