@@ -301,7 +301,7 @@ int callFunction(char * buffer, int backgroundflag) {
 		return 0;
 	}
 	else if(strcmp(input[0],"contextSwitchDemo") == 0) {
-		runContextSwitchDemo();
+		sysExecute(runContextSwitchDemo,"switcheroo");
 		return 0;
 	}
 	else if(strcmp(input[0],"foreground") == 0) {

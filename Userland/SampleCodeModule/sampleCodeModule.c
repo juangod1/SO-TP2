@@ -12,13 +12,12 @@ void r();
 
 int main()
 {
-	/*char* name = "shell";
+	char* name = "shell";
 	char ** buff;
 	sysMalloc(buff,6);
 	memcpy(*buff,name,6);
-	sysExecute((void*)startShell, *buff);*/
+	sysExecute((void*)startShell, *buff);
 
-	sysExecute(b,"bluu");
 	return 1;
 }
 
