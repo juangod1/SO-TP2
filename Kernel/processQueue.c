@@ -181,5 +181,6 @@ void removeLast()
         tmp = tmp->tail;
     }
     prev->tail = NULL;
+    --queueSize;
     free(tmp);
 }
