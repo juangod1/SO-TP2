@@ -26,6 +26,8 @@ process_t getCurrentProcess(){
 
 // Returns -1 if PID not found, 0 if slept, 1 if already sleeping
 int sleepProcess(pid_t pid){
+    printString("Queue before sleep:\n",255,255,255);
+    printQueue();
     process_t find = peekByPID(pid);
     if (find==NULL)
         return -1;
@@ -33,11 +35,15 @@ int sleepProcess(pid_t pid){
     if(find->sleeps)
         return 1;
     find->sleeps = 1;
+    printString("Queue after sleep:\n",255,255,255);
+    printQueue();
     return 0;
 }
 
 // Returns -1 if PID not found, 0 if woke up, 1 if already woke
 int wakeProcess(pid_t pid){
+    printString("Queue before woke:\n",255,255,255);
+    printQueue();
     process_t find = peekByPID(pid);
     if (find==NULL)
         return -1;
@@ -46,6 +52,8 @@ int wakeProcess(pid_t pid){
         return 1;
 
     find->sleeps = 0;
+    printString("Queue after woke:\n",255,255,255);
+    printQueue();
     return 0;
 }
 
@@ -132,24 +140,33 @@ void execute(void* eip, char * nameBuffer)
     printString("Tried to initialize process: ",100,200,200);
     printString(nameBuffer,100,200,200);
     printString("\n",0,0,0);
-    //printQueue();
 
+    printString("QueueSize before exec:",0,255,0);
+    printInt(getQueueSize(),0,255,0);
+    printString("\n",0,0,0);
+    //printQueue();
+    printString("a1\n",0,0,255);
     process_t newProcess = malloc(sizeof(struct process_t_CDT));
     if(newProcess == NULL){
         printString("No space for process.\n", 0, 0, 255);
     }
+    printString("a2\n",0,0,255);
     newProcess->pid = getNewPid();
+    printString("a3\n",0,0,255);
     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
+    printString("a4\n",0,0,255);
     if(newProcess->name == NULL){
         printString("No space for process.\n", 0, 0, 255);
         free(newProcess);
     }
+    printString("a5\n",0,0,255);
     memcpy(newProcess->name, nameBuffer,strleng(nameBuffer));
     void* sp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
     if(sp == NULL){
         printString("No space for process.\n", 0, 0, 255);
         free(newProcess);
     }
+    printString("a6\n",0,0,255);
     void* temp = initialize_stack_frame(eip, sp);
     newProcess->stackPointer = temp;
     if(queueProcess(newProcess)>=0)
@@ -159,6 +176,10 @@ void execute(void* eip, char * nameBuffer)
     }
     printString("This is the state of the queue: \n",255,255,255);
     printQueue();
+    printString("QueueSize after exec:",0,255,0);
+    printInt(getQueueSize(),0,255,0);
+    printString("lalalal",0,0,255);
+    printString("\n",0,0,0);
 }
 
 void exit()

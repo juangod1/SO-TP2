@@ -16,7 +16,7 @@ int add(process_t process){
     if(process==NULL)
        return -2;
 
-    node newNode = malloc(sizeof(struct node_CDT));
+    node newNode = malloc(sizeof(struct node_CDT)); 
     if(newNode==NULL) {
         return -1;
     }
@@ -137,6 +137,7 @@ void listQueue(pid_t ** buffer, char ** namesBuffer, int processNum[1]){
 }
 
 void printQueue() { // FOR DEBUGGING
+    printInt(queueSize,255,0,0);
     if (queueSize == 0) {
         printString(" ¡QUEUE IS EMPTY! \n",255,255,255);
         return;
