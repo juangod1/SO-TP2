@@ -181,10 +181,6 @@ void sysGetProcesses(pid_t ** buffer, char ** namesBuffer, int amount[1]){
   sysCall(9,(uint64_t)buffer,(uint64_t)namesBuffer,amount,0,0);
 }
 
-void sysMalloc(void ** buff, size_t size){
-    sysCall(17,buff,size,0,0,0);
-}
-
 void sendMessage(mbd_t descriptor, void * messageContent)
 {
   sysCall(10,(uint64_t)descriptor,(uint64_t)messageContent,0,0,0);
@@ -258,3 +254,83 @@ void * memcpy(void * destination, const void * source, uint64_t length)
     return destination;
 }
 
+void sysGetMyHeapBase(dataBlock * db)
+{
+  sysCall(19,(uint64_t)db,0,0,0,0);
+}
+
+void sysExpandHeap(dataBlock * db, size_t s)
+{
+  sysCall(20,(uint64_t)db,s,0,0,0);
+}
+
+void* sysMalloc(size_t s){
+  //Busca la base de mi heap. Si no tengo me la asigna.
+  dataBlock myHeapBase;
+  sysGetMyHeapBase(&myHeapBase);
+  if(s <= 0){
+    return NULL;
+  }
+
+  dataBlock block = searchFreeBlock(myHeapBase,s);
+  //Si no encuentro un bloque que cumpla las condiciones
+  if(block == NULL){
+    block = expandHeap(myHeapBase, s);
+    if(block == NULL)
+      return NULL;
+  } else {
+    //ToDo: blockSplitting
+    block->free = 0;
+  }
+  return(block+1);
+}
+
+//Si no se encuentra un bloque que cumpla con lo requerido, se deberia hacer un sbrk()
+//para generar nuevo espacio.
+dataBlock expandHeap(dataBlock first, size_t size){
+  //Verifica que lo que estoy pidiendo va a entrar en mi nuevo heap.
+  dataBlock newBlock;
+  sysExpandHeap(&newBlock, size + DBLOCK_SIZE);
+  //assert((void*)block == newBlock);
+
+  //Si no alcanza el espacio
+  if (newBlock == NULL) {
+    return NULL;
+  }
+
+  //Siempre que no sea el primer llamado, quiero conectar mi nuevo bloque a la cadena.
+  dataBlock last = getLastDataBlock(first);
+  if(last != NULL){
+    last->next = newBlock;
+  }
+  newBlock->size = size;
+  newBlock->next = NULL;
+  newBlock->free = 0;
+  return newBlock;
+}
+
+//Busca un bloque que cumpla con las condiciones
+dataBlock searchFreeBlock(dataBlock start, size_t size){
+  if(*((int*)start) == 0){
+    return NULL;
+  }
+  dataBlock current = start;
+  while (current!=NULL) {
+		if(current->free && (current->size >= size))
+			return current;
+		current = current->next;
+  }
+  return current;
+}
+
+//Busca el ultimo bloque de la cadena. Faltan checkeos de errores
+dataBlock getLastDataBlock(dataBlock first){
+  if(*((int*)first) == 0){
+    return NULL;//Es el primer bloque
+  }
+	dataBlock current = first;
+	while(current->next != NULL){
+		current = current->next;
+	}
+	return current;
+}

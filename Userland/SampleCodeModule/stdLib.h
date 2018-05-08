@@ -17,6 +17,22 @@ struct mbd_t_Struct
 
 typedef int pid_t;
 
+//MEMORYMANAGER//
+typedef struct dataBlockStruct * dataBlock;
+struct dataBlockStruct {
+	size_t size;
+	dataBlock next;
+	int free;
+};
+
+#define DBLOCK_SIZE (sizeof(struct dataBlockStruct))
+void* sysMalloc(size_t s);
+dataBlock expandHeap(dataBlock first, size_t size);
+dataBlock searchFreeBlock(dataBlock start, size_t size);
+dataBlock searchFreeBlock(dataBlock start, size_t size);
+dataBlock getLastDataBlock(dataBlock first);
+//------------//
+
 void reset(char * string, int size);
 int strleng(const char* s);
 void sysPrintString(char * string, int R, int G, int B);
@@ -27,7 +43,6 @@ void sysNewLine();
 void sysReadInput(char * buffer);
 void sysClear();
 void * memcpy(void * destination, const void * source, uint64_t length);
-void sysMalloc(void ** buff, size_t size);
 int countDigits(int num);
 void sysPaintPixel(int x, int y, char R, char G, char B);
 void sysGetChar(char * ch);

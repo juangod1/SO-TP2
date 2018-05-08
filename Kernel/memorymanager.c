@@ -186,6 +186,60 @@ void *sysmalloc(size_t s){
 	}
 }
 
+//Devuelve la base del heap correspondiente, si no existe ningun heap asociado, lo crea.
+void getMyHeapBase(dataBlock * db)
+{
+	int pid = getPid();
+
+	bookBlock bookedBlock = searchBookedBlock(pid);
+	if(bookedBlock == NULL){
+		bookBlock newBookBlock = mm_malloc(BBLOCK_SIZE);
+		if(newBookBlock == NULL){
+			//No hay mas espacio para storage
+			*db= NULL;
+			return;
+		}
+		newBookBlock->owner = pid;
+		newBookBlock->brk = 0;
+		newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
+		newBookBlock->next = NULL;
+		if(newBookBlock->base == NULL){
+			//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
+			//Deberia hacer mm_free(newBookBlock)
+			*db= NULL;
+			return;
+		}
+		*((int*)newBookBlock->base) = 0;//Seteo en NULL para que sepa que no hay bloque cargado.
+
+		//Modifico los punteros de mi libro
+		myBookLastPage->next = newBookBlock;//Conecto el anterior
+		myBookLastPage = newBookBlock;//Cambio el ultimo bloque
+		*db= newBookBlock->base;
+		return;//Le devuelvo la base.
+	} else {
+		*db= bookedBlock->base;
+		return;
+	}
+}
+
+void expandHeap(dataBlock * db, size_t s)
+{
+	int pid = getPid();
+	bookBlock bookedBlock = searchBookedBlock(pid);
+	//Nadie hace expand sin tener una pagina asignada.
+	int brk = bookedBlock->brk;
+	//Deberia verificar que tiene espacio en la pagina para la nueva magnitud
+	//Aumento el brk
+	if((brk + s) >= PAGE_SIZE){//Se cae de la pagina
+		*db=NULL;
+		return;
+	}
+	//Actualizo el brk
+	bookedBlock->brk = (brk + s);
+	*db=bookedBlock->base +brk;
+	return;
+}
+
 //Tiene que recorrer los bloques y ver cambiar el bit de "uso" recursivamente para adelante y para atras
 void free(void *pointer)
 {

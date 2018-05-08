@@ -38,11 +38,13 @@ void dropPage(int id);
 bookBlock searchBookedBlock(int id);
 void mmShow();
 void pbShow();
-void *sysmalloc(size_t s);
-
-//Public functions
 void * malloc(size_t size);
 void free(void *pointer);
+
+//Public functions
+void expandHeap(dataBlock * db, size_t s);
+void getMyHeapBase(dataBlock * db);
+void *sysmalloc(size_t s);
 
 //Internal page functions
 dataBlock getDataBlock(void *pointer);
@@ -51,7 +53,7 @@ dataBlock searchFreeBlock(dataBlock last, size_t size);
 
 //N2H
 void *mymalloc(size_t size);
-dataBlock expandHeap(dataBlock* last, size_t size);
+//dataBlock expandHeap(dataBlock* last, size_t size);
 void *sbrk(size_t s);
 
 #endif
