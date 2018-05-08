@@ -172,16 +172,16 @@ void setConditionsBackToNormal()
 
 void processQueueTestMain()
 {
-  printString("Testing queue addition --> ",TB,TG,TR);
+  //printString("Testing queue addition --> ",TB,TG,TR);
   testQueueAddition();
   setConditionsBackToNormal();
-  printString("Testing queue removal --> ",TB,TG,TR);
+  //printString("Testing queue removal --> ",TB,TG,TR);
   testQueueRemoval();
   setConditionsBackToNormal();
-  printString("Testing removal order --> ",TB,TG,TR);
+  //printString("Testing removal order --> ",TB,TG,TR);
   testThatRemoveRemovesFirst();
   setConditionsBackToNormal();
-  printString("Testing removal when empty --> ",TB,TG,TR);
+  //printString("Testing removal when empty --> ",TB,TG,TR);
   testCantRemoveWhenEmpty();
   setConditionsBackToNormal();
 }

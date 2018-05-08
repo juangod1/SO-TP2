@@ -135,20 +135,13 @@ void messageAdditionTest()
 
 void messageReadTest()
 {
-  printString("mr2\n",255,255,255);
   givenAnInitializedPostOffice();
-  printString("mr3\n",255,255,255);
   givenACorrectDescriptor();
-  printString("mr4\n",255,255,255);
   givenAMessage();
-  printString("mr5\n",255,255,255);
 
   givenAMessageAdded();
-  printString("mr6\n",255,255,255);
   whenReadingFromMessageBox();
-  printString("mr7\n",255,255,255);
   thenMessageBoxIsEmpty();
-  printString("mr8\n",255,255,255);
   thenMessageReadIsSame();
 }
 
@@ -234,9 +227,11 @@ void whenAddingAHundredMessageBoxs()
     str[2]='0'+i%10;
     str[3]='0'+i/10;
     str[4]=0;
-    //printString("%s\n", str);
-    struct mbd_t_Struct mbStruct = {global_size, str};
-    sendMessage(&mbStruct, global_message);
+    mbd_t descriptor=malloc(sizeof(struct mbd_t_Struct));
+    descriptor->key=str;
+    descriptor->size=global_size;
+    descriptor->block=0;
+    sendMessage(descriptor, global_message);
     free(str);
   }
 }
@@ -265,11 +260,11 @@ void thenPostOfficeSizeIsAHundred()
 
 void messagingTestMain()
 {
-  printString("Testing message addition --> ",TB,TG,TR);
+  //printString("Testing message addition --> ",TB,TG,TR);
   messageAdditionTest();
   finalizePostOffice();
   free(global_MB_descriptor);
-  printString("Testing message reception --> ",TB,TG,TR);
+  //printString("Testing message reception --> ",TB,TG,TR);
   messageReadTest();
   finalizePostOffice();
   free(global_MB_descriptor);
@@ -278,15 +273,15 @@ void messagingTestMain()
   deletionInDifferentOrderTest();
   finalizePostOffice();
   free(global_MB_descriptor);
-  printString("Test non existing message box deletion --> ",TB,TG,TR);
+  //printString("Test non existing message box deletion --> ",TB,TG,TR);
   nonExistingKeyDeletion();
   finalizePostOffice();
   free(global_MB_descriptor);
-  printString("Test a hundred additions --> ",TB,TG,TR);
+  //printString("Test a hundred additions --> ",TB,TG,TR);
   hundredAdditionsTest();
   finalizePostOffice();
   free(global_MB_descriptor);
-  printString("Test a hundred messageBox additions --> ",TB,TG,TR);
+  //printString("Test a hundred messageBox additions --> ",TB,TG,TR);
   hundredMessageBoxAdditionsTest();
   finalizePostOffice();
   free(global_MB_descriptor);

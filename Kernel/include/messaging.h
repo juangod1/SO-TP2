@@ -8,6 +8,7 @@ typedef struct mbd_t_Struct * mbd_t;
 struct mbd_t_Struct
 {
   size_t size;
+  char block;
   void * key;
 };
 
@@ -22,6 +23,7 @@ typedef struct messageBoxStruct * messageBox;
 struct messageBoxStruct
 {
   char * key;
+  char block;
   message msg;
   size_t msgSize;
   messageBox next;
@@ -40,7 +42,7 @@ void finalizePostOffice();
 int postOfficeSize();
 int postOfficeSizeRec(messageBox * mB);
 
-void initializeMessageBox(messageBox * mB, char * key_P, size_t size);
+void initializeMessageBox(messageBox * mB, char * key_P, size_t size, char block_P);
 void freeMessageBox(messageBox * mB);
 void recursiveFinalizeMessageBox(messageBox *mB);
 
@@ -48,8 +50,8 @@ messageBox * findMessageBox(char * key_P, messageBox * mB);
 int messageBoxSize(mbd_t descriptor);
 int recMessageSize(message * mL);
 
-messageBox getMessageBox(char * key_P, size_t messageSize);
-messageBox * getMessageBoxRec(char * key_P, messageBox * mB, size_t messageSize);
+messageBox getMessageBox(char * key_P, size_t messageSize,char block_P);
+messageBox * getMessageBoxRec(char * key_P, messageBox * mB, size_t messageSize, char block_P);
 
 void initializeMessage(message * m, void * messageContent, size_t messageSize);
 void finalizeMessage(message * m);

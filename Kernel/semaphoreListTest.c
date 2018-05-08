@@ -148,19 +148,19 @@ void static setConditionsBackToNormal()
 
 void semaphoreListTestMain()
 {
-	printString("Testing list addition...\n",0,0,255);
+	//printString("Testing list addition...\n",0,0,255);
 	testlistAddition();
 	setConditionsBackToNormal();
-	printString("Testing list removal...\n",0,0,255);
+	//printString("Testing list removal...\n",0,0,255);
 	testlistRemoval();
 	setConditionsBackToNormal();
-	printString("Testing two same key additions\n",0,0,255);
+	//printString("Testing two same key additions\n",0,0,255);
 	testTwoSameKeyAdditions();
 	setConditionsBackToNormal();
-	printString("Testing different additions\n",0,0,255);
+	//printString("Testing different additions\n",0,0,255);
 	testDifferentAdditions();
 	setConditionsBackToNormal();
-	printString("Testing existance after removal\n",0,0,255);
+	//printString("Testing existance after removal\n",0,0,255);
 	testingExistanceAfterRemoval();
 	setConditionsBackToNormal();
 
