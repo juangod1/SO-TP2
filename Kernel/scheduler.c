@@ -163,5 +163,5 @@ void execute(void* eip, char * nameBuffer)
 
 void exit()
 {
-    removeLastFromQueue();
+    removeLast();
 }
