@@ -230,6 +230,7 @@ void whenAddingAHundredMessageBoxs()
     descriptor->block=0;
     sendMessage(descriptor, global_message);
     free(str);
+    free(descriptor);
   }
 }
 
