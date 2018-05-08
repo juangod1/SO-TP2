@@ -17,6 +17,13 @@ char processNames[MAX_PROCESSES][MAX_PROCESS_NAME_LENGTH];
 int processes[MAX_PROCESSES][2];
 int processesAmount[1];
 
+mbd_t mbdescriptor;
+
+void backgroundProcessRun(){
+    while(1)
+        sysPrintString("hello\n",200,175,43);
+}
+
 int foreground(pid_t pid){
     foregroundPID = pid;
 }
@@ -31,7 +38,7 @@ void startShell(){
 	sysPrintString("$> ",CB,CG,CR);
 
 	while (isRunning) {
-	    checkPipePrint(); // check if background processes wanted to print to shell
+	    //checkShellBox(); // check if background processes wanted to print to shell
 		sysGetProcesses((pid_t **)processes,processNames,processesAmount);
 		sysGetChar(&ch);
 		if(counter<MAX_WORD_LENGTH || ch == '\n'|| ch == '\b'){
@@ -342,6 +349,16 @@ int callFunction(char * buffer, int backgroundflag) {
         return 0;
 
     }
+    else if(strcmp(input[0],"testBackgroundProcess") == 0) {
+        if(words!=1)
+        {
+            sysPrintString("Wrong parameters: backgroundProcess receives no arguments.\n", CB, CG, CR);
+            return 1;
+        }
+        sysExecute(backgroundProcessRun,"bg process test");
+        return 0;
+
+    }
 	else {
 		sysPrintString("Wrong input\n", CB, CG, CR);
 
@@ -446,14 +463,33 @@ pid_t getForegroundPID(){
 	return foregroundPID;
 }
 
-void pipeToShell(char * message, pid_t pid){
-
+void sendToShellBox(char * message, pid_t pid){
+	//sendMessage();
 }
 
-void checkPipePrint(){
+void checkShellBox(){
+	char buff[MESSAGE_BOX_SIZE]={0};
+	recieveMessage(mbdescriptor,buff);
+	if(buff[0]!=0)
+		sysPrintString("Received background messages:\n",CB,CG,CR);
 
+	while(buff[0]!=0){
+		sysPrintString(buff,CB,CG,CR);
+		wipeBuffer(buff,MESSAGE_BOX_SIZE);
+		recieveMessage(mbdescriptor,buff);
+	}
 }
 
+void initializeShellBox(){
+	//sysMalloc(mbdescriptor, sizeof(struct mbd_t_Struct));
+	mbdescriptor->block = 0;
+	mbdescriptor->key = "shell";
+	mbdescriptor->size = MESSAGE_BOX_SIZE;
+}
+
+mbd_t getShellBoxDescriptor(){
+	return mbdescriptor;
+}
 
 void listProcesses(){
     sysGetProcesses(processes,processNames,processesAmount);

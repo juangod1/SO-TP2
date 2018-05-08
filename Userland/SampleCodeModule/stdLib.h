@@ -8,6 +8,7 @@ typedef struct mbd_t_Struct * mbd_t;
 struct mbd_t_Struct
 {
   size_t size;
+  char block;
   void * key;
 };
 

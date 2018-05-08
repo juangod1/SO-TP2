@@ -7,6 +7,7 @@
 #define MAX_PROCESS_NAME_LENGTH 20
 #define MAX_WORD_LENGTH 124
 #define MAX_WORDS 32
+#define MESSAGE_BOX_SIZE 100
 #define CR 255
 #define CG 255
 #define CB 0
@@ -67,5 +68,7 @@ extern void opcodeGenerator();
 pid_t getForegroundPID();
 void DEBUGPrintInt();
 void DEBUGPrintString();
+void wipeBuffer(char * buff, size_t size);
+void listProcesses();
 
 #endif

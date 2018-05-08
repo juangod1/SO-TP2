@@ -15,8 +15,12 @@ void reset(char * string, int size){
 }
 
 
-int checkIfForeground(){
-  return 1;//(getForegroundPID()==getPid()?1:0);
+int checkIfForeground(){/*
+    DEBUGPrintString("pid: ",200,252,25);
+    DEBUGPrintInt(getPid(),200,252,25);
+    DEBUGPrintString(" fg: ",200,252,25);
+    DEBUGPrintInt(getForegroundPID(),200,252,25);*/
+  return (getForegroundPID()==getPid()?1:0);
 }
 
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
@@ -109,7 +113,7 @@ void DEBUGPrintInt(int num, int B, int G, int R) {
 
     numbers[dig] = '\0';
 
-    sysPrintString(numbers, B, G, R);
+    DEBUGPrintString(numbers, B, G, R);
 }
 
 void sysPrintFloat(float num, int B, int G, int R) {
@@ -135,7 +139,6 @@ int countDigits(int num){
 }
 
 void sysGetChar(char * ch){
-    if(checkIfForeground())
   sysCall(2,(uint64_t)ch,0,0,0,0);
 }
 
@@ -172,13 +175,13 @@ void sysExecute(void* functionPointer, char* name)
 
 int getPid()
 {
-  int pid;
-  sysCall(8,(uint64_t)&pid,0,0,0,0);
-  return pid;
+  int pid[1];
+  sysCall(8,pid,0,0,0,0);
+  return pid[0];
 }
 
 void sysGetProcesses(pid_t ** buffer, char ** namesBuffer, int amount[1]){
-  sysCall(9,(uint64_t)buffer,(uint64_t)namesBuffer,amount,0,0);
+  sysCall(9,buffer,namesBuffer,amount,0,0);
 }
 
 void sendMessage(mbd_t descriptor, void * messageContent)
@@ -257,6 +260,10 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 void sysGetMyHeapBase(dataBlock * db)
 {
   sysCall(19,(uint64_t)db,0,0,0,0);
+}
+void wipeBuffer(char * buff, size_t size){
+    while(size--)
+        buff[size]=0;
 }
 
 void sysExpandHeap(dataBlock * db, size_t s)
