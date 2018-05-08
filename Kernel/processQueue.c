@@ -67,8 +67,12 @@ process_t poll(char checkIfWoke){
         return process;
     }
 
-    if(skippedSleepingProcess)
+    if(skippedSleepingProcess) {
         previous->tail = tmp->tail;
+        if(tmp->tail == NULL){
+            last = previous;
+        }
+    }
     else
         first = tmp->tail;
 
@@ -145,13 +149,17 @@ void printQueue() { // FOR DEBUGGING
 
     int i;
     node tmp=first;
-    printString("PID    SLEEPS    NAME\n",255,255,255);
+    printString("PID    SLEEPS    NAME    ADDRESS    TAIL\n",255,255,255);
     for(i=0;i<queueSize;i++) {
         printInt(tmp->process->pid,255,255,255);
         printString("       ",255,255,255);
         printInt(tmp->process->sleeps,255,255,255);
         printString("      ",255,255,255);
         printString(tmp->process->name,255,255,255);
+        printString("      ",255,255,255);
+        printInt(tmp,255,255,255);
+        printString("      ",255,255,255);
+        printInt(tmp->tail,255,255,255);
         printString("\n",255,255,255);
 
         tmp = tmp->tail;
