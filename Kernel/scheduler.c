@@ -163,5 +163,9 @@ void execute(void* eip, char * nameBuffer)
 
 void exit()
 {
+    printString("Queue before exit:\n",255,255,255);
+    printQueue();
     removeLast();
+    printString("Queue after exit:\n",255,255,255);
+    printQueue();
 }

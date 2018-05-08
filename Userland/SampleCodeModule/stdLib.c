@@ -16,7 +16,7 @@ void reset(char * string, int size){
 
 
 int checkIfForeground(){
-  return (getForegroundPID()==getPid()?1:0);
+  return 1;//(getForegroundPID()==getPid()?1:0);
 }
 
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {

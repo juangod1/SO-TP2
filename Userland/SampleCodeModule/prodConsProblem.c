@@ -50,6 +50,7 @@ void producer()
   sysPrintInt(sharedInt,DB,DG,DR);
   semSignal(SEM_UNDERFLOW_KEY);
   semSignal(SEM_MUTEX_KEY);
+  exit();
 }
 
 void consumer()
@@ -60,4 +61,5 @@ void consumer()
   sharedInt--;
   semSignal(SEM_OVERFLOW_KEY);
   semSignal(SEM_MUTEX_KEY);
+  exit();
 }
