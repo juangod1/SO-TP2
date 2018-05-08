@@ -5,13 +5,11 @@
 #include "include/memorymanager.h"
 #include "include/scheduler.h"
 
-char * global_MB_key;
 message global_message;
 int global_size = 5;
 mbd_t global_MB_descriptor=NULL;
 mbd_t different_global_MB_descriptor=NULL;
-void * global_buffer;
-char * global_MB_key;
+void * global_buffer=NULL;
 
 
 void givenAMessageBox()
@@ -138,7 +136,6 @@ void messageReadTest()
   givenAnInitializedPostOffice();
   givenACorrectDescriptor();
   givenAMessage();
-
   givenAMessageAdded();
   whenReadingFromMessageBox();
   thenMessageBoxIsEmpty();
@@ -258,32 +255,37 @@ void thenPostOfficeSizeIsAHundred()
   }
 }
 
+void resetConditions()
+{
+  finalizePostOffice();
+  free(global_MB_descriptor);
+  global_MB_descriptor=NULL;
+  free(different_global_MB_descriptor);
+  different_global_MB_descriptor=NULL;
+  free(global_buffer);
+  global_buffer=NULL;
+}
+
+
+
 void messagingTestMain()
 {
   //printString("Testing message addition --> ",TB,TG,TR);
   messageAdditionTest();
-  finalizePostOffice();
-  free(global_MB_descriptor);
+  resetConditions();
   //printString("Testing message reception --> ",TB,TG,TR);
   messageReadTest();
-  finalizePostOffice();
-  free(global_MB_descriptor);
-  free(global_buffer);
-  printString("Test deletion in a different order of messageBox --> ",TB,TG,TR);
+  resetConditions();
+  //printString("Test deletion in a different order of messageBox --> ",TB,TG,TR);
   deletionInDifferentOrderTest();
-  finalizePostOffice();
-  free(global_MB_descriptor);
+  resetConditions();
   //printString("Test non existing message box deletion --> ",TB,TG,TR);
   nonExistingKeyDeletion();
-  finalizePostOffice();
-  free(global_MB_descriptor);
+  resetConditions();
   //printString("Test a hundred additions --> ",TB,TG,TR);
   hundredAdditionsTest();
-  finalizePostOffice();
-  free(global_MB_descriptor);
+  resetConditions();
   //printString("Test a hundred messageBox additions --> ",TB,TG,TR);
   hundredMessageBoxAdditionsTest();
-  finalizePostOffice();
-  free(global_MB_descriptor);
-  free(different_global_MB_descriptor);
+  resetConditions();
 }
