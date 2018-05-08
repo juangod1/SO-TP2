@@ -65,5 +65,7 @@ int calculateVerifications(int words, char* input1, char* input2, char* input3);
 int calculate(char* func, int param1, int param2);
 extern void opcodeGenerator();
 pid_t getForegroundPID();
+void DEBUGPrintInt();
+void DEBUGPrintString();
 
 #endif

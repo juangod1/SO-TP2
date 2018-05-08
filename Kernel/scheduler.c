@@ -59,7 +59,7 @@ int getAmountOfProcesses(){
    return getQueueSize();
 }
 
-void listProcesses(pid_t ** buffer, char ** namesBuffer, int processNum[1]){
+void listProcesses(pid_t ** buffer, char ** namesBuffer, int * processNum){
     listQueue(buffer,namesBuffer,processNum);
 }
 

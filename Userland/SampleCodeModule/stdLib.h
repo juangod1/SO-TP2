@@ -30,7 +30,6 @@ void * memcpy(void * destination, const void * source, uint64_t length);
 void sysMalloc(void ** buff, size_t size);
 int countDigits(int num);
 void sysPaintPixel(int x, int y, char R, char G, char B);
-void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red);
 void sysGetChar(char * ch);
 void copy(char* copy, char* original, int len);
 int subStrleng(const char * s, const char c);

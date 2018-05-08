@@ -13,7 +13,7 @@ static int isRunning = 1;
 static int timeZone = -3;
 pid_t foregroundPID = 0;
 
-char * processNames[MAX_PROCESSES];
+char processNames[MAX_PROCESSES][MAX_PROCESS_NAME_LENGTH];
 int processes[MAX_PROCESSES][2];
 int processesAmount[1];
 
@@ -35,7 +35,6 @@ void startShell(){
 		sysGetProcesses((pid_t **)processes,processNames,processesAmount);
 		sysGetChar(&ch);
 		if(counter<MAX_WORD_LENGTH || ch == '\n'|| ch == '\b'){
-
 			sysWriteChar(ch, B, G, R);
 
 
@@ -447,22 +446,12 @@ pid_t getForegroundPID(){
 	return foregroundPID;
 }
 
-char pipeBuffer[256]={0};
-
 void pipeToShell(char * message, pid_t pid){
-    int i=0;
-    while(*(message+i) && i<256) *(pipeBuffer + i) = message[i++];
-    while(i++<256) *(pipeBuffer + i) = 0;
+
 }
 
 void checkPipePrint(){
-    if(*pipeBuffer){
-        sysPrintString("\n",255,255,255);
-        sysPrintString(pipeBuffer,255,255,255);
-        sysPrintString("\n",255,255,255);
-        int i=0;
-        while(i++<256) *(pipeBuffer + i) = 0;
-    }
+
 }
 
 

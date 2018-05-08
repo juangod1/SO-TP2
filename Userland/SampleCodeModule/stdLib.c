@@ -16,19 +16,23 @@ void reset(char * string, int size){
 
 
 int checkIfForeground(){
-  return 1;//getForegroundPID()==getPid()?1:0;
+  return (getForegroundPID()==getPid()?1:0);
 }
 
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
-  if(checkIfForeground())
-    sysCall(4,ch,color_blue,color_green,color_red,0);
+    sysCall(4, ch, color_blue, color_green, color_red, 0);
+}
+
+void DEBUGWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
+        sysCall(4, ch, color_blue, color_green, color_red, 0);
+
 }
 
 void DEBUGPrintString(char * string, int B, int G, int R){
     int len = strleng(string);
     int i;
     for(i=0;i<len;i++){
-        sysWriteChar(string[i], B, G, R);
+        DEBUGWriteChar(string[i], B, G, R);
     }
 }
 
@@ -131,6 +135,7 @@ int countDigits(int num){
 }
 
 void sysGetChar(char * ch){
+    if(checkIfForeground())
   sysCall(2,(uint64_t)ch,0,0,0,0);
 }
 
