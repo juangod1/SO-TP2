@@ -197,8 +197,9 @@ void exit()
     printString("Queue before exit:\n",255,255,255);
     printQueue();
     pid_t pid = getPid();
-    removeLast();
-    // removeByPid(pid);
+    printString("REMOVING BY PID ",200,200,200);
+    printInt(pid,200,200,200);
+    removeByPid(pid);
     printString("Queue after exit:\n",255,255,255);
     printQueue();
 }

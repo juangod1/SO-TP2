@@ -195,21 +195,32 @@ void removeLast()
     free(tmp);
 }
 
-void removeByPid(pid_t pid)
-{
+
+int removeByPid(pid_t pid){
     node tmp = first;
     node prev = NULL;
-    if (queueSize == 0 || tmp == NULL)
-        return;
-    while (tmp->tail != NULL && tmp->tail->process->pid != pid)
-    {
-        prev = tmp;
+
+    if(queueSize==0 || tmp==NULL)
+        return -2;
+
+    int count=queueSize;
+    while(count-- != 0 && tmp->process->pid != pid) {
+        if(tmp->tail==NULL)
+            return -3;
+
+        prev=tmp;
         tmp = tmp->tail;
+
+        printString(prev->process->name,0,200,0);
     }
-    if(tmp->process->pid != pid)
-        return
-    prev->tail = NULL;
-    --queueSize;
+    if(tmp==NULL)
+        return -1;
+
+    prev->tail = tmp->tail;
+
     free(tmp->process);
     free(tmp);
+    queueSize--;
+
+    return 0;
 }
