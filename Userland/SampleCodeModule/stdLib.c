@@ -20,7 +20,7 @@ int checkIfForeground(){/*
     DEBUGPrintInt(getPid(),200,252,25);
     DEBUGPrintString(" fg: ",200,252,25);
     DEBUGPrintInt(getForegroundPID(),200,252,25);*/
-  return 1;//(getForegroundPID()==getPid()?1:0);
+  return (getForegroundPID()==getPid()?1:0);
 }
 
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
