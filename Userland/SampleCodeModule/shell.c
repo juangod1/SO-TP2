@@ -524,5 +524,13 @@ void listProcesses(){
         sysPrintString("\n",0,0,0);
         auxPtr+=MAX_PROCESS_NAME_LENGTH;
     }
-    //reinitialize();
+    reinitializeProcessNameBuffer();
+}
+void reinitializeProcessNameBuffer()
+{
+  char * auxPtr=processNames;
+  for(int i=0; i<MAX_PROCESSES*MAX_PROCESS_NAME_LENGTH; i++)
+  {
+    *(auxPtr+i)=0;
+  }
 }

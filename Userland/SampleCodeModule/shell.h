@@ -73,5 +73,6 @@ void DEBUGPrintString();
 void wipeBuffer(char * buff, size_t size);
 void listProcesses();
 void setForeground(pid_t pid);
+void reinitializeProcessNameBuffer();
 
 #endif
