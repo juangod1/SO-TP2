@@ -88,6 +88,8 @@ get_eip:
 
 clear_interrupts:
 	cli
+	ret
 
 set_interrupts:
 	sti
+	ret
