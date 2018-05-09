@@ -14,20 +14,28 @@ static int isRunning = 1;
 static int timeZone = -3;
 pid_t foregroundPID = 0;
 
-char * processNames[MAX_PROCESSES];
+char processNames[MAX_PROCESSES][MAX_PROCESS_NAME_LENGTH]={0};
 int processesSleep[MAX_PROCESSES];
 pid_t processesPID[MAX_PROCESSES];
 int processesAmount[1];
 
 mbd_t mbdescriptor;
 
+void setForeground(pid_t pid){
+    foregroundPID = pid;
+}
+
 void backgroundProcessRun(){
     int i,j,k;
+    char ch;
     while(1) {
         for (i=1;i<256;i=i+30) {
             for (j=1;j<256;j=j+30) {
                 for (k=1;k<256;k=k+30) {
-                    sysPrintString("Hello, i am a background process. Enjoy the RGB magic.\n", i, j, k);
+                    sysGetChar(&ch);
+                    if(ch=='\n')
+						sysExit();
+                    sysPrintString("Hello, i am a background process. Press ENTER to leave. Enjoy the RGB magic.\n", i, j, k);
                 }
             }
         }

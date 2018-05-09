@@ -47,6 +47,7 @@ void sysPrintString(char * string, int B, int G, int R){
   int len = strleng(string);
   int i;
   for(i=0;i<len;i++){
+      if(checkIfForeground())
     sysWriteChar(string[i], B, G, R);
   }
 }
@@ -139,10 +140,14 @@ int countDigits(int num){
 }
 
 void sysGetChar(char * ch){
+    if(checkIfForeground())
   sysCall(2,(uint64_t)ch,0,0,0,0);
 }
 
 void sysExit(){
+    if(getForegroundPID()==getPid()){
+        setForeground(0);
+    }
     sysCall(18,0,0,0,0,0);
 }
 
