@@ -14,6 +14,7 @@ typedef struct bookBlockStruct * bookBlock;
 struct bookBlockStruct {
 	int owner; //Este es el  pid
 	void* base;
+	void* stack;
 	int brk; //Este puede ser otro tipo de dato para ahorrar memoria
 	bookBlock next;
 };
@@ -31,9 +32,11 @@ struct dataBlockStruct {
 //Memory manager handling functions
 int initMemoryManager();
 void initPageDirArray();
+void* getStack(int pid);
 void* mm_malloc(size_t s);
 void mm_free();
 void * popNewPage();
+void * popReverseNewPage();
 void dropPage(int id);
 bookBlock searchBookedBlock(int id);
 void mmShow();

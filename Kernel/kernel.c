@@ -64,7 +64,7 @@ int main() {
 	initializeTrafficControl();// Semaphore system
 
 	void (*module)();
-
+	
 	module = sampleCodeModuleAddress;
 	module();
 	while(1){

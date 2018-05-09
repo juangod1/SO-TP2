@@ -5,6 +5,7 @@
 #include "mathLib.h"
 #include "contextSwitchDemo.h"
 #include "prodConsProblem.h"
+#include "mmDemo.h"
 
 static int R = DR;
 static int G = DG;

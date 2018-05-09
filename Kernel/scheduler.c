@@ -161,7 +161,8 @@ void execute(void* eip, char * nameBuffer)
     }
     printString("a5\n",0,0,255);
     memcpy(newProcess->name, nameBuffer,strleng(nameBuffer));
-    void* sp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
+    void* sp = getStack(newProcess->pid);
+    //void* sp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
     if(sp == NULL){
         printString("No space for process.\n", 0, 0, 255);
         free(newProcess);

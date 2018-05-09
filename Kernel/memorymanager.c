@@ -36,6 +36,7 @@ int initMemoryManager(){
 	newBookBlock->owner = 0;
 	newBookBlock->brk = BBLOCK_SIZE; //Como esto esta escrito en la pagina que hace referencia, ya esta corrido.
 	newBookBlock->base = popNewPage();
+	newBookBlock->stack=NULL;
 	newBookBlock->next = NULL;
 	if(newBookBlock->base == NULL){
 		//Esto no deberia pasar porque es el primera hoja.
@@ -47,6 +48,7 @@ int initMemoryManager(){
 	newKernelBookBlock->owner = 1;//ID del newKernelBookBlock
 	newKernelBookBlock->brk = DBLOCK_SIZE;
 	newKernelBookBlock->base = popNewPage();
+	newKernelBookBlock->stack=NULL;
 	newKernelBookBlock->next = NULL;
 
 	if(newKernelBookBlock->base == NULL){
@@ -71,6 +73,34 @@ void initPageDirArray(){
 		pageDirArray[i] = (u_int64_t)(HEAP_START + i * PAGE_SIZE);
 		pageStatusArray[i]=0;
 	}
+}
+
+//Assigns a new page as stack for the asked process
+void* getStack(int pid){
+	bookBlock newBookBlock = mm_malloc(BBLOCK_SIZE);
+	if(newBookBlock == NULL){
+		//No hay mas espacio para storage
+		return NULL;
+	}
+	newBookBlock->owner = pid;
+	newBookBlock->brk = 0;
+	newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
+	newBookBlock->stack = (void*)((int)(popReverseNewPage()) + PAGE_SIZE);
+	newBookBlock->next = NULL;
+	if(newBookBlock->base == NULL){//Verifica el heap porque si el proceso no tiene heap ya no sirve.
+		//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
+		//Deberia hacer mm_free(newBookBlock)
+		return NULL;
+	}
+	*((int*)newBookBlock->base) = 0;//Seteo en NULL para que sepa que no hay bloque cargado.
+	if(newBookBlock->stack == NULL){
+		//No hay mas paginas disponibles para el stack del proceso
+		//Deberia hacer mm_free(newBookBlock)
+	}
+	//Modifico los punteros de mi libro
+	myBookLastPage->next = newBookBlock;//Conecto el anterior
+	myBookLastPage = newBookBlock;//Cambio el ultimo bloque
+	return newBookBlock->stack;//Le devuelvo la base del stack.
 }
 
 //Memory manager malloc
@@ -139,6 +169,7 @@ void *sysmalloc(size_t s){
 		newBookBlock->owner = pid;
 		newBookBlock->brk = DBLOCK_SIZE + s; //Ya se sabe que no va a caer afuera de la pagina.
 		newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
+		newBookBlock->stack = NULL;
 		newBookBlock->next = NULL;
 		if(newBookBlock->base == NULL){
 			//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
@@ -202,6 +233,7 @@ void getMyHeapBase(dataBlock * db)
 		newBookBlock->owner = pid;
 		newBookBlock->brk = 0;
 		newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
+		newBookBlock->stack = NULL;
 		newBookBlock->next = NULL;
 		if(newBookBlock->base == NULL){
 			//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
@@ -274,10 +306,22 @@ void * popNewPage(){
 	//Tiene que verificar que le queda stock de paginas para asignar y manejarse como un stack
 	//Recorre el array de estados para verificar hojas, luego la marca como ocupada y la devuelve.
 	int i = 0;
-	while(pageStatusArray[i]){//Cuando es 0 no entra, porque esta libre. Cuando es 1 entra porque esta ocupada y busca otra.
+	while(pageStatusArray[i] && i<=NUM_OF_PAGES){//Cuando es 0 no entra, porque esta libre. Cuando es 1 entra porque esta ocupada y busca otra.
 		i++;
 	}
 	if(i==NUM_OF_PAGES){//Si se paso significa que no hay mas paginas
+		return NULL;
+	}
+	pageStatusArray[i] = 1;
+	return (void*) pageDirArray[i];
+}
+
+void* popReverseNewPage(){
+	int i = NUM_OF_PAGES-1;
+	while(pageStatusArray[i] && i>=-1){//Cuando es 0 no entra porque esta libre.
+		i--;
+	}
+	if(i==-1){//Si se paso significa que no hay mas paginas.
 		return NULL;
 	}
 	pageStatusArray[i] = 1;
