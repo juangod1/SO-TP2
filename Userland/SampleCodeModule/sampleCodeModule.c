@@ -4,7 +4,7 @@
 #include "mathLib.h"
 #include "plotLib.h"
 #include "contextSwitchDemo.h"
-
+#include "prodConsProblem.h"
 void shellWrapper();
 
 void b();

@@ -194,3 +194,22 @@ void removeLast()
     free(tmp->process);
     free(tmp);
 }
+
+void removeByPid(pid_t pid)
+{
+    node tmp = first;
+    node prev = NULL;
+    if (queueSize == 0 || tmp == NULL)
+        return;
+    while (tmp->tail != NULL && tmp->tail->process->pid != pid)
+    {
+        prev = tmp;
+        tmp = tmp->tail;
+    }
+    if(tmp->process->pid != pid)
+        return
+    prev->tail = NULL;
+    --queueSize;
+    free(tmp->process);
+    free(tmp);
+}

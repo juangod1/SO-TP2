@@ -35,7 +35,6 @@ void semaphoreFinalization(semaphore * sem)
 
 int taskRequest(semaphore sem, int pid) //eventually will have to ask pid type
 {
-
   if(semaphoreCheck(&(sem->value)))
   {
     printString("SemaphoreCheck returns true!\n",0,255,0);
@@ -43,14 +42,20 @@ int taskRequest(semaphore sem, int pid) //eventually will have to ask pid type
   }
     printString("SemaphoreCheck returns false!\n",0,0,255);
   sem->value--;
-  sleepProcess(pid);
+  printString("Pid: ",0,255,0);
+  printInt(pid,0,255,0);
+  printString("\n",0,0,0);
   processQueueAdd(pid, &(sem->processQueue));
+  sleepProcess(pid);
   return 0;
 }
 
 void taskFinished(semaphore sem, int pid) //eventually will have to ask for pid type
 {
   sem->value++;
+  printString("Sem value in task finished:",255,0,255);
+  printInt(sem->value,255,0,255);
+  printString("\n", 255, 0, 255);
   if(sem->value <1)
   {
     pid_t newProcess=processQueueRemove(&(sem->processQueue));

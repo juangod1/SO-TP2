@@ -44,22 +44,36 @@ void prodConsDemo()
 
 void producer()
 {
+  sysPrintString("Producer arrived\n",255,0,255);
   semWait(SEM_OVERFLOW_KEY);
+  sysPrintString("Producer passed overflow\n", 255, 0, 255);
   semWait(SEM_MUTEX_KEY);
+  sysPrintString("Producer passed mutex\n", 255, 0, 255);
+  sysPrintString("LEMO",255,255,0);
   sharedInt++;
+  sysPrintString("LEMO", 255, 255, 0);
   sysPrintInt(sharedInt,DB,DG,DR);
-  semSignal(SEM_UNDERFLOW_KEY);
+  sysPrintString("Producer sending signals\n", 255, 0, 255);
   semSignal(SEM_MUTEX_KEY);
+  sysPrintString("Producer sent mutex\n", 255, 0, 255);
+  semSignal(SEM_UNDERFLOW_KEY);
+  sysPrintString("Producer sent underflow\n", 255, 0, 255);
   sysExit();
 }
 
 void consumer()
 {
+  sysPrintString("consumer arrived\n", 255, 0, 255);
   semWait(SEM_UNDERFLOW_KEY);
+  sysPrintString("consumer passed overflow\n", 255, 0, 255);
   semWait(SEM_MUTEX_KEY);
+  sysPrintString("consumer passed mutex\n", 255, 0, 255);
   sysPrintInt(sharedInt,DB,DG,DR);
+  sysPrintString("consumer sending signals\n", 255, 0, 255);
   sharedInt--;
-  semSignal(SEM_OVERFLOW_KEY);
   semSignal(SEM_MUTEX_KEY);
+  sysPrintString("consumer sent mutex\n", 255, 0, 255);
+  semSignal(SEM_OVERFLOW_KEY);
+  sysPrintString("consumer sent underflow\n", 255, 0, 255);
   sysExit();
 }

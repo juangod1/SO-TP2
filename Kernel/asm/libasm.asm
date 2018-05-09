@@ -1,6 +1,8 @@
 GLOBAL cpuVendor
 GLOBAL initialize_stack_frame
 GLOBAL get_eip
+GLOBAL clear_interrupts
+GLOBAL set_interrupts
 section .text
 
 %macro PUSHAQ 0
@@ -64,14 +66,6 @@ cpuVendor:
 	pop rbp
 	ret
 
-initialize_stack_frame_mein:
-	mov rsp, rdx
-	mov rax, rdi
-	push rax
-	PUSFQ
-	PUSHAQ
-	ret
-
 initialize_stack_frame:
 	pop rbx
 	mov rcx, rsp 
@@ -91,3 +85,9 @@ initialize_stack_frame:
 get_eip:
 	pop rax
 	ret
+
+clear_interrupts:
+	cli
+
+set_interrupts:
+	sti

@@ -10,9 +10,13 @@
 
 void* initialize_stack_frame(void* rip, void* rbp);
 uint64_t* get_eip();
+void clear_interrupts();
+void set_interrupts();
 
 process_t currentProcess = NULL;
 pid_t lastPid=-1;
+
+int halt = 0;
 
 pid_t getPid(){
     if(currentProcess == NULL)
@@ -28,6 +32,9 @@ process_t getCurrentProcess(){
 int sleepProcess(pid_t pid){
     printString("Queue before sleep:\n",255,255,255);
     printQueue();
+    printString("Process to be slept as fuck:", 255, 0, 255);
+    printInt(pid, 255, 0, 255);
+    printString("\n", 0, 0, 0);
     process_t find = peekByPID(pid);
     if (find==NULL)
         return -1;
@@ -37,13 +44,20 @@ int sleepProcess(pid_t pid){
     find->sleeps = 1;
     printString("Queue after sleep:\n",255,255,255);
     printQueue();
+    halt = 1;
+    clear_interrupts();
+    while(halt);
+    set_interrupts();
     return 0;
 }
 
 // Returns -1 if PID not found, 0 if woke up, 1 if already woke
 int wakeProcess(pid_t pid){
-    printString("Queue before woke:\n",255,255,255);
+    printString("Queue before woke:\n", 255, 255, 255);
     printQueue();
+    printString("Process to be Woke as fuck:", 255, 0, 255);
+    printInt(pid,255,0,255);
+    printString("\n", 0, 0, 0);
     process_t find = peekByPID(pid);
     if (find==NULL)
         return -1;
@@ -98,6 +112,7 @@ void debug()
 
 void * schedule(void* prevSP)
 {
+    halt = 0;
     process_t prevProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
 
@@ -106,16 +121,16 @@ void * schedule(void* prevSP)
 
     if(nextProcess == NULL) // QUEUE IS EMPTY
     {
-        //printString("nextProcess is null\n",255,0,0);
+        // printString("nextProcess is null\n",255,0,0);
         return prevSP;
     }
     queueProcess(nextProcess);
     if(prevProcess == NULL) // FIRST PROCESS CASE
     {
-        //printString("prevProcess is null but next process is not null\n",255,0,0);
-        //printString("NextProcess name: ", 0, 255, 0);
-        //printString(nextProcess->name, 0, 255, 0);
-        //printString("\n", 0, 0, 0);
+        // printString("prevProcess is null but next process is not null\n",255,0,0);
+        // printString("NextProcess name: ", 0, 255, 0);
+        // printString(nextProcess->name, 0, 255, 0);
+        // printString("\n", 0, 0, 0);
         return nextProcess->stackPointer;
     }
     else
@@ -128,9 +143,9 @@ void * schedule(void* prevSP)
         // printString(nextProcess->name,0,255,0);
         // printString("\n",0,0,0);
         prevProcess->stackPointer = prevSP;
-        //printString("NextProcess name: ",0,255,0);
-        //printString(nextProcess->name,0,255,0);
-        //printString("\n",0,0,0);
+        // printString("NextProcess name: ",0,255,0);
+        // printString(nextProcess->name,0,255,0);
+        // printString("\n",0,0,0);
         return nextProcess->stackPointer;
     }
 }
@@ -145,21 +160,16 @@ void execute(void* eip, char * nameBuffer)
     printInt(getQueueSize(),0,255,0);
     printString("\n",0,0,0);
     //printQueue();
-    printString("a1\n",0,0,255);
     process_t newProcess = malloc(sizeof(struct process_t_CDT));
     if(newProcess == NULL){
         printString("No space for process.\n", 0, 0, 255);
     }
-    printString("a2\n",0,0,255);
     newProcess->pid = getNewPid();
-    printString("a3\n",0,0,255);
     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
-    printString("a4\n",0,0,255);
     if(newProcess->name == NULL){
         printString("No space for process.\n", 0, 0, 255);
         free(newProcess);
     }
-    printString("a5\n",0,0,255);
     memcpy(newProcess->name, nameBuffer,strleng(nameBuffer));
     void* sp = getStack(newProcess->pid);
     //void* sp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
@@ -167,7 +177,6 @@ void execute(void* eip, char * nameBuffer)
         printString("No space for process.\n", 0, 0, 255);
         free(newProcess);
     }
-    printString("a6\n",0,0,255);
     void* temp = initialize_stack_frame(eip, sp);
     newProcess->stackPointer = temp;
     if(queueProcess(newProcess)>=0)
@@ -187,7 +196,9 @@ void exit()
 {
     printString("Queue before exit:\n",255,255,255);
     printQueue();
+    pid_t pid = getPid();
     removeLast();
+    // removeByPid(pid);
     printString("Queue after exit:\n",255,255,255);
     printQueue();
 }

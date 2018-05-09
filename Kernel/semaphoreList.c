@@ -43,11 +43,11 @@ int listSize(listEntry * me_P)
 
 int createlistEntry(int key_P, int value_P, listEntry * me_P)
 {
-	printString("createList Entry with key = ",0,255,0);
-	printInt(key_P,0,255,0);
-	printString(" value = ",0,255,0);
-	printInt(value_P,0,255,0);
-	printString("\n",0,255,0);
+	// printString("createList Entry with key = ",0,255,0);
+	// printInt(key_P,0,255,0);
+	// printString(" value = ",0,255,0);
+	// printInt(value_P,0,255,0);
+	// printString("\n",0,255,0);
 	if((*me_P)==NULL)
 	{
 		(*me_P) = malloc(sizeof(struct listEntryStruct));
@@ -95,9 +95,9 @@ int removelistEntry(listEntry * me_P)
 
 listEntry * getListEntry(int key_P, listEntry * lE)
 {
-	printString("getListEntry with key = ",255,0,255);
-	printInt(key_P,255,0,255);
-	printString("\n",255,0,255);
+	// printString("getListEntry with key = ",255,0,255);
+	// printInt(key_P,255,0,255);
+	// printString("\n",255,0,255);
 	if(lE==NULL || *lE ==NULL)
 	{
 		return NULL;
@@ -124,7 +124,10 @@ void wait(int key_P)
 
 void signal(int key_P)
 {
+	printString("BeforeGetting\n",255,0,255);
 	listEntry * lE=getListEntry(key_P, &(trafficControl->semaphoreList));
+	printString("AfterGetting\n", 255, 0, 255);
+	printInt(lE!=NULL && (*lE)!=NULL,255,255,0);
 	if(lE!=NULL && (*lE)!=NULL)
 	{
 		taskFinished((*lE)->sem, getPid());
