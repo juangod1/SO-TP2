@@ -22,4 +22,5 @@ process_t peekByPID(pid_t pid);
 void listQueue();
 void destroyQueue();
 void printQueue();
+void listQueue(pid_t * processesPID, int * processesSleep, char * processesNames, int * processesAmount);
 #endif //TP2_TEMPORARY_PROCESSQUEUE_H

@@ -14,7 +14,7 @@ static int isRunning = 1;
 static int timeZone = -3;
 pid_t foregroundPID = 0;
 
-char processNames[MAX_PROCESSES][MAX_PROCESS_NAME_LENGTH]={0};
+char processNames[MAX_PROCESSES*MAX_PROCESS_NAME_LENGTH]={0};
 int processesSleep[MAX_PROCESSES];
 pid_t processesPID[MAX_PROCESSES];
 int processesAmount[1];
@@ -512,7 +512,7 @@ mbd_t getShellBoxDescriptor(){
 
 void listProcesses(){
     sysGetProcesses(processesPID,processesSleep,processNames,processesAmount);
-
+    char * auxPtr=processNames;
     sysPrintString("PID      SLEEPS      NAME\n",255,255,255);
     int i;
     for(i=0;i<processesAmount[0];i++){
@@ -520,7 +520,9 @@ void listProcesses(){
         sysPrintString("        ",255,255,255);
         sysPrintInt(processesSleep[i],255,255,255);
         sysPrintString("        ",255,255,255);
-        sysPrintString(processNames[i],255,255,255);
+        sysPrintString(auxPtr,255,255,255);
         sysPrintString("\n",0,0,0);
+        auxPtr+=MAX_PROCESS_NAME_LENGTH;
     }
+    //reinitialize();
 }

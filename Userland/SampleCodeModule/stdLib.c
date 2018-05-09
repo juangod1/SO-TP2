@@ -185,7 +185,8 @@ int getPid()
   return pid[0];
 }
 
-void sysGetProcesses(pid_t * processesPID, int * processesSleep, char ** processesNames, int * processesAmount){
+void sysGetProcesses(pid_t * processesPID, int * processesSleep, char * processesNames, int * processesAmount)
+{
   sysCall(9,processesPID,processesSleep,processesNames,processesAmount,0);
 }
 

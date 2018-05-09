@@ -8,6 +8,9 @@
 #include "include/processQueue.h"
 #include "include/memorymanager.h"
 
+#define MAX_PROCESSES 256
+#define MAX_PROCESS_NAME_LENGTH 20
+
 node first = NULL;
 node last = NULL;
 int queueSize = 0;
@@ -16,7 +19,7 @@ int add(process_t process){
     if(process==NULL)
        return -2;
 
-    node newNode = malloc(sizeof(struct node_CDT)); 
+    node newNode = malloc(sizeof(struct node_CDT));
     if(newNode==NULL) {
         return -1;
     }
@@ -124,7 +127,8 @@ process_t peekByPID(pid_t pid){
     return tmp->process;
 }
 
-void listQueue(pid_t * processesPID, int * processesSleep, char ** processesNames, int * processesAmount){
+void listQueue(pid_t * processesPID, int * processesSleep, char * processesNames, int * processesAmount)
+{
     if(queueSize==0)
         return;
 
@@ -133,8 +137,8 @@ void listQueue(pid_t * processesPID, int * processesSleep, char ** processesName
     for(i=0;i<queueSize;i++) {
         processesPID[i] = tmp->process->pid;
         processesSleep[i] = tmp->process->sleeps;
-        memcpy(processesNames[i],tmp->process->name,strleng(tmp->process->name));
-
+        memcpy(processesNames,tmp->process->name,strleng(tmp->process->name));
+        processesNames+=MAX_PROCESS_NAME_LENGTH;
         tmp = tmp->tail;
     }
     processesAmount[0]=queueSize;

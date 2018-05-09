@@ -3,7 +3,7 @@
 
 #include "stdLib.h"
 
-#define MAX_PROCESSES 256
+#define MAX_PROCESSES 100
 #define MAX_PROCESS_NAME_LENGTH 20
 #define MAX_WORD_LENGTH 124
 #define MAX_WORDS 32
