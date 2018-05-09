@@ -44,10 +44,14 @@ int sleepProcess(pid_t pid){
     find->sleeps = 1;
     printString("Queue after sleep:\n",255,255,255);
     printQueue();
-    halt = 1;
-    clear_interrupts();
-    while(halt);
-    set_interrupts();
+    if(getPid()==pid){
+        halt = 1;
+        set_interrupts();
+        printString("BEFORE HALT",255,255,0);
+        while(halt){
+            printString("halt",255,100,0);
+        }
+    }
     return 0;
 }
 
