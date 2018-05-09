@@ -63,6 +63,8 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       break;
     case 13:
       wait((int)rsi);
+      printString("FINISHED WAIT ____________\n",0,255,0);
+      printQueue();
       break;
     case 14:
       signal((int)rsi);

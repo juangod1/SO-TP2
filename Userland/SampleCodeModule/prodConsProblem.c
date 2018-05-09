@@ -71,6 +71,7 @@ void consumer()
   sysPrintInt(sharedInt,DB,DG,DR);
   sysPrintString("consumer sending signals\n", 255, 0, 255);
   sharedInt--;
+  sysPrintString("about to send signal\n",255,0,255);
   semSignal(SEM_MUTEX_KEY);
   sysPrintString("consumer sent mutex\n", 255, 0, 255);
   semSignal(SEM_OVERFLOW_KEY);

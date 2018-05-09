@@ -119,6 +119,7 @@ void wait(int key_P)
 	{
 		printString("non Null lE in wait\n",100,100,100);
 		taskRequest((*lE)->sem, getPid());
+		printString("FINISHED TASK REQUEST\n",0,0,255);
 	}
 }
 

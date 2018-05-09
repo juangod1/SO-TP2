@@ -28,6 +28,8 @@ process_t getCurrentProcess(){
     return currentProcess;
 }
 
+void spoof_tick();
+
 // Returns -1 if PID not found, 0 if slept, 1 if already sleeping
 int sleepProcess(pid_t pid){
     printString("Queue before sleep:\n",255,255,255);
@@ -41,8 +43,10 @@ int sleepProcess(pid_t pid){
 
     if(find->sleeps)
         return 1;
+
     find->sleeps = 1;
-    printString("Queue after sleep:\n",255,255,255);
+
+    /*printString("Queue after sleep:\n",255,255,255);
     printQueue();
     if(getPid()==pid){
         halt = 1;
@@ -51,7 +55,10 @@ int sleepProcess(pid_t pid){
         while(halt){
             printString("halt",255,100,0);
         }
-    }
+    }*/
+
+    spoof_tick();
+    printString("PASSED SPOOF\n", 255, 0, 255);
     return 0;
 }
 

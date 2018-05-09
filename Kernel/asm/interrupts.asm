@@ -4,6 +4,7 @@ GLOBAL picMasterMask
 GLOBAL picSlaveMask
 GLOBAL haltcpu
 GLOBAL _hlt
+GLOBAL spoof_tick
 
 GLOBAL _irq00Handler
 GLOBAL _irq01Handler
@@ -90,7 +91,9 @@ picSlaveMask:
 
 
 ;8254 Timer (Timer Tick)
-_irq00Handler: 
+_irq00Handler:
+    mov rdi,49
+    call printInt
 	push rax
 	pushaqlite
 	mov rdi,rsp ;rsp of previous process
@@ -154,6 +157,10 @@ _tick_handler:
 	mov al, 20h
 	out 20h, al
 	iretq
+
+spoof_tick:
+    int 0x20
+    ret
 
 SECTION .bss
 	aux resq 1

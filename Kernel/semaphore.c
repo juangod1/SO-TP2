@@ -46,7 +46,10 @@ int taskRequest(semaphore sem, int pid) //eventually will have to ask pid type
   printInt(pid,0,255,0);
   printString("\n",0,0,0);
   processQueueAdd(pid, &(sem->processQueue));
+  printString("before sleep, PID: \n",30,60,90);
+  printInt(pid,30,60,90);
   sleepProcess(pid);
+  printString("After sleep.\n",255,255,255);
   return 0;
 }
 
