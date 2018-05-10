@@ -15,6 +15,7 @@ bookBlock myBookLastPage = NULL;;//Ultima hoja del libro
 //y volviendolas a poner. Al volverlas a poner las tengo que poner en 0 nuevamente
 u_int64_t pageDirArray[NUM_OF_PAGES];
 char pageStatusArray[NUM_OF_PAGES];
+char memoryManagerBlocksStatusArray[NUM_OF_BBLOCKS];
 
 
 //Hay que definir un espacio de memoria para el stack y para el heap. El stack se va a ir asignando
@@ -31,15 +32,19 @@ char pageStatusArray[NUM_OF_PAGES];
 int initMemoryManager(){
 	printString("Initializing memory manager... \n",255,255,255);
 	initPageDirArray();
+	initMemoryManagerBlocksArray();
 	//Levanto la primer pagina del book para mi. Como yo conozco esa direccion, ya la utilizo para guardar las cosas.
 	bookBlock newBookBlock = (bookBlock) HEAP_START;
+	memoryManagerBlocksStatusArray[0]=1;
 	newBookBlock->owner = 0;
 	newBookBlock->brk = BBLOCK_SIZE; //Como esto esta escrito en la pagina que hace referencia, ya esta corrido.
 	newBookBlock->base = popNewPage();
 	newBookBlock->stack=NULL;
+	newBookBlock->prev = NULL;
 	newBookBlock->next = NULL;
 	if(newBookBlock->base == NULL){
 		//Esto no deberia pasar porque es el primera hoja.
+		memoryManagerBlocksStatusArray[0]=0;//Free
 		return 1;
 	}
 	myHeapInfo = newBookBlock;
@@ -49,10 +54,12 @@ int initMemoryManager(){
 	newKernelBookBlock->brk = DBLOCK_SIZE;
 	newKernelBookBlock->base = popNewPage();
 	newKernelBookBlock->stack=NULL;
+	newKernelBookBlock->prev = newBookBlock;
 	newKernelBookBlock->next = NULL;
 
 	if(newKernelBookBlock->base == NULL){
 		//Esto no deberia pasar porque es la segunda hoja.
+		mm_free(newKernelBookBlock);
 		return 1;
 	}
 	dataBlock firstDataBlock = (dataBlock) newKernelBookBlock->base;
@@ -75,6 +82,13 @@ void initPageDirArray(){
 	}
 }
 
+//Solucion a falla en diseno
+void initMemoryManagerBlocksArray(){
+	for(int i=0;i<NUM_OF_BBLOCKS;i++){
+		memoryManagerBlocksStatusArray[i] = 0;
+	}
+}
+
 //Assigns a new page as stack for the asked process
 void* getStack(int pid){
 	bookBlock newBookBlock = mm_malloc(BBLOCK_SIZE);
@@ -82,20 +96,22 @@ void* getStack(int pid){
 		//No hay mas espacio para storage
 		return NULL;
 	}
-	newBookBlock->owner = pid;
+	newBookBlock->owner = pid+2;
 	newBookBlock->brk = 0;
 	newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
 	newBookBlock->stack = (void*)((int)(popReverseNewPage()) + PAGE_SIZE);
+	newBookBlock->prev = myBookLastPage;
 	newBookBlock->next = NULL;
 	if(newBookBlock->base == NULL){//Verifica el heap porque si el proceso no tiene heap ya no sirve.
 		//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
-		//Deberia hacer mm_free(newBookBlock)
+		mm_free(newBookBlock);
 		return NULL;
 	}
 	*((int*)newBookBlock->base) = 0;//Seteo en NULL para que sepa que no hay bloque cargado.
 	if(newBookBlock->stack == NULL){
 		//No hay mas paginas disponibles para el stack del proceso
-		//Deberia hacer mm_free(newBookBlock)
+		mm_free(newBookBlock);
+		return NULL;
 	}
 	//Modifico los punteros de mi libro
 	myBookLastPage->next = newBookBlock;//Conecto el anterior
@@ -105,6 +121,18 @@ void* getStack(int pid){
 
 //Memory manager malloc
 void* mm_malloc(size_t s){
+	int i = 0;
+	while(memoryManagerBlocksStatusArray[i] == 1 && i<NUM_OF_BBLOCKS){
+		i++;
+	}
+	if(i==NUM_OF_BBLOCKS){
+		return NULL;
+	}
+	memoryManagerBlocksStatusArray[i] = 1;
+	return (myHeapInfo->base + (i*BBLOCK_SIZE));
+}
+/*
+void* mm_malloc(size_t s){
 	int brk = myHeapInfo->brk;
 	if((brk + s) >= PAGE_SIZE){//Verifico que mi nuevo bloque no se caiga de mi pagina. Si queremos hay que agrandar el espacio de storage.
 		return NULL;
@@ -112,10 +140,14 @@ void* mm_malloc(size_t s){
 		myHeapInfo->brk += s;
 		return myHeapInfo->base + brk;
 	}
-}
+}*/
 
 //Memory manager Free
-void mm_free(){
+void mm_free(void* pointer){
+	if(pointer == NULL)
+		return;
+	int i = ((int)pointer - (int)myHeapInfo->base)/BBLOCK_SIZE;
+	memoryManagerBlocksStatusArray[i]=0;
 }
 
 void * malloc(size_t s){
@@ -149,114 +181,25 @@ void * malloc(size_t s){
 }
 
 
-//Metodos de parciales
-//Malloc otorga un espacio de memoria de x bytes
-void *sysmalloc(size_t s){
-	int pid = getPid();
-	//if(pid == -1)
-	//int pid = 3;
-	bookBlock bookedBlock = searchBookedBlock(pid);
-	if(bookedBlock == NULL){
-		//No encontro ninguna pagina almacenada, hay que crear una nueva
-		if((s + DBLOCK_SIZE) >= PAGE_SIZE){//Pide mas de una pagina contando el bloque de dato
-			return NULL;
-		}
-		bookBlock newBookBlock = mm_malloc(BBLOCK_SIZE);
-		if(newBookBlock == NULL){
-			//No hay mas espacio para storage
-			return NULL;
-		}
-		newBookBlock->owner = pid;
-		newBookBlock->brk = DBLOCK_SIZE + s; //Ya se sabe que no va a caer afuera de la pagina.
-		newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
-		newBookBlock->stack = NULL;
-		newBookBlock->next = NULL;
-		if(newBookBlock->base == NULL){
-			//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
-			//Deberia hacer mm_free(newBookBlock)
-			return NULL;
-		}
-		//Cargo el dataBlock
-		dataBlock newDataBlock = (dataBlock) newBookBlock->base;
-		printInt(pid,255,255,255);
-		printString("Hola\n", 255,255,255);
-		printInt(s,255,255,255);
-		newDataBlock->size = s;
-		newDataBlock->next = NULL;
-		newDataBlock->free = 0;
-
-		//Modifico los punteros de mi libro
-		myBookLastPage->next = newBookBlock;//Conecto el anterior
-		myBookLastPage = newBookBlock;//Cambio el ultimo bloque
-		return (newDataBlock+1);//Le devuelvo el espacio realmente libre.
-	}
-	else{
-		dataBlock freeBlock = searchFreeBlock((dataBlock)bookedBlock->base, s);//Busca un bloque que cumpla con los requisitos
-		if(freeBlock == NULL){//No hay bloque libre entonces tengo que mover el brk.
-			//Al encontrarla me guardo el break anterior
-			int brk = bookedBlock->brk;
-			//Deberia verificar que tiene espacio en la pagina para la nueva magnitud
-			//Aumento el brk
-			if((brk + s + DBLOCK_SIZE) >= PAGE_SIZE){//Se cae de la pagina
-				return NULL;
-			}
-			bookedBlock->brk = (brk +s+DBLOCK_SIZE);
-			//Armo el nuevo dataBlock
-			dataBlock newDataBlock =(dataBlock)(bookedBlock->base + brk);
-			newDataBlock->size = s;
-			newDataBlock->next = NULL;
-			newDataBlock->free = 0;
-
-			//Por el momento uso esta funcion para buscar al ultimo bloque. Cambiando la struct se puede hacer mas eficiente
-			dataBlock lastDataBlock = getLastDataBlock((dataBlock) bookedBlock->base);
-			lastDataBlock->next = newDataBlock;
-			return (newDataBlock+DBLOCK_SIZE);
-		} else {
-			return (freeBlock +DBLOCK_SIZE);
-		}
-	}
-}
-
 //Devuelve la base del heap correspondiente, si no existe ningun heap asociado, lo crea.
 void getMyHeapBase(dataBlock * db)
 {
 	int pid = getPid();
+	pid+=2;
 
 	bookBlock bookedBlock = searchBookedBlock(pid);
-	if(bookedBlock == NULL){
-		bookBlock newBookBlock = mm_malloc(BBLOCK_SIZE);
-		if(newBookBlock == NULL){
-			//No hay mas espacio para storage
-			*db= NULL;
-			return;
-		}
-		newBookBlock->owner = pid;
-		newBookBlock->brk = 0;
-		newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
-		newBookBlock->stack = NULL;
-		newBookBlock->next = NULL;
-		if(newBookBlock->base == NULL){
-			//No hay mas paginas disponibles (Esto no deberia pasar nunca en este caso porque es el primero)
-			//Deberia hacer mm_free(newBookBlock)
-			*db= NULL;
-			return;
-		}
-		*((int*)newBookBlock->base) = 0;//Seteo en NULL para que sepa que no hay bloque cargado.
-
-		//Modifico los punteros de mi libro
-		myBookLastPage->next = newBookBlock;//Conecto el anterior
-		myBookLastPage = newBookBlock;//Cambio el ultimo bloque
-		*db= newBookBlock->base;
-		return;//Le devuelvo la base.
-	} else {
-		*db= bookedBlock->base;
+	if(bookedBlock == NULL){//Proceso no existe
+		*db=NULL;
 		return;
 	}
+	*db= bookedBlock->base;
+	return;
 }
 
 void expandHeap(dataBlock * db, size_t s)
 {
 	int pid = getPid();
+	pid+=2;
 	bookBlock bookedBlock = searchBookedBlock(pid);
 	//Nadie hace expand sin tener una pagina asignada.
 	int brk = bookedBlock->brk;
@@ -328,25 +271,28 @@ void* popReverseNewPage(){
 	return (void*) pageDirArray[i];
 }
 
-//Recive el pid del proceso y busca en el libro su pagina correspondiente y la libera.
-void dropPage(int id){
-	if(heapBookBase == NULL)
-		return;//Book no inicializado
-	bookBlock current = heapBookBase;
-	while(current->owner != id){
-		if(current->next == NULL){
-			return;//No se encontro una pagina asociada al proceso
-		}
-		current = current->next;
+void dropBookPageForProcess(int pid){
+	pid+=2;//Corro 2 porque mis id estan corridos del pid.
+	bookBlock bookBlockToDrop = searchBookedBlock(pid);
+	(bookBlockToDrop->prev)->next = bookBlockToDrop->next;//Saco de la lista
+	if(bookBlockToDrop->next != NULL){
+	 	(bookBlockToDrop->next)->prev = bookBlockToDrop->prev;
 	}
+	myBookLastPage = bookBlockToDrop->prev;
+	//Ahora dropeo las paginas que estaba usando
+	dropPage((uint64_t)bookBlockToDrop->base);
+	dropPage(((uint64_t)bookBlockToDrop->stack)-PAGE_SIZE);
+	mm_free(bookBlockToDrop);
+}
+
+//Recive el pid del proceso y busca en el libro su pagina correspondiente y la libera.
+void dropPage(uint64_t dir){
 	int i = 0;
-	u_int64_t dir =(u_int64_t) current->base;
 	while(pageDirArray[i] != dir){
 		i++;
 	}
 	//Ya se que siempre encuentra el valor porque de esa lista salio.
 	pageStatusArray[i]=0;//Libero
-	//Se le podria agregar un codigo de error en el retorno.
 }
 
 /*A partir de aca es la implementacion completa*/

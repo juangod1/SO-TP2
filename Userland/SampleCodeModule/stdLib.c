@@ -276,8 +276,21 @@ void sysExpandHeap(dataBlock * db, size_t s)
 {
   sysCall(20,(uint64_t)db,s,0,0,0);
 }
+void free(void *pointer)
+{
+	if (pointer == NULL) {
+	return;
+	}
+	dataBlock oldDataBlock = getDataBlock(pointer);
+	oldDataBlock->free = 1;
+}
 
-void* sysMalloc(size_t s){
+dataBlock getDataBlock(void *pointer)
+ {
+  return (dataBlock)pointer - 1;
+}
+
+void* malloc(size_t s){
   //Busca la base de mi heap. Si no tengo me la asigna.
   dataBlock myHeapBase;
   sysGetMyHeapBase(&myHeapBase);

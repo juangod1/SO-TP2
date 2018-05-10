@@ -7,6 +7,7 @@
 #define HEAP_START 0x400000
 #define HEAP_END 0x799999
 #define NUM_OF_PAGES ((HEAP_END - HEAP_START)/PAGE_SIZE)
+#define NUM_OF_BBLOCKS (PAGE_SIZE/BBLOCK_SIZE)
 #define PAGE_SIZE 0xF000
 
 
@@ -16,6 +17,7 @@ struct bookBlockStruct {
 	void* base;
 	void* stack;
 	int brk; //Este puede ser otro tipo de dato para ahorrar memoria
+	bookBlock prev;
 	bookBlock next;
 };
 
@@ -32,12 +34,14 @@ struct dataBlockStruct {
 //Memory manager handling functions
 int initMemoryManager();
 void initPageDirArray();
+void initMemoryManagerBlocksArray();
 void* getStack(int pid);
 void* mm_malloc(size_t s);
-void mm_free();
+void mm_free(void* pointer);
 void * popNewPage();
 void * popReverseNewPage();
-void dropPage(int id);
+void dropBookPageForProcess(int pid);
+void dropPage(uint64_t dir);
 bookBlock searchBookedBlock(int id);
 void mmShow();
 void pbShow();

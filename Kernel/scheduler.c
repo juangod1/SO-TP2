@@ -211,6 +211,7 @@ void exit()
     printString("REMOVING BY PID ",200,200,200);
     printInt(pid,200,200,200);
     removeByPid(pid);
+    dropBookPageForProcess(pid);
     printString("Queue after exit:\n",255,255,255);
     printQueue();
 }

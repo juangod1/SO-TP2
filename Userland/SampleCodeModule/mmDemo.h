@@ -3,6 +3,7 @@
 
 
 void mmDemo();
+void childMMDemo();
 
 
 

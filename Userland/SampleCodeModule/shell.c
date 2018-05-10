@@ -244,7 +244,7 @@ int callFunction(char * buffer, int backgroundflag) {
 		}
 
 		return 0;
-	} else if (strcmp(input[0], "exit") == 0) {
+	} else if (strcmp(input[0], "exit") == 0 ) {
 		if (words != 1) {
 			sysPrintString("No extra parameters for exit\n", CB, CG, CR);
 
@@ -258,6 +258,18 @@ int callFunction(char * buffer, int backgroundflag) {
 		return 0;
 	} else if (strcmp(input[0], "plot") == 0) {
 		return graph(input, words);
+	}else if (strcmp(input[0], "mmDemo") == 0) {
+    if(words!= 1)
+    {
+			sysPrintString("No extra parameters for mmDemo\n", CB, CG, CR);
+
+			return 1;
+    }
+    sysClear();
+		mmDemo(input, words);
+		sysClear();
+    //sysClear();
+    return 0;
 	} else if (strcmp(input[0],"displayTime") == 0) {
 		if(words != 1) {
 			sysPrintString("Wrong parameters: displayTime\n", CB, CG, CR);

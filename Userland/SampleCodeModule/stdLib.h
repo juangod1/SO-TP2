@@ -27,11 +27,12 @@ struct dataBlockStruct {
 };
 
 #define DBLOCK_SIZE (sizeof(struct dataBlockStruct))
-void* sysMalloc(size_t s);
+void* malloc(size_t s);
 dataBlock expandHeap(dataBlock first, size_t size);
 dataBlock searchFreeBlock(dataBlock start, size_t size);
 dataBlock searchFreeBlock(dataBlock start, size_t size);
 dataBlock getLastDataBlock(dataBlock first);
+dataBlock getDataBlock(void *pointer);
 //------------//
 
 void reset(char * string, int size);

@@ -7,9 +7,9 @@ char* s2;
 char* mem1;
 
 void mmTester(){
-  printString("Testing memory manager\n----------------------\n",255,0,0);
+  //printString("Testing memory manager\n----------------------\n",255,0,0);
 
-  testSuccessfullInit();
+  //testSuccessfullInit();
   showStructure();
   //testNoMallocBefore();
   //testConsistentDualMalloc();
