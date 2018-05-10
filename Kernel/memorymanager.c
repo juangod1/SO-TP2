@@ -277,8 +277,9 @@ void dropBookPageForProcess(int pid){
 	(bookBlockToDrop->prev)->next = bookBlockToDrop->next;//Saco de la lista
 	if(bookBlockToDrop->next != NULL){
 	 	(bookBlockToDrop->next)->prev = bookBlockToDrop->prev;
-	}
+	}else{
 	myBookLastPage = bookBlockToDrop->prev;
+	}
 	//Ahora dropeo las paginas que estaba usando
 	dropPage((uint64_t)bookBlockToDrop->base);
 	dropPage(((uint64_t)bookBlockToDrop->stack)-PAGE_SIZE);
