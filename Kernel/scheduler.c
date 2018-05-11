@@ -41,17 +41,6 @@ int sleepProcess(pid_t pid){
 
     find->sleeps = 1;
 
-    /*printString("Queue after sleep:\n",255,255,255);
-    printQueue();
-    if(getPid()==pid){
-        halt = 1;
-        set_interrupts();
-        printString("BEFORE HALT",255,255,0);
-        while(halt){
-            printString("halt",255,100,0);
-        }
-    }*/
-
     spoof_tick();
     return 0;
 }
@@ -121,36 +110,18 @@ void * schedule(void* prevSP)
     process_t prevProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
 
-    //dumpStackAndHalt(prevSP + sizeof(uint64_t));
-    //processorWait(10000000);
-
     if(nextProcess == NULL) // QUEUE IS EMPTY
     {
-        // printString("nextProcess is null\n",255,0,0);
         return prevSP;
     }
     queueProcess(nextProcess);
     if(prevProcess == NULL) // FIRST PROCESS CASE
     {
-        // printString("prevProcess is null but next process is not null\n",255,0,0);
-        // printString("NextProcess name: ", 0, 255, 0);
-        // printString(nextProcess->name, 0, 255, 0);
-        // printString("\n", 0, 0, 0);
         return nextProcess->stackPointer;
     }
     else
     {
-        // printString("Prev and next processes are not null.\n",255,0,0);
-        // printString("PrevProcess name: ",0,255,0);
-        // printString(prevProcess->name,0,255,0);
-        // printString("\n",0,0,0);
-        // printString("NextProcess name: ",0,255,0);
-        // printString(nextProcess->name,0,255,0);
-        // printString("\n",0,0,0);
         prevProcess->stackPointer = prevSP;
-        // printString("NextProcess name: ",0,255,0);
-        // printString(nextProcess->name,0,255,0);
-        // printString("\n",0,0,0);
         return nextProcess->stackPointer;
     }
 }
@@ -164,7 +135,6 @@ void execute(void* eip, char * nameBuffer)
     printString("QueueSize before exec:",0,255,0);
     printInt(getQueueSize(),0,255,0);
     printString("\n",0,0,0);
-    //printQueue();
     process_t newProcess = malloc(sizeof(struct process_t_CDT));
     if(newProcess == NULL){
         printString("No space for process.\n", 0, 0, 255);
@@ -177,7 +147,6 @@ void execute(void* eip, char * nameBuffer)
     }
     memcpy(newProcess->name, nameBuffer,strleng(nameBuffer));
     void* sp = getStack(newProcess->pid);
-    //void* sp = malloc(PROCESS_STACK_SIZE) + PROCESS_STACK_SIZE - sizeof(uint64_t);
     if(sp == NULL){
         printString("No space for process.\n", 0, 0, 255);
         free(newProcess);
@@ -187,25 +156,15 @@ void execute(void* eip, char * nameBuffer)
     if(queueProcess(newProcess)>=0)
         printString("Queued process correctly.\n", 100, 200, 200);
     else{
-        printString("Cannot quque process, not enough memory",0,0,255);
     }
-    printString("This is the state of the queue: \n",255,255,255);
     printQueue();
-    printString("QueueSize after exec:",0,255,0);
-    printInt(getQueueSize(),0,255,0);
-    printString("lalalal",0,0,255);
-    printString("\n",0,0,0);
 }
 
 void exit()
 {
-    printString("Queue before exit:\n",255,255,255);
     printQueue();
     pid_t pid = getPid();
-    printString("REMOVING BY PID ",200,200,200);
-    printInt(pid,200,200,200);
     removeByPid(pid);
     dropBookPageForProcess(pid);
-    printString("Queue after exit:\n",255,255,255);
     printQueue();
 }
