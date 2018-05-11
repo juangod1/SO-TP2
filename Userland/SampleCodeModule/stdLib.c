@@ -8,6 +8,13 @@
 
 extern int sysCall(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
+int flag=0;
+
+void toggleForegroundSystem()
+{
+  flag=!flag;
+}
+
 void reset(char * string, int size){
   for (int i = 0; i < size; i++){
     *(string + i)=0;
@@ -20,7 +27,7 @@ int checkIfForeground(){/*
     DEBUGPrintInt(getPid(),200,252,25);
     DEBUGPrintString(" fg: ",200,252,25);
     DEBUGPrintInt(getForegroundPID(),200,252,25);*/
-  return (getForegroundPID()==getPid()?1:0);
+  return flag  || (getForegroundPID()==getPid()?1:0);
 }
 
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {

@@ -115,38 +115,26 @@ void * schedule(void* prevSP)
 
 void execute(void* eip, char * nameBuffer, int * pid)
 {
-    printString("d1",255,0,0);
     process_t newProcess = malloc(sizeof(struct process_t_CDT));
-    printString("d2",255,0,0);
     if(newProcess == NULL){
         printString("Not enough memory for process.\n", 0, 0, 255);
     }
-    printString("d3",255,0,0);
     newProcess->pid = getNewPid();
-    printString("d4",255,0,0);
     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
-    printString("d5",255,0,0);
     if(newProcess->name == NULL){
         printString("Not enough memory for process.\n", 0, 0, 255);
         free(newProcess);
     }
-    printString("d6",255,0,0);
     memcpy(newProcess->name, nameBuffer,strleng(nameBuffer));
-    printString("d7",255,0,0);
     void* sp = getStack(newProcess->pid);
     if(sp == NULL){
         printString("Not enough memory for process.\n", 0, 0, 255);
         free(newProcess);
     }
-    printString("d8",255,0,0);
     void* temp = initialize_stack_frame(eip, sp);
-    printString("d9",255,0,0);
     newProcess->stackPointer = temp;
-    printString("d10",255,0,0);
     queueProcess(newProcess);
-    printString("d11",255,0,0);
     *pid = newProcess->pid;
-    printQueue();
 }
 
 void exit()

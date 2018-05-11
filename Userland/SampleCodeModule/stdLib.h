@@ -38,6 +38,7 @@ dataBlock getDataBlock(void *pointer);
 void reset(char * string, int size);
 int strleng(const char* s);
 void sysPrintString(char * string, int R, int G, int B);
+void toggleForegroundSystem();
 void sysPrintInt(int num, int B, int G, int R);
 void sysPrintFloat(float num, int B, int G, int R);
 void sysGetTime(int * buffer);

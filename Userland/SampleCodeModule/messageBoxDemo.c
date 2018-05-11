@@ -32,6 +32,7 @@ void receiverProcess()
 
 int messageBoxDemoMain()
 {
+  toggleForegroundSystem();
   sysPrintString("a1\n",CB,CG,CR);
   sysExecute(senderProcess, "Sender Process");
   sysPrintString("a2\n",CB,CG,CR);

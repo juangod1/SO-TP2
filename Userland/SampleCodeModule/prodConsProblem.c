@@ -6,6 +6,8 @@ int sharedInt=0;
 
 void prodConsDemo()
 {
+  sharedInt=0;
+  toggleForegroundSystem();
   semStart(SEM_MUTEX_KEY,1);
   semStart(SEM_OVERFLOW_KEY,1);
   semStart(SEM_UNDERFLOW_KEY,0);
@@ -40,6 +42,7 @@ void prodConsDemo()
   semStop(SEM_MUTEX_KEY);
   semStop(SEM_OVERFLOW_KEY);
   semStop(SEM_UNDERFLOW_KEY);
+  toggleForegroundSystem();
 }
 
 void producer()
