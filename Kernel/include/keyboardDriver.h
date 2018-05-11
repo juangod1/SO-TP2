@@ -1,7 +1,8 @@
 #ifndef KEYBOARDDRIVER_H_
 #define KEYBOARDRIVER_H_
 
-#include <stdint.h>
+
+#include "videoDriver.h"
 
 #define BUFFERSIZE 20
 #define EOF 0

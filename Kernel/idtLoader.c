@@ -1,8 +1,4 @@
-#include <stdint.h>
-#include <idtLoader.h>
-#include <defs.h>
-#include <interrupts.h>
-#include "videoDriver.h"
+#include "idtLoader.h"
 
 #pragma pack(push)		/* Push de la alineación actual */
 #pragma pack (1) 		/* Alinear las siguiente estructuras a 1 byte */

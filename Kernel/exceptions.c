@@ -1,7 +1,4 @@
-#include "videoDriver.h"
 #include "exceptions.h"
-#include "stdlib.h"
-#include <stdint.h>
 
 #define EB 0
 #define EG 155

@@ -1,6 +1,10 @@
 #ifndef EXCEPTIONS_H_
 #define EXCEPTIONS_H_
 
+#include "videoDriver.h"
+#include "stdlib.h"
+
+
 #define ZERO_EXCEPTION_ID 0
 #define OVERFLOW_EXCEPTION_ID 4
 #define INVALID_OPCODE_EXCEPTION_ID 6

@@ -1,13 +1,4 @@
-#include <stdint.h>
-#include <lib.h>
-#include <moduleLoader.h>
-#include "interrupts.h"
-#include "videoDriver.h"
-#include "idtLoader.h"
-#include "stdio.h"
-#include "memorymanager.h"
-#include "include/messaging.h"
-#include "include/semaphoreList.h"
+#include "kernel.h"
 
 extern uint8_t text;
 extern uint8_t rodata;
