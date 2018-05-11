@@ -70,7 +70,7 @@ void startShell(){
 			if (ch == '\n') {
 				reset(lastString,strleng(lastString));
 				copy(lastString,string,strleng(string)-1);
-				callFunction(string,0);
+				callFunction(string,1);
 				if(isRunning) sysPrintString("$> ",CB,CG,CR);
 				reset(string,strleng(string));
 				counter=0;
@@ -120,7 +120,6 @@ int callFunction(char * buffer, int backgroundflag) {
 
 		aux++;
 	}
-
 
 	if (strcmp(input[0], "echo") == 0) {
 		return echo(input, words);
@@ -223,18 +222,18 @@ int callFunction(char * buffer, int backgroundflag) {
 			else if(strcmp(input[1], "opcode") == 0){
 				sysPrintString(OPCODE_INS, B, G, R);
 			}
+            else if(strcmp(input[1], "runfg") == 0){
+                sysPrintString(RUNFG_INS, B, G, R);
+            }
       else if(strcmp(input[1], "test") == 0){
         sysPrintString(TEST_INS, B, G, R);
       }
-      else if(strcmp(input[1], "foreground") == 0){
+      else if(strcmp(input[1], "fg") == 0){
         sysPrintString(FOREGROUND_INS, B, G, R);
       }
       else if(strcmp(input[1], "prodConsDemo") == 0){
         sysPrintString(PRODCONS_INS, B, G, R);
       }
-            else if(strcmp(input[1], "background") == 0){
-                sysPrintString(BACKGROUND_INS, B, G, R);
-            }
 			else{
 				sysPrintString("Not a valid command\n",CB,CG,CR);
 			}
@@ -341,7 +340,7 @@ int callFunction(char * buffer, int backgroundflag) {
 		sysExecute(runContextSwitchDemo,"switcheroo");
 		return 0;
 	}
-	else if(strcmp(input[0],"foreground") == 0) {
+	else if(strcmp(input[0],"fg") == 0) {
 		if(words != 2) {
 			sysPrintString("Wrong parameters: foreground receives one argument.\n", CB, CG, CR);
 			return 1;
@@ -350,15 +349,6 @@ int callFunction(char * buffer, int backgroundflag) {
 		foreground(toInt(input[1]));
 		return 0;
 	}
-    else if(strcmp(input[0],"background") == 0) {
-        if(words != 2) {
-            sysPrintString("Wrong parameters: background receives one argument.\n", CB, CG, CR);
-            return 1;
-        }
-
-        callFunction(input[1],1);
-        return 0;
-    }
 	else if(strcmp(input[0],"prodConsDemo") == 0) {
     if(words!=1)
     {
@@ -381,12 +371,25 @@ int callFunction(char * buffer, int backgroundflag) {
 
     }
     else if(strcmp(input[0],"testBackgroundProcess") == 0) {
-        if(words!=1)
+        if(words>1)
         {
             sysPrintString("Wrong parameters: backgroundProcess receives no arguments.\n", CB, CG, CR);
             return 1;
         }
-        sysExecute(backgroundProcessRun,"bg process test");
+        int pid = sysExecute(backgroundProcessRun,"bg process test");
+		if(!backgroundflag)
+			setForeground(pid);
+        return 0;
+
+    }
+    else if(strcmp(input[0],"runfg") == 0) {
+        if(words<2)
+        {
+            sysPrintString("Wrong parameters: runfg.\n", CB, CG, CR);
+            return 1;
+        }
+
+        callFunction(input+1,0);
         return 0;
 
     }

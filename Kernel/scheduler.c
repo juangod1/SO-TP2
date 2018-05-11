@@ -113,7 +113,7 @@ void * schedule(void* prevSP)
     }
 }
 
-void execute(void* eip, char * nameBuffer)
+void execute(void* eip, char * nameBuffer, int * pid)
 {
     process_t newProcess = malloc(sizeof(struct process_t_CDT));
     if(newProcess == NULL){
@@ -134,6 +134,7 @@ void execute(void* eip, char * nameBuffer)
     void* temp = initialize_stack_frame(eip, sp);
     newProcess->stackPointer = temp;
     queueProcess(newProcess);
+    *pid = newProcess->pid;
 }
 
 void exit()

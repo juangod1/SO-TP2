@@ -44,7 +44,7 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
 	    }
 	    break;
     case 7:
-      execute((void *)rsi, (char*)rdx);
+      execute((void *)rsi, (char*)rdx, rcx);
       break;
     case 8:
         *((pid_t*)rsi) = getPid();

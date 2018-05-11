@@ -27,10 +27,11 @@
 				exit                        - Exits the shell\n\
 				opcode                      - Tests opcode exception\n\
 				test module                 - Executes Kernel test suite\n\
-				foreground process_ID       - Sends process to foreground\n\
+				fg process_ID               - Sends process to foreground\n\
 				prodConsDemo size           - Executes a demo of the Producer Consumer Problem\n\
 ps                          - Lists running processes.\n\
-testBackgroundProcess       - Creates a test background process, use foreground command to see.\n"
+testBackgroundProcess       - Creates a test background process, use foreground command to see.\n\
+runfg process               - Runs process in foreground.\n"
 
 
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
@@ -53,7 +54,7 @@ testBackgroundProcess       - Creates a test background process, use foreground 
 #define OPCODE_INS "Creates opcode exception for testing purposes.\n"
 #define TEST_INS "Executes Kenel Testing Suite, the modules are: scheduler, ipc, all\n"
 #define FOREGROUND_INS "Sends requested process to foreground.\n"
-#define BACKGROUND_INS "Receives one argument, runs program argument in background. Shell programs can't be run in background. "
+#define RUNFG_INS "Runs process in foreground.\n"
 #define PRODCONS_INS "Parameter 'size' determines the size of the testing buffer\n\
 											Once inside consumer and producer processes can be instantiated\n\
 											with the '1' and '2' keys"

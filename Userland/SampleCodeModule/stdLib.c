@@ -20,7 +20,7 @@ int checkIfForeground(){/*
     DEBUGPrintInt(getPid(),200,252,25);
     DEBUGPrintString(" fg: ",200,252,25);
     DEBUGPrintInt(getForegroundPID(),200,252,25);*/
-  return 1;//(getForegroundPID()==getPid()?1:0);
+  return (getForegroundPID()==getPid()?1:0);
 }
 
 void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
@@ -173,9 +173,11 @@ void sysPaintPixel(int x, int y, char B, char G, char R) {
     sysCall(5, x, y, B, G, R);
 }
 
-void sysExecute(void* functionPointer, char* name)
+int sysExecute(void* functionPointer, char* name)
 {
-  sysCall(7,(uint64_t)functionPointer,(uint64_t)name,0,0,0);
+    int pid;
+  sysCall(7,(uint64_t)functionPointer,(uint64_t)name,&pid,0,0);
+  return pid;
 }
 
 int getPid()

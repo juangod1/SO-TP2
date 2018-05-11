@@ -52,7 +52,7 @@ void copy(char* copy, char* original, int len);
 int subStrleng(const char * s, const char c);
 void sysPrintFloat(float num, int B, int G, int R);
 int getPid();
-void sysExecute(void* functionPointer, char * name);
+int sysExecute(void* functionPointer, char * name);
 void sysTestSuite(int num);
 void sysCSD();
 void sysGetProcesses(pid_t * processesPID, int * processesSleep, char * processesNames, int * processesAmount);
