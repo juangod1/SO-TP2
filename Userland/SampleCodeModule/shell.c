@@ -6,6 +6,7 @@
 #include "contextSwitchDemo.h"
 #include "prodConsProblem.h"
 #include "mmDemo.h"
+#include "messageBoxDemo.h"
 
 static int R = DR;
 static int G = DG;
@@ -228,6 +229,9 @@ int callFunction(char * buffer, int backgroundflag) {
       else if(strcmp(input[1], "test") == 0){
         sysPrintString(TEST_INS, B, G, R);
       }
+      else if(strcmp(input[1], "mmDemo") == 0){
+        sysPrintString(MMDEMO_INS, B, G, R);
+      }
       else if(strcmp(input[1], "fg") == 0){
         sysPrintString(FOREGROUND_INS, B, G, R);
       }
@@ -335,6 +339,10 @@ int callFunction(char * buffer, int backgroundflag) {
 	}
 	else if(strcmp(input[0],"contextSwitchDemo") == 0) {
 		sysExecute(runContextSwitchDemo,"switcheroo");
+		return 0;
+	}
+	else if(strcmp(input[0],"messageBoxDemo") == 0) {
+		messageBoxDemoMain();
 		return 0;
 	}
 	else if(strcmp(input[0],"fg") == 0) {

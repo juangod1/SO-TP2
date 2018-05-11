@@ -31,7 +31,8 @@
 				prodConsDemo size           - Executes a demo of the Producer Consumer Problem\n\
 ps                          - Lists running processes.\n\
 testBackgroundProcess       - Creates a test background process, use foreground command to see.\n\
-runfg process               - Runs process in foreground.\n"
+runfg process               - Runs process in foreground.\n\
+mmDemo                      - Executes a demo of the Memory Manager system.\n"
 
 
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
@@ -58,6 +59,7 @@ runfg process               - Runs process in foreground.\n"
 #define PRODCONS_INS "Parameter 'size' determines the size of the testing buffer\n\
 											Once inside consumer and producer processes can be instantiated\n\
 											with the '1' and '2' keys"
+#define MMDEMO_INS "Follow the instructions, navigate by pressing any key.\n"
 
 void startShell();
 int graph(char input[][MAX_WORD_LENGTH], int words);

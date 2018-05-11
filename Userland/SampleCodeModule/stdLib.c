@@ -175,7 +175,7 @@ void sysPaintPixel(int x, int y, char B, char G, char R) {
 
 int sysExecute(void* functionPointer, char* name)
 {
-    int pid;
+  int pid;
   sysCall(7,(uint64_t)functionPointer,(uint64_t)name,&pid,0,0);
   return pid;
 }
