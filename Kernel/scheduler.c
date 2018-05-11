@@ -74,7 +74,6 @@ void listProcesses(pid_t * processesPID, int * processesSleep, char ** processes
 
 int queueProcess(process_t process){
     int ret = add(process);
-    //printString("cualquier cosa\n",255,0,0);
     if(ret==-1)
         perror("Malloc process queue error\n");
     if(ret==-2)
@@ -90,11 +89,6 @@ pid_t getNewPid()
 
 void destroyProcessQueue(){
     destroyQueue();
-}
-
-void debug()
-{
-    printString("asdsdsa", 0,0,255);
 }
 
 void * schedule(void* prevSP)
