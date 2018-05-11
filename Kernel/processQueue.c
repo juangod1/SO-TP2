@@ -215,8 +215,6 @@ int removeByPid(pid_t pid){
 
         prev=tmp;
         tmp = tmp->tail;
-
-        printString(prev->process->name,0,200,0);
     }
     if(tmp==NULL)
         return -1;

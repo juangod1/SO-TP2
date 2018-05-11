@@ -320,9 +320,6 @@ int callFunction(char * buffer, int backgroundflag) {
 			sysPrintString("Wrong parameters: test receives one argument.\n", CB, CG, CR);
 			return 1;
 		}
-
-		if(strcmp(input[1],"scheduler") == 0)
-		    sysTestSuite(1);
 		else if (strcmp(input[1],"ipc") == 0)
 		    sysTestSuite(2);
     else if (strcmp(input[1], "mm") == 0)

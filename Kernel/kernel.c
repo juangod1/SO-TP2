@@ -6,7 +6,6 @@
 #include "idtLoader.h"
 #include "stdio.h"
 #include "memorymanager.h"
-#include "include/schedulerTest.h"
 #include "include/messaging.h"
 #include "include/semaphoreList.h"
 
@@ -64,7 +63,7 @@ int main() {
 	initializeTrafficControl();// Semaphore system
 
 	void (*module)();
-	
+
 	module = sampleCodeModuleAddress;
 	module();
 	while(1){

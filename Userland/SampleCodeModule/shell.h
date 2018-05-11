@@ -52,7 +52,7 @@ runfg process               - Runs process in foreground.\n"
 							Once inside navigate with the arrow keys and use +/- to zoom in/out\n"
 #define EXIT_INS "Quits the shell.\n"
 #define OPCODE_INS "Creates opcode exception for testing purposes.\n"
-#define TEST_INS "Executes Kenel Testing Suite, the modules are: scheduler, ipc, all\n"
+#define TEST_INS "Executes Kenel Testing Suite, the modules are: mm, ipc, all\n"
 #define FOREGROUND_INS "Sends requested process to foreground.\n"
 #define RUNFG_INS "Runs process in foreground.\n"
 #define PRODCONS_INS "Parameter 'size' determines the size of the testing buffer\n\

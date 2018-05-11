@@ -2,8 +2,6 @@
 #include "videoDriver.h"
 #include "time.h"
 #include "keyboardDriver.h"
-#include "schedulerTest.h"
-#include "include/schedulerTest.h"
 #include "include/memoryManagerTest.h"
 #include "include/IPCTester.h"
 #include "scheduler.h"
@@ -31,11 +29,7 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
         switch(rsi){
             case 0:
                 IPCTester();
-                schedulerTestRun();
                 break;
-	        case 1:
-	            schedulerTestRun();
-	            break;
 	        case 2:
 	            IPCTester();
        	        break;
