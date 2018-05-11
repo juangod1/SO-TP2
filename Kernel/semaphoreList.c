@@ -43,11 +43,6 @@ int listSize(listEntry * me_P)
 
 int createlistEntry(int key_P, int value_P, listEntry * me_P)
 {
-	// printString("createList Entry with key = ",0,255,0);
-	// printInt(key_P,0,255,0);
-	// printString(" value = ",0,255,0);
-	// printInt(value_P,0,255,0);
-	// printString("\n",0,255,0);
 	if((*me_P)==NULL)
 	{
 		(*me_P) = malloc(sizeof(struct listEntryStruct));
