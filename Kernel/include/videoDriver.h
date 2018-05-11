@@ -25,6 +25,7 @@ void printHex(uint64_t num, int B, int G, int R);
 uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
 void newLine();
 void readInput(char * buffer);
+int isPixelColor(int x, int y, int B, int G, int R);
 uint8_t * currentline();
 int boundedPixel(int x, int y);
 void paintPixel(int x, int y, char R, char G, char B);

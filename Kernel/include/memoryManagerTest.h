@@ -31,6 +31,7 @@ void thenCheckFirstBookBlockNull();
 void thenCheckStringsAreConsistent();
 void thenSaveAddressAndFreeFirst();
 void thenCheckFirstAdressIsEqualToSecond();
+void showStructure();
 
 void thenOk();
 void thenFailed();

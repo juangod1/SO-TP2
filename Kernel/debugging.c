@@ -4,7 +4,7 @@ void dumpStack(void* stackAdress)
 {
     printString("__________________________________________________________________\n", 255, 0, 0);
     uint64_t *curr = (uint64_t *)stackAdress;
-    printHex(curr, 0, 255, 0);
+    printHex((uint64_t)curr, 0, 255, 0);
     printString("\n", 255, 0, 0);
     for (uint64_t i = 0; i < 20; i++)
     {
@@ -20,7 +20,7 @@ void dumpStackAndHalt(void* stackAdress)
 {
     printString("__________________________________________________________________\n", 255, 0, 0);
     uint64_t *curr = (uint64_t *)stackAdress;
-    printHex(curr, 0, 255, 0);
+    printHex((uint64_t)curr, 0, 255, 0);
     printString("\n", 255, 0, 0);
     for (uint64_t i = 0; i < 20; i++)
     {

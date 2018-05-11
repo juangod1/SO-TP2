@@ -3,6 +3,7 @@
 #include "include/messagingTest.h"
 #include "include/lib.h"
 #include "include/memorymanager.h"
+#include "include/videoDriver.h"
 #include "include/scheduler.h"
 
 message global_message;

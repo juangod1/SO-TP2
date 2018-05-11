@@ -18,6 +18,7 @@ int getQueueSize();
 process_t poll(char checkIfWoke);
 void freeNodeMemory(node nodeToFree);
 process_t peekByPosition(int position);
+int removeByPid(pid_t pid);
 process_t peekByPID(pid_t pid);
 void listQueue();
 void destroyQueue();

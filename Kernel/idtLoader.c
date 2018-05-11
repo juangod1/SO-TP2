@@ -2,6 +2,7 @@
 #include <idtLoader.h>
 #include <defs.h>
 #include <interrupts.h>
+#include "videoDriver.h"
 
 #pragma pack(push)		/* Push de la alineación actual */
 #pragma pack (1) 		/* Alinear las siguiente estructuras a 1 byte */
@@ -35,11 +36,11 @@ void load_idt() {
   setup_IDT_entry(0x04, (uint64_t)&_overflowHandler); // Overflow exception
   setup_IDT_entry(0x06, (uint64_t)&_opcodeHandler); // Invalid opcode exception
   //setup_IDT_entry(0x08, (uint64_t)&hang); // Double fault
-  setup_IDT_entry(0x13, (uint64_t)&_generalProtection); // Invalid general protection exception 
+  setup_IDT_entry(0x13, (uint64_t)&_generalProtection); // Invalid general protection exception
   setup_IDT_entry(0x20, (uint64_t)&_irq00Handler);
   setup_IDT_entry(0x21, (uint64_t)&_irq01Handler); //Keyboard
   setup_IDT_entry(0x80, (uint64_t)&sysCallDispatcher);
-  
+
 	//Solo interrupcion timer tick habilitadas
 	picMasterMask(0xFC);//FC
 	picSlaveMask(0xFF);//FF

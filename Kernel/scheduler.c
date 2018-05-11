@@ -69,7 +69,7 @@ int getAmountOfProcesses(){
 }
 
 void listProcesses(pid_t * processesPID, int * processesSleep, char ** processesNames, int * processesAmount){
-    listQueue(processesPID,processesSleep,processesNames,processesAmount);
+    listQueue(processesPID,processesSleep,*processesNames,processesAmount);
 }
 
 int queueProcess(process_t process){

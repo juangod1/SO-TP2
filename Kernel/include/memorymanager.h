@@ -3,6 +3,8 @@
 
 #include <sys/types.h>
 #include "scheduler.h"
+#include "videoDriver.h"
+#include "testLib.h"
 
 #define HEAP_START 0x400000
 #define HEAP_END 0x799999

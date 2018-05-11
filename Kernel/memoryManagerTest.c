@@ -196,7 +196,8 @@ void thenCheckStringsAreConsistent(){
   }
 }
 
-void showStructure(){
+void showStructure()
+{
   mmShow();
 }
 

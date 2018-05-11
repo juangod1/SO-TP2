@@ -30,7 +30,7 @@ char memoryManagerBlocksStatusArray[NUM_OF_BBLOCKS];
 
 //Inicializar mi heap y variables de entorno. Devuelve 1 cuando hay error, 0 cuando fue exitoso.
 int initMemoryManager(){
-	printString("Initializing memory manager... \n",255,255,255);
+	printString("Initializing memory manager... \n",TB,TG,TR);
 	initPageDirArray();
 	initMemoryManagerBlocksArray();
 	//Levanto la primer pagina del book para mi. Como yo conozco esa direccion, ya la utilizo para guardar las cosas.
@@ -99,7 +99,7 @@ void* getStack(int pid){
 	newBookBlock->owner = pid+2;
 	newBookBlock->brk = 0;
 	newBookBlock->base = popNewPage();//Apunta a donde empieza el dataBlock
-	newBookBlock->stack = (void*)((int)(popReverseNewPage()) + PAGE_SIZE);
+	newBookBlock->stack = (void*)((u_int64_t)(popReverseNewPage()) + PAGE_SIZE);
 	newBookBlock->prev = myBookLastPage;
 	newBookBlock->next = NULL;
 	if(newBookBlock->base == NULL){//Verifica el heap porque si el proceso no tiene heap ya no sirve.
@@ -146,7 +146,7 @@ void* mm_malloc(size_t s){
 void mm_free(void* pointer){
 	if(pointer == NULL)
 		return;
-	int i = ((int)pointer - (int)myHeapInfo->base)/BBLOCK_SIZE;
+	int i = ((uint64_t)pointer - (uint64_t)myHeapInfo->base)/BBLOCK_SIZE;
 	memoryManagerBlocksStatusArray[i]=0;
 }
 
@@ -158,8 +158,8 @@ void * malloc(size_t s){
 		//Deberia verificar que tiene espacio en la pagina para la nueva magnitud
 		//Aumento el brk
 		if((brk + s + DBLOCK_SIZE) >= PAGE_SIZE){//Se cae de la pagina
-			printString("Fallo malloc\n",0,0,255);
-			return 0x1500000;
+			printString("Fallo malloc\n",TB_FAIL,TG_FAIL,TR_FAIL);
+			return (void *) 0x1500000;
 		}
 		myKernelBook->brk = (brk +s+DBLOCK_SIZE);
 		//Armo el nuevo dataBlock
@@ -326,28 +326,28 @@ dataBlock searchFreeBlock(dataBlock start, size_t size)
 
 void mmShow(){
 	bookBlock current = heapBookBase;
-	printString("Showing Heap Book. PID --> Base\n");
+	printString("Showing Heap Book. PID --> Base\n",TB,TG,TR);
 	while(current!=NULL){
-		printInt(current->owner,255,255,255);
-		printString(" --> ");
-		printHex((u_int64_t)current->base,255,255,255);
-		printString("\n",255,255,255);
+		printInt(current->owner,TB,TG,TR);
+		printString(" --> ",TB,TG,TR);
+		printHex((u_int64_t)current->base,TB,TG,TR);
+		printString("\n",TB,TG,TR);
 		if(current->owner != 0){
-			printString("Showing Blocks. Size --> Status\n");
+			printString("Showing Blocks. Size --> Status\n",TB,TG,TR);
 			pbShow((dataBlock)current->base);
 		}
 		current = current->next;
-		printString("--- \n");
+		printString("--- \n",TB,TG,TR);
 	}
 }
 
 void pbShow(dataBlock first){
 	dataBlock current = first;
 	while(current != NULL){
-		printInt(current->size,255,255,255);
-		printString(" --> ");
-		printInt((u_int64_t)current->free,255,255,255);
-		printString("\n",255,255,255);
+		printInt(current->size,TB,TG,TR);
+		printString(" --> ",TB,TG,TR);
+		printInt((u_int64_t)current->free,TB,TG,TR);
+		printString("\n",TB,TG,TR);
 		current = current -> next;
 	}
 }
