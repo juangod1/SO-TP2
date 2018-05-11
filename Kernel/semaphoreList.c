@@ -95,18 +95,12 @@ int removelistEntry(listEntry * me_P)
 
 listEntry * getListEntry(int key_P, listEntry * lE)
 {
-	// printString("getListEntry with key = ",255,0,255);
-	// printInt(key_P,255,0,255);
-	// printString("\n",255,0,255);
 	if(lE==NULL || *lE ==NULL)
 	{
 		return NULL;
 	}
 	if((*lE)->key==key_P)
 	{
-		printString("Found listEntry with value = ",255,255,0);
-		printInt((*lE)->sem->value,255,255,0);
-		printString("\n",255,255,0);
 		return lE;
 	}
 	return getListEntry(key_P, &((*lE)->next));
@@ -117,18 +111,13 @@ void wait(int key_P)
 	listEntry * lE=getListEntry(key_P, &(trafficControl->semaphoreList));
 	if(lE!=NULL && (*lE)!=NULL)
 	{
-		printString("non Null lE in wait\n",100,100,100);
 		taskRequest((*lE)->sem, getPid());
-		printString("FINISHED TASK REQUEST\n",0,0,255);
 	}
 }
 
 void signal(int key_P)
 {
-	printString("BeforeGetting\n",255,0,255);
 	listEntry * lE=getListEntry(key_P, &(trafficControl->semaphoreList));
-	printString("AfterGetting\n", 255, 0, 255);
-	printInt(lE!=NULL && (*lE)!=NULL,255,255,0);
 	if(lE!=NULL && (*lE)!=NULL)
 	{
 		taskFinished((*lE)->sem, getPid());
@@ -142,11 +131,6 @@ void stopSemaphore(int key_P)
 
 void startSemaphore(int key, int value)
 {
-	printString("startSemaphore with key = ",0,255,255);
-	printInt(key,0,255,255);
-	printString(" value = ",0,255,255);
-	printInt(value,0,255,255);
-	printString("\n",0,255,255);
 	createlistEntry(key,value,&(trafficControl->semaphoreList));
 }
 

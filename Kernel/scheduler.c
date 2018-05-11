@@ -47,11 +47,7 @@ int sleepProcess(pid_t pid){
 
 // Returns -1 if PID not found, 0 if woke up, 1 if already woke
 int wakeProcess(pid_t pid){
-    printString("Queue before woke:\n", 255, 255, 255);
     printQueue();
-    printString("Process to be Woke as fuck:", 255, 0, 255);
-    printInt(pid,255,0,255);
-    printString("\n", 0, 0, 0);
     process_t find = peekByPID(pid);
     if (find==NULL)
         return -1;
@@ -60,7 +56,6 @@ int wakeProcess(pid_t pid){
         return 1;
 
     find->sleeps = 0;
-    printString("Queue after woke:\n",255,255,255);
     printQueue();
     return 0;
 }
@@ -147,7 +142,6 @@ void execute(void* eip, char * nameBuffer)
     void* temp = initialize_stack_frame(eip, sp);
     newProcess->stackPointer = temp;
     queueProcess(newProcess);
-    printQueue();
 }
 
 void exit()
