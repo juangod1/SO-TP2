@@ -151,9 +151,8 @@ void execute(void* eip, char * nameBuffer, int * pid)
 
 void exit()
 {
-    printQueue();
     pid_t pid = getPid();
     removeByPid(pid);
     dropBookPageForProcess(pid);
-    printQueue();
+    spoof_tick();
 }
