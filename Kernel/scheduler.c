@@ -47,7 +47,6 @@ int sleepProcess(pid_t pid){
 
 // Returns -1 if PID not found, 0 if woke up, 1 if already woke
 int wakeProcess(pid_t pid){
-    printQueue();
     process_t find = peekByPID(pid);
     if (find==NULL)
         return -1;
@@ -56,7 +55,6 @@ int wakeProcess(pid_t pid){
         return 1;
 
     find->sleeps = 0;
-    printQueue();
     return 0;
 }
 
