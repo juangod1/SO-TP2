@@ -1,4 +1,7 @@
-#include "stdio.h"
+//DEPRECATED
+
+
+/*#include "stdio.h"
 #include "stdLib.h"
 
 int (*child_func)();
@@ -63,7 +66,7 @@ void childProcessFunction()
     char* name2 = "thirdProcess";
     sysExecute(func2, name2);
     sysPrintString("2nd process second print.\n",255,255,255);
-    
+
 }
 
 void f2(){
@@ -95,4 +98,4 @@ void f4(){
 
 void f5(){
     sysPrintString("Hello, I am the 6th process.\n",255,255,255);
-}
+}*/

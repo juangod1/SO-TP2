@@ -3,5 +3,6 @@
 
 void process1();
 void process2();
+void messageBoxDemoMain();
 
 #endif

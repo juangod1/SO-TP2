@@ -30,7 +30,8 @@ int checkIfForeground(){/*
   return flag  || (getForegroundPID()==getPid()?1:0);
 }
 
-void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) {
+void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red)
+{
     sysCall(4, ch, color_blue, color_green, color_red, 0);
 }
 
@@ -183,20 +184,20 @@ void sysPaintPixel(int x, int y, char B, char G, char R) {
 int sysExecute(void* functionPointer, char* name)
 {
   int pid;
-  sysCall(7,(uint64_t)functionPointer,(uint64_t)name,&pid,0,0);
+  sysCall(7,(uint64_t)functionPointer,(uint64_t)name,(uint64_t)&pid,0,0);
   return pid;
 }
 
 int getPid()
 {
   int pid[1];
-  sysCall(8,pid,0,0,0,0);
+  sysCall(8,(uint64_t)pid,0,0,0,0);
   return pid[0];
 }
 
 void sysGetProcesses(pid_t * processesPID, int * processesSleep, char * processesNames, int * processesAmount)
 {
-  sysCall(9,processesPID,processesSleep,processesNames,processesAmount,0);
+  sysCall(9,(uint64_t)processesPID,(uint64_t)processesSleep,(uint64_t)processesNames,(uint64_t)processesAmount,0);
 }
 
 void sendMessage(mbd_t descriptor, void * messageContent)

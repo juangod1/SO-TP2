@@ -1,5 +1,5 @@
-#ifndef PRODCONSPROBLEM_H
-#define PRODCONSPROBLEM_H
+#ifndef MMDEMO_H
+#define MMDEMO_H
 
 
 void mmDemo();

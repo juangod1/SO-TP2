@@ -8,7 +8,7 @@ void senderProcess()
   char * key="0123";
   int size=10;
   char block=1;
-  struct mbd_t_Struct descriptor = {size,key, block};
+  struct mbd_t_Struct descriptor = {size,block,key};
   char * msg = "received?";
   sysPrintString("b2\n",CB,CG,CR);
   sendMessage(&descriptor, msg);
@@ -21,7 +21,7 @@ void receiverProcess()
   char * key="0123";
   int size=10;
   char block=1;
-  struct mbd_t_Struct descriptor = {size,key, block};
+  struct mbd_t_Struct descriptor = {size, block,key};
   char buffer[10]={0};
   sysPrintString("c2\n",CB,CG,CR);
   recieveMessage(&descriptor, buffer);
@@ -30,12 +30,11 @@ void receiverProcess()
   sysPrintString(".\n",CB,CG,CR);
 }
 
-int messageBoxDemoMain()
+void messageBoxDemoMain()
 {
   toggleForegroundSystem();
   sysPrintString("a1\n",CB,CG,CR);
   sysExecute(senderProcess, "Sender Process");
   sysPrintString("a2\n",CB,CG,CR);
   sysExecute(receiverProcess, "Consumer Process");
-  while(1);
 }

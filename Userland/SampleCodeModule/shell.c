@@ -43,7 +43,7 @@ void backgroundProcessRun(){
     }
 }
 
-int foreground(pid_t pid){
+void foreground(pid_t pid){
     //DEBUGPrintInt(pid,100,100,100);
     foregroundPID = pid;
 }
@@ -209,6 +209,9 @@ int callFunction(char * buffer, int backgroundflag) {
 			else if(strcmp(input[1], "exit") == 0){
 				sysPrintString(EXIT_INS, B, G, R);
 			}
+			else if(strcmp(input[1], "messageBoxDemo") == 0){
+				sysPrintString(MESSAGEBOXDEMO_INS, B, G, R);
+			}
 			else if(strcmp(input[1], "plot") == 0){
 				sysPrintString(PLOT_INS, B, G, R);
 			}
@@ -258,7 +261,7 @@ int callFunction(char * buffer, int backgroundflag) {
 			return 1;
     }
     sysClear();
-		mmDemo(input, words);
+		mmDemo();
 		sysClear();
     //sysClear();
     return 0;
@@ -326,10 +329,10 @@ int callFunction(char * buffer, int backgroundflag) {
 		}
 		return 0;
 	}
-	else if(strcmp(input[0],"contextSwitchDemo") == 0) {
-		sysExecute(runContextSwitchDemo,"switcheroo");
-		return 0;
-	}
+	/*else if(strcmp(input[0],"contextSwitchDemo") == 0) {               ===========
+		sysExecute(runContextSwitchDemo,"switcheroo");                      DEPRECATED
+		return 0;                                                          ===========
+	}*/
 	else if(strcmp(input[0],"messageBoxDemo") == 0) {
 		messageBoxDemoMain();
 		return 0;
@@ -383,7 +386,7 @@ int callFunction(char * buffer, int backgroundflag) {
             return 1;
         }
 
-        callFunction(input+1,0);
+        callFunction(input[1],0);
         return 0;
 
     }

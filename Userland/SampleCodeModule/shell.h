@@ -27,11 +27,12 @@
 				exit                        - Exits the shell\n\
 				test module                 - Executes Kernel test suite\n\
 				fg process_ID               - Sends process to foreground\n\
-				prodConsDemo size           - Executes a demo of the Producer Consumer Problem\n\
 ps                          - Lists running processes.\n\
 testBackgroundProcess       - Creates a test background process, use foreground command to see.\n\
 runfg process               - Runs process in foreground.\n\
-mmDemo                      - Executes a demo of the Memory Manager system.\n"
+prodConsDemo                - Executes a demo of the Producer Consumer Problem\n\
+mmDemo                      - Executes a demo of the Memory Manager system.\n\
+messageBoxDemo              - Executes a demo of the Messing system.\n"
 
 
 #define ECHO_INS "Recieves a variable amount of arguments, prints them in the screen (max 32).\n"
@@ -54,10 +55,10 @@ mmDemo                      - Executes a demo of the Memory Manager system.\n"
 #define TEST_INS "Executes Kenel Testing Suite, the modules are: mm, ipc, all\n"
 #define FOREGROUND_INS "Sends requested process to foreground.\n"
 #define RUNFG_INS "Runs process in foreground.\n"
-#define PRODCONS_INS "Parameter 'size' determines the size of the testing buffer\n\
-											Once inside consumer and producer processes can be instantiated\n\
-											with the '1' and '2' keys"
+#define PRODCONS_INS "Once inside consumer and producer processes can be instantiated\n\
+											with the '1' and '2' keys. Press '3' to exit and free sleeping processes\n"
 #define MMDEMO_INS "Follow the instructions, navigate by pressing any key.\n"
+#define MESSAGEBOXDEMO_INS "Shows an example of two processes communicating with message boxes.\n"
 
 void startShell();
 int graph(char input[][MAX_WORD_LENGTH], int words);

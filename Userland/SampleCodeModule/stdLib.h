@@ -39,6 +39,8 @@ void reset(char * string, int size);
 int strleng(const char* s);
 void sysPrintString(char * string, int R, int G, int B);
 void toggleForegroundSystem();
+void free(void *pointer);
+void sysWriteChar(char ch, unsigned char color_blue, unsigned char color_green, unsigned char color_red) ;
 void sysPrintInt(int num, int B, int G, int R);
 void sysPrintFloat(float num, int B, int G, int R);
 void sysGetTime(int * buffer);
