@@ -164,14 +164,6 @@ int callFunction(char * buffer, int backgroundflag) {
 	} else if (strcmp(input[0], "clear") == 0) {
 		return clear(words);
 	}
-	else if(strcmp(input[0],"opcode")==0){
-		if(words!=1){
-			sysPrintString("No extra parameters for opcode\n",CB, CG, CR);
-			return 1;
-		}
-		opcodeGenerator();
-		return 0;
-	}
 	else if (strcmp(input[0], "calculate") == 0) {
 		int ver = calculateVerifications(words, input[1], input[2], input[3]);
 
@@ -220,12 +212,9 @@ int callFunction(char * buffer, int backgroundflag) {
 			else if(strcmp(input[1], "plot") == 0){
 				sysPrintString(PLOT_INS, B, G, R);
 			}
-			else if(strcmp(input[1], "opcode") == 0){
-				sysPrintString(OPCODE_INS, B, G, R);
-			}
-            else if(strcmp(input[1], "runfg") == 0){
-                sysPrintString(RUNFG_INS, B, G, R);
-            }
+      else if(strcmp(input[1], "runfg") == 0){
+          sysPrintString(RUNFG_INS, B, G, R);
+      }
       else if(strcmp(input[1], "test") == 0){
         sysPrintString(TEST_INS, B, G, R);
       }

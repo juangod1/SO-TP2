@@ -25,7 +25,6 @@
 				plot coef_a coef_b coef_c   - Plots a Quadratic function for the given values\n\
 				help (optional)command      - Displays help instructions for command\n\
 				exit                        - Exits the shell\n\
-				opcode                      - Tests opcode exception\n\
 				test module                 - Executes Kernel test suite\n\
 				fg process_ID               - Sends process to foreground\n\
 				prodConsDemo size           - Executes a demo of the Producer Consumer Problem\n\
@@ -52,7 +51,6 @@ mmDemo                      - Executes a demo of the Memory Manager system.\n"
 							a quadratic function\n\
 							Once inside navigate with the arrow keys and use +/- to zoom in/out\n"
 #define EXIT_INS "Quits the shell.\n"
-#define OPCODE_INS "Creates opcode exception for testing purposes.\n"
 #define TEST_INS "Executes Kenel Testing Suite, the modules are: mm, ipc, all\n"
 #define FOREGROUND_INS "Sends requested process to foreground.\n"
 #define RUNFG_INS "Runs process in foreground.\n"
@@ -69,7 +67,6 @@ int clear(int words);
 int overflowGenerator(int n);
 int calculateVerifications(int words, char* input1, char* input2, char* input3);
 int calculate(char* func, int param1, int param2);
-extern void opcodeGenerator();
 pid_t getForegroundPID();
 void DEBUGPrintInt();
 void DEBUGPrintString();
