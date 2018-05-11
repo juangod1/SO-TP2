@@ -92,8 +92,6 @@ picSlaveMask:
 
 ;8254 Timer (Timer Tick)
 _irq00Handler:
-    mov rdi,49
-    call printInt
 	push rax
 	pushaqlite
 	mov rdi,rsp ;rsp of previous process

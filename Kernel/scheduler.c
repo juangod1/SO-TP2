@@ -32,11 +32,6 @@ void spoof_tick();
 
 // Returns -1 if PID not found, 0 if slept, 1 if already sleeping
 int sleepProcess(pid_t pid){
-    printString("Queue before sleep:\n",255,255,255);
-    printQueue();
-    printString("Process to be slept as fuck:", 255, 0, 255);
-    printInt(pid, 255, 0, 255);
-    printString("\n", 0, 0, 0);
     process_t find = peekByPID(pid);
     if (find==NULL)
         return -1;
@@ -58,7 +53,6 @@ int sleepProcess(pid_t pid){
     }*/
 
     spoof_tick();
-    printString("PASSED SPOOF\n", 255, 0, 255);
     return 0;
 }
 

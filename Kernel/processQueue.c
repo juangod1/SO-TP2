@@ -21,6 +21,7 @@ int add(process_t process){
 
     node newNode = malloc(sizeof(struct node_CDT));
     if(newNode==NULL) {
+        perror("MALLOC RETURNED NULL");
         return -1;
     }
 
@@ -221,6 +222,8 @@ int removeByPid(pid_t pid){
         return -1;
 
     prev->tail = tmp->tail;
+    if(last->process->pid == tmp->process->pid)
+        last = prev;
 
     free(tmp->process);
     free(tmp);
