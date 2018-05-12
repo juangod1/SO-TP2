@@ -1,10 +1,10 @@
-//
-// Created by juangod on 15/04/18.
-//
-
 #ifndef TP2_TEMPORARY_PROCESSQUEUE_H
 #define TP2_TEMPORARY_PROCESSQUEUE_H
 
+#include <stddef.h>
+#include <unistd.h>
+#include "videoDriver.h"
+#include "memorymanager.h"
 #include "process.h"
 
 typedef struct node_CDT * node;

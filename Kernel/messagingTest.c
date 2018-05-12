@@ -1,10 +1,4 @@
-#include "include/testLib.h"
-#include "include/messaging.h"
 #include "include/messagingTest.h"
-#include "include/lib.h"
-#include "include/memorymanager.h"
-#include "include/videoDriver.h"
-#include "include/scheduler.h"
 
 message global_message;
 int global_size = 5;

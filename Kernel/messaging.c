@@ -1,8 +1,4 @@
-#include "include/lib.h"
 #include "messaging.h"
-#include "include/videoDriver.h"
-#include "include/memorymanager.h"
-#include "include/scheduler.h"
 
 #define MBKEYSIZE 5
 

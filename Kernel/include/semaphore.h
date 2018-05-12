@@ -2,6 +2,10 @@
 #define SEMAPHORE_H
 
 #include "semaphoreProcessQueue.h"
+#include "lib.h"
+#include "memorymanager.h"
+#include "semaphoreProcessQueue.h"
+#include "scheduler.h"
 
 typedef struct semStruct * semaphore;
 struct semStruct

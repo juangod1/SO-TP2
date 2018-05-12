@@ -1,12 +1,4 @@
-//
-// Created by juangod on 18/04/18.
-//
-#include "include/process.h"
-#include "include/memorymanager.h"
-#include "include/processQueue.h"
-#include "include/videoDriver.h"
 #include "scheduler.h"
-#include "include/debugging.h"
 
 void* initialize_stack_frame(void* rip, void* rbp);
 uint64_t* get_eip();

@@ -1,6 +1,12 @@
 #ifndef MESSAGINGTEST_H
 #define MESSAGINGTEST_H
 
+#include "testLib.h"
+#include "messaging.h"
+#include "lib.h"
+#include "memorymanager.h"
+#include "videoDriver.h"
+#include "scheduler.h"
 
 void givenAnInitializedMessageBox();
 void givenAnInitializedmessage();

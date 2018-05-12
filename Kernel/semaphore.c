@@ -1,8 +1,4 @@
 #include "include/semaphore.h"
-#include "include/lib.h"
-#include "include/memorymanager.h"
-#include "include/semaphoreProcessQueue.h"
-#include "include/scheduler.h"
 
 extern int semaphoreCheck(void * ptr);
 

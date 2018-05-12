@@ -1,9 +1,4 @@
-#include "include/process.h"
-#include "include/scheduler.h"
-#include "include/testLib.h"
-#include "include/videoDriver.h"
-#include "include/memorymanager.h"
-#include "processQueue.h"
+#include "schedulerTest.h"
 //
 // Created by juangod on 18/04/18.
 //

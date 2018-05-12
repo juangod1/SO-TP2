@@ -1,12 +1,4 @@
-//
-// Created by juangod on 15/04/18.
-//
-
-#include <stddef.h>
-#include <unistd.h>
-#include "include/videoDriver.h"
 #include "include/processQueue.h"
-#include "include/memorymanager.h"
 
 #define MAX_PROCESSES 256
 #define MAX_PROCESS_NAME_LENGTH 20

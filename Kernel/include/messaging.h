@@ -3,6 +3,10 @@
 
 #include "lib.h"
 #include "semaphoreProcessQueue.h"
+#include "videoDriver.h"
+#include "memorymanager.h"
+#include "scheduler.h"
+#include "lib.h"
 
 typedef struct mbd_t_Struct * mbd_t;
 struct mbd_t_Struct

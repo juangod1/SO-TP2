@@ -5,9 +5,9 @@
 #ifndef TP2_TEMPORARY_PROCESS_H
 #define TP2_TEMPORARY_PROCESS_H
 
+
 #include <stdint.h>
 #include "lib.h"
-
 struct process_initial_stack{
     uint64_t gs;
     uint64_t fs;
@@ -37,5 +37,6 @@ struct process_t_CDT {
 };
 
 void freeProcessMemory(process_t process);
+#include "memorymanager.h"
 
 #endif //TP2_TEMPORARY_PROCESS_H

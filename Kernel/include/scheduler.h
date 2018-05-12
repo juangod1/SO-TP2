@@ -5,7 +5,12 @@
 #ifndef TP2_TEMPORARY_SCHEDULER_H
 #define TP2_TEMPORARY_SCHEDULER_H
 
+
 #include "process.h"
+#include "memorymanager.h"
+#include "processQueue.h"
+#include "videoDriver.h"
+#include "debugging.h"
 
 #define MAX_PROCESS_NAME_LENGTH 20
 #define PROCESS_STACK_SIZE 2048
