@@ -23,6 +23,7 @@ int memcmp(const char * destination, const char * source, uint8_t length)
 	return 0;
 }
 
+
 void * memcpy(void * destination, const void * source, uint64_t length)
 {
 	/*
@@ -37,6 +38,10 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 	* the compiler to be reasonably intelligent about optimizing
 	* the divides and modulos out. Fortunately, it is.
 	*/
+	//if((uint64_t)destination-(uint64_t)source<length && (uint64_t)destination>(uint64_t)source)
+	//{
+	//	return memcpyBackwards(destination, source, length);
+	//}
 	uint64_t i;
 
 	if ((uint64_t)destination % sizeof(uint32_t) == 0 &&
@@ -56,6 +61,33 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 		for (i = 0; i < length; i++)
 			d[i] = s[i];
+	}
+
+	return destination;
+}
+
+void * memcpyBackwards(void * destination, void * source, uint64_t length)
+{
+	uint64_t i;
+
+	if ((uint64_t)destination % sizeof(uint32_t) == 0 &&
+		(uint64_t)source % sizeof(uint32_t) == 0 &&
+		length % sizeof(uint32_t) == 0)
+	{
+		uint32_t *d = (uint32_t *) destination;
+		const uint32_t *s = (const uint32_t *)source;
+		length/=sizeof(uint32_t);
+
+		for (i = 0; i < length; i++)
+			d[length-i-1] = s[length-i-1];
+	}
+	else
+	{
+		uint8_t * d = (uint8_t*)destination;
+		const uint8_t * s = (const uint8_t*)source;
+
+		for (i = 0; i < length; i++)
+			d[length-i-1] = s[length-i-1];
 	}
 
 	return destination;
