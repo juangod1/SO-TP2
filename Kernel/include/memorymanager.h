@@ -15,10 +15,10 @@
 
 typedef struct bookBlockStruct * bookBlock;
 struct bookBlockStruct {
-	int owner; //Este es el  pid
+	int owner; //Este es el  pid+2
 	void* base;
 	void* stack;
-	int brk; //Este puede ser otro tipo de dato para ahorrar memoria
+	int brk;
 	bookBlock prev;
 	bookBlock next;
 };
@@ -37,32 +37,26 @@ struct dataBlockStruct {
 int initMemoryManager();
 void initPageDirArray();
 void initMemoryManagerBlocksArray();
-void* getStack(int pid);
 void* mm_malloc(size_t s);
 void mm_free(void* pointer);
-void * popNewPage();
-void * popReverseNewPage();
-void dropBookPageForProcess(int pid);
-void dropPage(uint64_t dir);
-bookBlock searchBookedBlock(int id);
-void mmShow();
-void pbShow();
 void * malloc(size_t size);
 void free(void *pointer);
-
-//Public functions
-void expandHeap(dataBlock * db, size_t s);
-void getMyHeapBase(dataBlock * db);
-void *sysmalloc(size_t s);
 
 //Internal page functions
 dataBlock getDataBlock(void *pointer);
 dataBlock getLastDataBlock(dataBlock first);
 dataBlock searchFreeBlock(dataBlock last, size_t size);
+bookBlock searchBookedBlock(int id);
+void * popNewPage();
+void * popReverseNewPage();
+void dropBookPageForProcess(int pid);
+void dropPage(uint64_t dir);
+void mmShow();
+void pbShow();
 
-//N2H
-void *mymalloc(size_t size);
-//dataBlock expandHeap(dataBlock* last, size_t size);
-void *sbrk(size_t s);
+//Public functions
+void expandHeap(dataBlock * db, size_t s);
+void getMyHeapBase(dataBlock * db);
+void* getStack(int pid);
 
 #endif
