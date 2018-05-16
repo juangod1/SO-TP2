@@ -1,4 +1,5 @@
 #include "scheduler.h"
+#include "memorymanager.h"
 
 void* initialize_stack_frame(void* rip, void* rbp);
 uint64_t* get_eip();
@@ -135,4 +136,4 @@ void exit()
     removeByPid(pid);
     dropBookPageForProcess(pid);
     spoof_tick();
-}
+ }

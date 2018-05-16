@@ -216,6 +216,7 @@ int removeByPid(pid_t pid)
     if(last->process->pid == tmp->process->pid)
         last = prev;
 
+    free(tmp->process->name);
     free(tmp->process);
     free(tmp);
     queueSize--;
