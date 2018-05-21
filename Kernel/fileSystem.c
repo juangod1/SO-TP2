@@ -15,10 +15,10 @@ map_t fileAllocationTable;
 void initializeFS()
 {
     rootDirectoryTable = newHashMap();
-    fileAllocationTable = newHasMap();
+    fileAllocationTable = newHashMap();
 }
 
-void f_open(file fd, char* path, int mode)
+void f_open(char* path, int mode)
 {
     file fd = hashmapGet(rootDirectoryTable, path, fd) ;
 
@@ -57,3 +57,6 @@ void f_chdir(char* name)
     
 }
 
+void f_create(file fd, char * path, int mode){
+
+}
