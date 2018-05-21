@@ -1,12 +1,14 @@
 #ifndef SO_TP2_FILESYSTEM_H
 #define SO_TP2_FILESYSTEM_H
 
+#define MAX_FILENAME 20
+
 typedef struct file_CDT * file;
 struct file_CDT
 {
     int isFile;
     int isOpen;
-    char fileName [20];
+    char fileName [MAX_FILENAME];
 };
 
 void initializeFS();
