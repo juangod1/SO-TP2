@@ -27,3 +27,5 @@ typedef struct _hashmap_map{
     int size;
     hashmapElement *data;
 } hashmapMap;
+
+map_t newHashMap();

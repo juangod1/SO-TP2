@@ -3,3 +3,23 @@
 //
 
 #include "include/MemoryDriver.h"
+
+void writeBlock()
+{
+
+}
+
+void createBlock()
+{
+
+}
+
+void readBlock()
+{
+
+}
+
+void deleteBlock()
+{
+
+}

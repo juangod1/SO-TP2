@@ -2,7 +2,7 @@
 #define SO_TP2_FILESYSTEM_H
 #endif //SO_TP2_FILESYSTEM_H
 
-typedef struct file * file_CDT;
+typedef struct file_CDT * file;
 struct file_CDT
 {
     int isFile;
