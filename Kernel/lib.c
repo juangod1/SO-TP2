@@ -104,11 +104,10 @@ char * intToString(int i){
 	int count = 0;
 
 	do {
-		a[count++] = i%10;
+		a[count++] = i%10+48;
 	} while(i/=10);
 
 	a[count] = '\0';
-
 	return a;
 }
 

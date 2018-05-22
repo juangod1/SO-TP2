@@ -241,6 +241,7 @@ int hashmapIterate(map_t in, PFany f, any_t item) {
     for(i = 0; i< m->tableSize; i++)
         if(m->data[i].inUse != 0) {
             any_t data = (any_t) (m->data[i].data);
+            printInt(data,0,255,0);
             int status = f(item, data);
             if (status != MAP_OK) {
                 return status;

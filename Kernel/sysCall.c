@@ -35,6 +35,8 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
        	        break;
           case 3:
               mmTester();
+            case 4:
+              mdTester();
 	    }
 	    break;
     case 7:

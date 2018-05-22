@@ -322,6 +322,8 @@ int callFunction(char * buffer, int backgroundflag) {
         sysTestSuite(3);
     else if (strcmp(input[1],"all") == 0)
         sysTestSuite(0);
+		else if (strcmp(input[1],"md") == 0)
+			sysTestSuite(4);
 		else {
 			sysPrintString("Wrong parameters: ", CB, CG, CR);
 			sysPrintString(input[1], B, G, R);

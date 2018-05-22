@@ -13,10 +13,11 @@ typedef uint64_t blockID;
 
 
 int writeBlock(blockID id, void * data);
-void createBlock();
+blockID createBlock();
 int readBlock(void * pointer, blockID id);
 int deleteBlock(blockID id);
 void initializeMemoryDriver();
-
+void mdTester();
+void printWrap(int dummy, void * data);
 
 #endif //SO_TP2_MEMORYDRIVER_H

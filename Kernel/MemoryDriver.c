@@ -5,6 +5,7 @@
 #include "include/MemoryDriver.h"
 #include "hashMap.h"
 #include "lib.h"
+#include "include/videoDriver.h"
 
 blockID lastBlock = 0;
 
@@ -18,12 +19,17 @@ int writeBlock(blockID id, void * data)
 
 
 // returns blockID;
-void createBlock()
+blockID createBlock()
 {
     int address = malloc(BLOCK_SIZE);
     lastBlock++;
-    hashmapPut(blockTable,lastBlock,intToString(lastBlock));
-    hashmapPut(blockTable,intToString(lastBlock),address);
+    char * lb = intToString(lastBlock);
+    hashmapPut(blockTable, lb, address);
+    printString("Creating block with id, address: \n",238,130,238);
+    printString(lb,238,130,238);
+    printString(", ",238,130,238);
+    printInt(address,238,130,238);
+    printString("\n",238,130,238);
     return lastBlock;
 }
 
@@ -43,3 +49,15 @@ void initializeMemoryDriver(){
     blockTable = newHashMap();
 }
 
+void mdTester(){
+    initializeMemoryDriver();
+    createBlock();
+    printString("TEST MD\n",255,255,255);
+    hashmapIterate(blockTable,printWrap,0);
+}
+
+void printWrap(int dummy, void * data){
+    printString("Entry: ",255,255,255);
+    printInt(data, 255,255,255);
+    printString("\n",255,255,255);
+}
