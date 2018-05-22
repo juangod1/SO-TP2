@@ -52,11 +52,14 @@ void f_close(char* name, char* path)
     }
 }
 
+
+// TODO
 void f_read(char* name, char* path, int offset, int bytes)
 {
 
 }
 
+//TODO
 void f_write(char* name, char* path, int offset, void * data, int dataSize)
 {
 
