@@ -21,13 +21,13 @@ void initializeFS()
     initializeMemoryDriver();
 }
 
-void f_open(char* path, int mode)
+void f_open(char* name, char* path)
 {
     file fd = hashmapGet(rootDirectoryTable, path, fd) ;// ?? fd no esta definido
 
     if(fd == (char*)0)
     {
-        f_create(fd, path, mode);
+        f_create(fd, path);
     }
 
 
@@ -35,17 +35,17 @@ void f_open(char* path, int mode)
 
 }
 
-void f_close()
+void f_close(char* name, char* path)
 {
 
 }
 
-void f_read(file f)
+void f_read(char* name, char* path, int offset, int bytes)
 {
 
 }
 
-void f_seek(file f)
+void f_write(char* name, char* path, int offset, void * data, int dataSize)
 {
 
 }

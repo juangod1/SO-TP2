@@ -16,10 +16,10 @@ struct file_CDT
 };
 
 void initializeFS();
-void f_open(char* path, int mode);
-void f_close();
-void f_read(file f);
-void f_seek(file f);
+void f_open(char* name, char* path);
+void f_close(char* name, char* path);
+void f_read(char* name, char* path, int offset, int bytes);
+void f_write(char* name, char* path, int offset, void * data, int dataSize);
 void f_mkdir(char* name, char* path);
 void f_chdir(char* name);
 void f_create(char* name, char * path, int mode);
