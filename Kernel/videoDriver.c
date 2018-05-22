@@ -3,6 +3,7 @@
 #include "include/lib.h"
 #include "font.h"
 #include "testLib.h"
+#include "lib.h"
 
 static unsigned char ** video_start = (unsigned char**)0x0005C28;
 static unsigned int current_x = 0;
@@ -137,12 +138,6 @@ void checkLine(){
 			shiftVideo(PIXELS_PER_LINE);
 		}
 	}
-}
-
-int countDigits(int num){
-	int dig = 1;
-	while((num/=10) != 0) dig++;
-	return dig;
 }
 
 void printInt(int num, int B, int G, int R){

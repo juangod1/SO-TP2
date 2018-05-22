@@ -98,3 +98,22 @@ int strcmp(const char* s1, const char* s2){
 		s1++, s2++;
 	return *(const unsigned char*)s1 - *(const unsigned char*)s2;
 }
+
+char * intToString(int i){
+	char * a = malloc(countDigits(i)+1);
+	int count = 0;
+
+	do {
+		a[count++] = i%10;
+	} while(i/=10);
+
+	a[count] = '\0';
+
+	return a;
+}
+
+int countDigits(int num){
+	int dig = 1;
+	while((num/=10) != 0) dig++;
+	return dig;
+}

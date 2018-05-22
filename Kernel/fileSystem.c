@@ -4,11 +4,13 @@
 
 #include "include/fileSystem.h"
 #include "include/hashMap.h"
+#include "include/MemoryDriver.h"
+#include <stdint.h>
 
-
-// maps filename to starting block
+// maps filename to starting blockID
 map_t rootDirectoryTable;
-// maps block to <busy, next>
+
+// maps blockID to <busy, next>
 map_t fileAllocationTable;
 
 
@@ -16,6 +18,7 @@ void initializeFS()
 {
     rootDirectoryTable = newHashMap();
     fileAllocationTable = newHashMap();
+    initializeMemoryDriver();
 }
 
 void f_open(char* path, int mode)

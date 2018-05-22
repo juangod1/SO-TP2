@@ -3,23 +3,42 @@
 //
 
 #include "include/MemoryDriver.h"
+#include "hashMap.h"
+#include "lib.h"
 
-void writeBlock()
+blockID lastBlock = 0;
+
+// maps blockID to address
+map_t blockTable;
+
+int writeBlock(blockID id, void * data)
 {
-
+    return hashmapPut(blockTable,intToString(id),data);
 }
 
+
+// returns blockID;
 void createBlock()
 {
-
+    int address = malloc(BLOCK_SIZE);
+    lastBlock++;
+    hashmapPut(blockTable,lastBlock,intToString(lastBlock));
+    return lastBlock;
 }
 
-void readBlock()
+// puts data address in pointer value
+// pointer -----> address -----> block data
+int readBlock(void * pointer, blockID id)
 {
-
+    return hashmapGet(blockTable,intToString(id),pointer);
 }
 
-void deleteBlock()
+int deleteBlock(blockID id)
 {
-
+    return hashmapRemove(blockTable, intToString(id));
 }
+
+void initializeMemoryDriver(){
+    blockTable = newHashMap();
+}
+

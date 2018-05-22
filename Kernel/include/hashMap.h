@@ -1,6 +1,6 @@
 #ifndef SO_TP2_HASHMAP_H
 #define SO_TP2_HASHMAP_H
-#endif //SO_TP2_HASHMAP_H
+
 
 #define INITIAL_SIZE (256)
 #define MAX_CHAIN_LENGTH (8)
@@ -29,3 +29,15 @@ typedef struct _hashmap_map{
 } hashmapMap;
 
 map_t newHashMap();
+unsigned long crc32(const unsigned char *s, unsigned int len);
+unsigned int hashmapHashInt(hashmapMap* m, char* keystring);
+int hashmapHash(map_t in, char* key);
+int hashmapRehash(map_t in);
+int hashmapPut(map_t in, char* key, any_t value);
+int hashmapGet(map_t in, char* key, any_t *arg);
+int hashmapIterate(map_t in, PFany f, any_t item);
+int hashmapRemove(map_t in, char* key);
+void hashmapFree(map_t in);
+int hashmapLength(map_t in);
+
+#endif //SO_TP2_HASHMAP_H

@@ -5,9 +5,18 @@
 #ifndef SO_TP2_MEMORYDRIVER_H
 #define SO_TP2_MEMORYDRIVER_H
 
-void writeBlock();
+#include <stdint.h>
+
+#define BLOCK_SIZE 256
+
+typedef uint64_t blockID;
+
+
+int writeBlock(blockID id, void * data);
 void createBlock();
-void readBlock();
-void deleteBlock();
+int readBlock(void * pointer, blockID id);
+int deleteBlock(blockID id);
+void initializeMemoryDriver();
+
 
 #endif //SO_TP2_MEMORYDRIVER_H
