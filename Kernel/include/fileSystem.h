@@ -22,6 +22,6 @@ void f_read(char* name, char* path, int offset, int bytes);
 void f_write(char* name, char* path, int offset, void * data, int dataSize);
 void f_mkdir(char* name, char* path);
 void f_chdir(char* name);
-void f_create(char* name, char * path, int mode);
+void f_create(char* name, char * path);
 
 #endif SO_TP2_FILESYSTEM_H

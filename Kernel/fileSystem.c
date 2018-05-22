@@ -23,21 +23,33 @@ void initializeFS()
 
 void f_open(char* name, char* path)
 {
-    file fd = hashmapGet(rootDirectoryTable, path, fd) ;// ?? fd no esta definido
+    map_t table = parseDirectory(path);
+    file fileBuffer[1];
+    hashmapGet(table, name, f);
 
-    if(fd == (char*)0)
-    {
-        f_create(fd, path);
+    if(f==NULL){
+        f_create(name,path);
+        f_open(name,path);
     }
-
-
-
-
+    else{
+        file f = fileBuffer[0];
+        f->isOpen = 1;
+    }
 }
 
 void f_close(char* name, char* path)
 {
+    map_t table = parseDirectory(path);
+    file fileBuffer[1];
+    hashmapGet(table, name, f);
 
+    if(f==NULL){
+        return;
+    }
+    else{
+        file f = fileBuffer[0];
+        f->isOpen = 0;
+    }
 }
 
 void f_read(char* name, char* path, int offset, int bytes)
@@ -89,7 +101,7 @@ void f_mkdir(char* name, char* path)
 
 }
 
-void f_create(char * name, char * path, int mode){
+void f_create(char * name, char * path){
     map_t dir = parseDirectory(path);
 
     if(filenameExists(name,dir))
