@@ -54,6 +54,9 @@ void mdTester(){
     createBlock();
     printString("TEST MD\n",255,255,255);
     hashmapIterate(blockTable,printWrap,0);
+    int * b;
+    readBlock(b,1);
+    printInt(*b,255,0,0);
 }
 
 void printWrap(int dummy, void * data){
