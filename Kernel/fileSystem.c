@@ -70,9 +70,10 @@ map_t parseDirectory(char * path){
     return (char*)0;
 }
 
-//TODO
 int filenameExists(char * name, map_t directoryTable){
-    return 0;
+    int b[1];
+    hashmapGet(directoryTable,name,b);
+    return b==NULL?0:1;
 }
 
 // A directory is a block which contains a pointer to a directory table (map_t)
