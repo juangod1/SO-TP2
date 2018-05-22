@@ -23,6 +23,7 @@ void createBlock()
     int address = malloc(BLOCK_SIZE);
     lastBlock++;
     hashmapPut(blockTable,lastBlock,intToString(lastBlock));
+    hashmapPut(blockTable,intToString(lastBlock),address);
     return lastBlock;
 }
 
