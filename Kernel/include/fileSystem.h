@@ -19,7 +19,7 @@ struct file_CDT
 void initializeFS();
 void f_open(char* name, char* path);
 void f_close(char* name, char* path);
-void f_read(char* name, char* path, int offset, int bytes);
+void f_read(void* buffer, char* name, char* path, int offset, int bytes);
 void f_write(char* name, char* path, int offset, void * data, int dataSize);
 void f_mkdir(char* name, char* path);
 void f_chdir(char* name);
