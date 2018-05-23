@@ -29,12 +29,12 @@ void f_open(char* name, char* path)
     file fileBuffer[1];
     hashmapGet(table, name, fileBuffer);
 
-    if(fileBuffer==NULL){
+    file f = fileBuffer[0];
+    if(f==NULL){
         f_create(name,path);
         f_open(name,path);
     }
     else{
-        file f = fileBuffer[0];
         f->isOpen = 1;
     }
 }
@@ -45,11 +45,11 @@ void f_close(char* name, char* path)
     file fileBuffer[1];
     hashmapGet(table, name, fileBuffer);
 
-    if(fileBuffer==NULL){
+    file f = fileBuffer[0];
+    if(f==NULL){
         return;
     }
     else{
-        file f = fileBuffer[0];
         f->isOpen = 0;
     }
 }
