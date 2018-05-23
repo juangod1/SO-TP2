@@ -67,15 +67,30 @@ void f_write(char* name, char* path, int offset, void * data, int dataSize)
 
 }
 
-map_t parseDirectoryRecursive(char * path){
+map_t parseDirectoryRecursive(char * path, map_t prevTable){
+    printString(path,244,0,244);
     char buffer[MAX_FILENAME];
     char count=1;
 
     while(path[count] != '\0' && path[count] != '/' && count<=MAX_FILENAME+1){
         buffer[count-1] = path[count];
+        count++;
     }
+    buffer[count]='\0';
+    printString(buffer,244,244,0);
+    file temp;
+    hashmapGet(prevTable, buffer, &temp);
 
-    printString(buffer,255,255,255);
+    if(temp == NULL || count>MAX_FILENAME+1)
+        return;
+
+    map_t map;
+    hashmapGet(fileAllocationTable,temp->fileName,&map);
+
+    if(path[count]=='\0')
+        return map;
+
+    return parseDirectoryRecursive(path+count,map);
 }
 
 map_t parseDirectory(char * path){
@@ -83,7 +98,7 @@ map_t parseDirectory(char * path){
         return rootDirectoryTable;
     }
 
-    return parseDirectoryRecursive(path);
+    return parseDirectoryRecursive(path, rootDirectoryTable);
 }
 
 int filenameExists(char * name, map_t directoryTable){

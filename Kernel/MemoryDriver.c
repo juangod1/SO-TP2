@@ -53,9 +53,10 @@ void initializeMemoryDriver(){
 void mdTester(){
     initializeMemoryDriver();
     createBlock();
+    f_mkdir("bin","/");
     printString("TEST MD\n",255,255,255);
 
-    parseDirectory("/bin/bash");
+    //parseDirectory("/bin");
 }
 
 void printWrap(int dummy, void * data){
