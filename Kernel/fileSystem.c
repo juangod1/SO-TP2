@@ -56,45 +56,8 @@ void f_close(char* name, char* path)
 
 
 // TODO
-void f_read(void* buffer, char* name, char* path, int offset, int bytes)
+void f_read(char* name, char* path, int offset, int bytes)
 {
-    char* writeBuffer = (char*)buffer;
-    map_t table = parseDirectory(path);
-    file fileBuffer[1];
-    hashmapGet(table,name,fileBuffer);
-
-    file f = fileBuffer[0];
-    if(f==NULL)
-    {
-        //error file does not exist
-        return;
-    }
-    else if(!f->isOpen)
-    {
-        //TODO maybe we should differentiate between which process opened which file.
-        //error file is not opened
-        return;
-
-    }
-
-    blockID currentBlock = f->startingBlock;
-    while(currentBlock != -1) {
-        void * blockBuffer;
-        char* readBuffer;
-        int writeBufferIndex=0;
-
-        while(currentBlock != -1) {
-            readBlock(readBuffer, currentBlock);
-            while (writeBufferIndex < BLOCK_SIZE) {
-
-                writeBuffer[writeBufferIndex] = readBuffer[writeBufferIndex];
-                ++writeBufferIndex;
-                if (writeBufferIndex = bytes)
-                    break;
-            }
-            hashmapGet(fileAllocationTable, f->startingBlock, currentBlock);
-        }
-    }
 
 }
 
@@ -104,15 +67,30 @@ void f_write(char* name, char* path, int offset, void * data, int dataSize)
 
 }
 
-map_t parseDirectoryRecursive(char * path){
+map_t parseDirectoryRecursive(char * path, map_t prevTable){
+    printString(path,244,0,244);
     char buffer[MAX_FILENAME];
     char count=1;
 
     while(path[count] != '\0' && path[count] != '/' && count<=MAX_FILENAME+1){
         buffer[count-1] = path[count];
+        count++;
     }
+    buffer[count]='\0';
+    printString(buffer,244,244,0);
+    file temp;
+    hashmapGet(prevTable, buffer, &temp);
 
-    printString(buffer,255,255,255);
+    if(temp == NULL || count>MAX_FILENAME+1)
+        return;
+
+    map_t map;
+    hashmapGet(fileAllocationTable,temp->fileName,&map);
+
+    if(path[count]=='\0')
+        return map;
+
+    return parseDirectoryRecursive(path+count,map);
 }
 
 map_t parseDirectory(char * path){
@@ -120,7 +98,7 @@ map_t parseDirectory(char * path){
         return rootDirectoryTable;
     }
 
-    return parseDirectoryRecursive(path);
+    return parseDirectoryRecursive(path, rootDirectoryTable);
 }
 
 int filenameExists(char * name, map_t directoryTable){
