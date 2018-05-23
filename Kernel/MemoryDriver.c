@@ -6,6 +6,7 @@
 #include "hashMap.h"
 #include "lib.h"
 #include "include/videoDriver.h"
+#include "fileSystem.h"
 
 blockID lastBlock = 0;
 
@@ -53,9 +54,8 @@ void mdTester(){
     initializeMemoryDriver();
     createBlock();
     printString("TEST MD\n",255,255,255);
-    int * b;
-    readBlock(b,1);
-    printInt(*b,255,0,0);
+
+    parseDirectory("/bin/bash");
 }
 
 void printWrap(int dummy, void * data){

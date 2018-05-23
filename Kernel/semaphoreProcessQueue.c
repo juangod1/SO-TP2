@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <strings.h>
 #include "include/semaphoreProcessQueue.h"
 

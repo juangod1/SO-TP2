@@ -6,6 +6,8 @@
 #include "include/hashMap.h"
 #include "include/MemoryDriver.h"
 #include <stdint.h>
+#include "videoDriver.h"
+#include <stddef.h>
 
 // maps filename to file { isFile, isOpen, fileName, startingBlock}
 map_t rootDirectoryTable;
@@ -25,9 +27,9 @@ void f_open(char* name, char* path)
 {
     map_t table = parseDirectory(path);
     file fileBuffer[1];
-    hashmapGet(table, name, f);
+    hashmapGet(table, name, fileBuffer);
 
-    if(f==NULL){
+    if(fileBuffer==NULL){
         f_create(name,path);
         f_open(name,path);
     }
@@ -41,7 +43,7 @@ void f_close(char* name, char* path)
 {
     map_t table = parseDirectory(path);
     file fileBuffer[1];
-    hashmapGet(table, name, f);
+    hashmapGet(table, name, fileBuffer);
 
     if(f==NULL){
         return;
@@ -65,15 +67,29 @@ void f_write(char* name, char* path, int offset, void * data, int dataSize)
 
 }
 
-//TODO
+map_t parseDirectoryRecursive(char * path){
+    char buffer[MAX_FILENAME];
+    char count=1;
+
+    while(path[count] != '\0' && path[count] != '/' && count<=MAX_FILENAME+1){
+        buffer[count-1] = path[count];
+    }
+
+    printString(buffer,255,255,255);
+}
+
 map_t parseDirectory(char * path){
-    return (char*)0;
+    if(strcmp(path,"/")==0){
+        return rootDirectoryTable;
+    }
+
+    return parseDirectoryRecursive(path);
 }
 
 int filenameExists(char * name, map_t directoryTable){
     int b[1];
     hashmapGet(directoryTable,name,b);
-    return b==NULL?0:1;
+    return b==(char*)0?0:1;
 }
 
 // A directory is a block which contains a pointer to a directory table (map_t)
