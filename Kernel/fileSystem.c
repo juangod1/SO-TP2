@@ -102,9 +102,9 @@ map_t parseDirectory(char * path){
 }
 
 int filenameExists(char * name, map_t directoryTable){
-    int b[1];
+    file b[1];
     hashmapGet(directoryTable,name,b);
-    return b==(char*)0?0:1;
+    return (b[0]==NULL)?0:1;
 }
 
 // A directory is a block which contains a pointer to a directory table (map_t)
