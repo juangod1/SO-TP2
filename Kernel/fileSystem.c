@@ -99,7 +99,7 @@ map_t parseDirectoryRecursive(char * path, map_t prevTable)
     }
 
 
-    return parseDirectoryRecursive(path+count+1,b);
+    return parseDirectoryRecursive(path+count,b);
 }
 
 map_t parseDirectory(char * path){
