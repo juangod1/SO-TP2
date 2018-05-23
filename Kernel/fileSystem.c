@@ -45,7 +45,7 @@ void f_close(char* name, char* path)
     file fileBuffer[1];
     hashmapGet(table, name, fileBuffer);
 
-    if(f==NULL){
+    if(fileBuffer==NULL){
         return;
     }
     else{
