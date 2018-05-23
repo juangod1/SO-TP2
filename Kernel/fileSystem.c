@@ -26,10 +26,10 @@ void initializeFS()
 void f_open(char* name, char* path)
 {
     map_t table = parseDirectory(path);
-    file fileBuffer[1];
-    hashmapGet(table, name, fileBuffer);
+    file fileBuffer;
+    hashmapGet(table, name, &fileBuffer);
 
-    file f = fileBuffer[0];
+    file f = fileBuffer;
     if(f==NULL){
         f_create(name,path);
         f_open(name,path);
@@ -42,10 +42,10 @@ void f_open(char* name, char* path)
 void f_close(char* name, char* path)
 {
     map_t table = parseDirectory(path);
-    file fileBuffer[1];
-    hashmapGet(table, name, fileBuffer);
+    file fileBuffer;
+    hashmapGet(table, name, &fileBuffer);
 
-    file f = fileBuffer[0];
+    file f = fileBuffer;
     if(f==NULL){
         return;
     }
@@ -67,7 +67,8 @@ void f_write(char* name, char* path, int offset, void * data, int dataSize)
 
 }
 
-map_t parseDirectoryRecursive(char * path, map_t prevTable){
+map_t parseDirectoryRecursive(char * path, map_t prevTable)
+{
     printString(path,244,0,244);
     char buffer[MAX_FILENAME];
     char count=1;
@@ -78,23 +79,34 @@ map_t parseDirectoryRecursive(char * path, map_t prevTable){
     }
     buffer[count]='\0';
     printString(buffer,244,244,0);
+
     file temp;
     hashmapGet(prevTable, buffer, &temp);
-
+    printString("got obj ",244,244,0);printInt(temp,244,244,0);
     if(temp == NULL || count>MAX_FILENAME+1)
-        return;
+        return NULL;
 
-    map_t map;
-    hashmapGet(fileAllocationTable,temp->fileName,&map);
+    map_t b;
+    readBlock(&b, temp->startingBlock);
+    printString("got map ",244,244,0);printInt(b,244,244,0);
 
-    if(path[count]=='\0')
-        return map;
+    if(path[count]=='\0'){
+        printString("Returning ",100,0,100);
+        printString(temp->fileName,100,0,100);
+        printString(" -- address: ",100,0,100);
+        printInt(b,100,0,100);
+        return b;
+    }
 
-    return parseDirectoryRecursive(path+count,map);
+
+    return parseDirectoryRecursive(path+count+1,b);
 }
 
 map_t parseDirectory(char * path){
+    printString("Parsing ",34,70,130);
+    printString(path,34,70,130);
     if(strcmp(path,"/")==0){
+        printString("Returning root /",100,0,100);
         return rootDirectoryTable;
     }
 
@@ -102,37 +114,53 @@ map_t parseDirectory(char * path){
 }
 
 int filenameExists(char * name, map_t directoryTable){
-    file b[1];
-    hashmapGet(directoryTable,name,b);
-    return (b[0]==NULL)?0:1;
+    file b;
+    hashmapGet(directoryTable,name,&b);
+    printString(name,34,70,130);
+    printString(" filename exists: ",34,70,130);
+    printInt((b==NULL)?0:1,34,70,130);
+    return (b==NULL)?0:1;
 }
 
 // A directory is a block which contains a pointer to a directory table (map_t)
 void f_mkdir(char* name, char* path)
 {
-    map_t dir = parseDirectory(path);
-
-    if(filenameExists(name,dir))
+    if(strleng(name)>MAX_FILENAME){
         return;
+    }
+
+    map_t dir = parseDirectory(path);
+    printString("Parsed dir address: ",34,70,130);
+    printInt(dir,0,100,0);
+    if(filenameExists(name,dir)){
+        return;
+    }
 
     blockID id = createBlock();
 
     file newFile = malloc(sizeof(struct file_CDT));
+
     newFile->isFile = 0;
     newFile->isOpen = 0;
-    memcpy(newFile->fileName, name);
+    memcpy(newFile->fileName, name, strleng(name));
+    newFile->fileName[strleng(name)+1]='\0';
     newFile->startingBlock= id;
-
-    hashmapPut(dir, name, newFile);
-
+    printString("Putting filename in DIR:",34,70,130);
+    printString(newFile->fileName,34,70,130);
+    printInt(newFile,34,70,130);
+    hashmapPut(dir, newFile->fileName, newFile);
     map_t newDirectoryTable = newHashMap();
-    writeBlock(id, newDirectoryTable);
+    printString("      writing in block ",255,255,255);
+    printInt(id ,255,255,255);
+    printString(" data ",255,255,255);
+    printInt(newDirectoryTable,255,255,255);
+    writeBlock(id, newDirectoryTable, sizeof(map_t));
 
     // write FAT entry
     char * entry = malloc(2);
     entry[0]=0; //busy
     entry[1]=-1; //next
-    hashmapPut(fileAllocationTable,id,entry);
+    hashmapPut(fileAllocationTable,intToString(id),entry);
 
 }
 

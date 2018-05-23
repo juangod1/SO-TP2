@@ -12,9 +12,9 @@
 typedef uint64_t blockID;
 
 
-int writeBlock(blockID id, void * data);
+int writeBlock(blockID id, void * data, int bytes);
 blockID createBlock();
-int readBlock(void * pointer, blockID id);
+int readBlock(void * pointer, blockID i);
 int deleteBlock(blockID id);
 void initializeMemoryDriver();
 void mdTester();

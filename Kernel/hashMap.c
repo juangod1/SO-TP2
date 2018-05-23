@@ -169,6 +169,9 @@ int hashmapPut(map_t in, char* key, any_t value){
 
     /* Cast the hashmap */
     m = (hashmapMap *) in;
+    printString("hash Put key:",2,150,255); printString(key,2,150,255);
+    printString("value:",2,150,255); printInt(value,2,150,255);
+    printString("\n",2,150,255);
 
     /* Find a place to hashmapPut our value */
     index = hashmapHash(in, key);
@@ -206,8 +209,15 @@ int hashmapGet(map_t in, char* key, any_t *arg){
     for(i = 0; i<MAX_CHAIN_LENGTH; i++){
 
         int inUse = m->data[curr].inUse;
+        printInt(inUse,100,100,10);
         if (inUse == 1){
+            printString("CMPING ",10,100,100);
             if (strcmp(m->data[curr].key,key)==0){
+
+                printString("arg: ",10,100,100);
+                printInt(arg,10,100,100);
+                printString("data: ",10,100,100);
+                printInt(m->data[curr].data,10,100,100);
                 *arg = (m->data[curr].data);
                 return MAP_OK;
             }
@@ -215,6 +225,10 @@ int hashmapGet(map_t in, char* key, any_t *arg){
 
         curr = (curr + 1) % m->tableSize;
     }
+
+    printString("ID: ",0,0,255);
+    printString(key,0,0,255);
+    printString(" NOT FOUND",0,0,255);
 
     *arg = NULL;
 
@@ -241,7 +255,6 @@ int hashmapIterate(map_t in, PFany f, any_t item) {
     for(i = 0; i< m->tableSize; i++)
         if(m->data[i].inUse != 0) {
             any_t data = (any_t) (m->data[i].data);
-            printInt(data,0,255,0);
             int status = f(item, data);
             if (status != MAP_OK) {
                 return status;

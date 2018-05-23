@@ -137,7 +137,6 @@ void * malloc(size_t s){
 
 		dataBlock lastDataBlock = getLastDataBlock((dataBlock) myKernelBook->base);
 		lastDataBlock->next = newDataBlock;
-
 		return (newDataBlock+1);
 	} else {
 
