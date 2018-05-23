@@ -78,21 +78,21 @@ void f_read(void* buffer, char* name, char* path, int offset, int bytes)
     }
 
     blockID currentBlock = f->startingBlock;
-    int writeBufferIndex=0;
-    while(currentBlock != -1 && writeBuffer <= bytes) {
-        char * blockBuffer;
+    while(currentBlock != -1) {
+        void * blockBuffer;
+        char* readBuffer;
+        int writeBufferIndex=0;
 
         while(currentBlock != -1) {
-            readBlock(blockBuffer, currentBlock);
-            while (blockIndex < BLOCK_SIZE) {
+            readBlock(readBuffer, currentBlock);
+            while (writeBufferIndex < BLOCK_SIZE) {
 
-                writeBuffer[++writeBufferIndex] = blockBuffer[++blockIndex];
-
-                if (writeBufferIndex > bytes)
+                writeBuffer[writeBufferIndex] = readBuffer[writeBufferIndex];
+                ++writeBufferIndex;
+                if (writeBufferIndex = bytes)
                     break;
             }
-            blockIndex=0;
-            hashmapGet(fileAllocationTable, f->startingBlock, &currentBlock);
+            hashmapGet(fileAllocationTable, f->startingBlock, currentBlock);
         }
     }
 
