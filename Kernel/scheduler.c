@@ -33,6 +33,7 @@ int sleepProcess(pid_t pid){
         return 1;
 
     find->sleeps = 1;
+    printString("Slept pricess in scheduler",255,0,255);
 
     spoof_tick();
     return 0;
@@ -92,6 +93,7 @@ void * schedule(void* prevSP)
 
     if(nextProcess == NULL) // QUEUE IS EMPTY
     {
+        currentProcess = prevProcess;
         return prevSP;
     }
     queueProcess(nextProcess);

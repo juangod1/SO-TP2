@@ -40,6 +40,7 @@ static int readindex=0;
 static int writeindex=0;
 static int elements=0;
 
+static int pid = -1;
 static int shift = 0;
 static int alt = 0;
 static int control = 0;
@@ -157,6 +158,14 @@ void keyboard_handler()
       }
   		if(print==1){
         putChar(c);
+        if(pid!=-1){
+          printString("Waking...\n",255,255,255);
+          printInt(pid,255,255,255);
+          // printQueue();
+          wakeProcess(pid);
+          // printQueue();
+          pid=-1;
+        }
 
   		}
   		print=1;
@@ -173,7 +182,12 @@ int isEmpty(){
 }
 void getChar(char * ch){
   if(isEmpty()){
-    *ch= EOF;
+    printString("Sleeping...\n",255,255,255);
+    // printQueue();
+    pid=getPid();
+    printInt(pid,255,255,255);
+    sleepProcess(pid);
+    // printQueue();
     return;
   }
   *ch=circularBuffer[readindex];
