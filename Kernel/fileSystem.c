@@ -56,14 +56,90 @@ void f_close(char* name, char* path)
 
 
 // TODO
-void f_read(char* name, char* path, int offset, int bytes)
+void f_read(void* buffer, char* name, char* path, int offset, int bytes)
 {
+    char* writeBuffer = (char*)buffer;
+    map_t table = parseDirectory(path);
+    file fileBuffer[1];
+    hashmapGet(table,name,fileBuffer);
+
+    file f = fileBuffer[0];
+    if(f==NULL)
+    {
+        //error file does not exist
+        return;
+    }
+    else if(!f->isOpen)
+    {
+        //TODO maybe we should differentiate between which process opened which file.
+        //error file is not opened
+        return;
+
+    }
+
+    blockID currentBlock = f->startingBlock;
+    int writeBufferIndex=0;
+    int blockIndex=0;
+    while(currentBlock != -1 && writeBuffer <= bytes) {
+        char * blockBuffer;
+
+        while(currentBlock != -1) {
+            readBlock(blockBuffer, currentBlock);
+            while (blockIndex < BLOCK_SIZE) {
+
+                writeBuffer[++writeBufferIndex] = blockBuffer[++blockIndex];
+
+                if (writeBufferIndex > bytes)
+                    break;
+            }
+            blockIndex=0;
+            hashmapGet(fileAllocationTable, f->startingBlock, &currentBlock);
+        }
+    }
 
 }
 
 //TODO
 void f_write(char* name, char* path, int offset, void * data, int dataSize)
 {
+
+    map_t table = parseDirectory(path);
+    file fileBuffer[1];
+    hashmapGet(table,name,fileBuffer);
+
+    file f = fileBuffer[0];
+    if(f==NULL)
+    {
+        //error file does not exist
+        return;
+    }
+    else if(!f->isOpen)
+    {
+        //TODO maybe we should differentiate between which process opened which file.
+        //error file is not opened
+        return;
+
+    }
+
+    blockID currentBlock = f->startingBlock;
+    blockID aux;
+    int blockIndex=offset % BLOCK_SIZE;
+    int seekBlocksAmount = offset / BLOCK_SIZE;
+    while(currentBlock != -1 && seekBlocksAmount != 0)
+    {
+        hashmapGet(fileAllocationTable, currentBlock, &aux);
+        currentBlock = aux;
+        seekBlocksAmount--;
+    }
+
+    createBlocks(currentBlock, seekBlocksAmount);
+
+    while(currentBlock != -1){
+        while(blockIndex < BLOCK_SIZE){
+
+        }
+    }
+
 
 }
 
@@ -186,4 +262,7 @@ void f_create(char * name, char * path){
     entry[0]=0; //busy
     entry[1]=-1; //next
     hashmapPut(fileAllocationTable,id,entry);
+}
+
+void createBlocks(blockID lastBlock, int quantity){
 }
