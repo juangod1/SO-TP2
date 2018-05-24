@@ -159,11 +159,7 @@ void keyboard_handler()
   		if(print==1){
         putChar(c);
         if(pid!=-1){
-          printString("Waking...\n",255,255,255);
-          printInt(pid,255,255,255);
-          // printQueue();
           wakeProcess(pid);
-          // printQueue();
           pid=-1;
         }
 
@@ -182,12 +178,9 @@ int isEmpty(){
 }
 void getChar(char * ch){
   if(isEmpty()){
-    printString("Sleeping...\n",255,255,255);
-    // printQueue();
+    *ch = EOF;
     pid=getPid();
-    printInt(pid,255,255,255);
     sleepProcess(pid);
-    // printQueue();
     return;
   }
   *ch=circularBuffer[readindex];
