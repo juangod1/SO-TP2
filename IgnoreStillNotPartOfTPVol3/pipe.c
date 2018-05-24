@@ -139,16 +139,75 @@ void thenCountIsOneHundred()
   }
 }
 
+void given100Writes()
+{
+  char c = 'z';
+  for(int i=0; i<100; i++)
+  {
+    write(&global_pipe, c);
+  }
+}
+
+void given99Reads()
+{
+  char c;
+  for(int i=0; i<99; i++)
+  {
+    read(&global_pipe, &c);
+  }
+}
+
+void whenReading()
+{
+  char c;
+  read(&global_pipe, &c);
+}
+
+void thenReadIndexIsZero()
+{
+  if(global_pipe->readIndex==0)
+  {
+    ok();
+  }
+  else
+  {
+    fail("Expected read one, found another number\n");
+  }
+}
+
+void thenCountIsOne()
+{
+ if(global_pipe->count==0)
+  {
+    ok();
+  }
+  else
+  {
+    fail("Expected count one, found another number\n");
+  }
+}
+
 int main()
 {
+  printf("Entering pipe test\n");
+  printf("Testing initialization\n");
   givenANonInitializedPipe();
   whenInitializingPipe();
   thenSuccess();
 
+  printf("Testing circularity of write\n");
   givenAnInitializedPipe();
   whenAdding101elements();
   thenReadIndexIsOne();
   thenWriteIndexIsOne();
   thenCountIsOneHundred();
+
+  printf("Testing circularity of read\n");
+  givenAnInitializedPipe();
+  given100Writes();
+  given99Reads();
+  whenReading();
+  thenReadIndexIsZero();
+  thenCountIsOne();
 
 }
