@@ -20,4 +20,7 @@ void thenReadIndexIsZero();
 void thenCountIsOne();
 
 
+void pipeTestMain();
+
+
 #endif

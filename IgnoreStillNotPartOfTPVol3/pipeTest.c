@@ -111,7 +111,7 @@ void thenCountIsOne()
   }
 }
 
-int main()
+void pipeTestMain()
 {
   printf("Entering pipe test\n");
   printf("Testing initialization\n");
@@ -133,5 +133,7 @@ int main()
   whenReading();
   thenReadIndexIsZero();
   thenCountIsOne();
+
+  givenANonInitializedPipe();
 
 }
