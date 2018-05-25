@@ -5,11 +5,13 @@ void* initialize_stack_frame(void* rip, void* rbp);
 uint64_t* get_eip();
 void clear_interrupts();
 void set_interrupts();
+void idleProgram();
 
 process_t currentProcess = NULL;
+process_t idlePid = NULL;
 pid_t lastPid=-1;
 
-int halt = 0;
+int setupComplete = 0;
 
 pid_t getPid(){
     if(currentProcess == NULL)
@@ -52,6 +54,23 @@ int wakeProcess(pid_t pid){
 
 process_t getNextProcess(){
     process_t next = poll(1);
+    if(next != NULL){
+        setupComplete = 1;
+    }
+
+    if(setupComplete) {
+        if (next == NULL && idlePid == NULL) {
+            pid_t nextPid;
+            execute(idleProgram, "idle process", &nextPid);
+            queueProcess(currentProcess);
+            next = poll(1);
+            idlePid = nextPid;
+        }
+        if (next != NULL && idlePid != NULL) {
+            kill(idlePid);
+            idlePid = NULL;
+        }
+    }
     currentProcess = next;
     return next;
 }
@@ -85,11 +104,10 @@ void destroyProcessQueue(){
 
 void * schedule(void* prevSP)
 {
-    halt = 0;
     process_t prevProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
 
-    if(nextProcess == NULL) // QUEUE IS EMPTY
+    if(nextProcess == NULL) // QUEUE IS EMPTY OR ALL SLEEPING
     {
         if(prevProcess != NULL) {
             currentProcess = prevProcess;
@@ -141,4 +159,16 @@ void exit()
     removeByPid(pid);
     dropBookPageForProcess(pid);
     spoof_tick();
+ }
+
+ void kill(pid_t pid)
+ {
+     removeByPid(pid);
+     dropBookPageForProcess(pid);
+     spoof_tick();
+ }
+
+ void idleProgram()
+ {
+     while(1);
  }
