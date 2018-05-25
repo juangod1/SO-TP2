@@ -147,8 +147,8 @@ void keyboard_handler()
             case '}':
               c=']';
               break;
-            case '|':
-              c='\\';
+            case '\\':
+              c='|';
               break;
             case '=':
               c='+';
