@@ -96,6 +96,7 @@ void startShell(){
 			}
 		}
 	}
+  sysExit();
 }
 
 int callFunction(char * buffer, int backgroundflag) {
