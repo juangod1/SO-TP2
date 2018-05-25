@@ -2,7 +2,7 @@
 #define PIPEMANAGERTEST_H
 
 #include "pipeManager.h"
-#include "testlib.h"
+#include "testLib.h"
 
 
 void givenAnInitializedPipeManager();
@@ -11,9 +11,9 @@ void thenPipeManagerSizeIsOne();
 void whenAdding10ElementsWithDifferentIndex();
 void thenPipeManagerSizeIsTen();
 void given10AdditionsWithDifferentIndex();
-void whenRemovingAnElement();
+void whenRemovingAnElementFromPipeManager();
 void thenPipeManagerSizeIsNine();
 void whenRemovingANonExistingElement();
-int pipeManagerTestMain();
+void pipeManagerTestMain();
 
 #endif

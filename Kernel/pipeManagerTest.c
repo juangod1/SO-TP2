@@ -56,7 +56,7 @@ void given10AdditionsWithDifferentIndex()
   }
 }
 
-void whenRemovingAnElement()
+void whenRemovingAnElementFromPipeManager()
 {
   int index=7;
   removePipeNode(index);
@@ -80,28 +80,28 @@ void whenRemovingANonExistingElement()
   removePipeNode(index);
 }
 
-int pipeManagerTestMain()
+void pipeManagerTestMain()
 {
-  printf("Entering pipeManager test\n");
-  printf("Testing multiple same additions\n");
+  printString("Entering pipeManager test\n",TB,TG,TR);
+  printString("Testing multiple same additions\n",TB,TG,TR);
   givenAnInitializedPipeManager();
   whenAdding10ElementsWithSameIndex();
   thenPipeManagerSizeIsOne();
 
-  printf("Testing multiple different additions\n");
+  printString("Testing multiple different additions\n",TB,TG,TR);
 
   givenAnInitializedPipeManager();
   whenAdding10ElementsWithDifferentIndex();
   thenPipeManagerSizeIsTen();
 
-  printf("Testing existing removal\n");
+  printString("Testing existing removal\n",TB,TG,TR);
 
   givenAnInitializedPipeManager();
   given10AdditionsWithDifferentIndex();
-  whenRemovingAnElement();
+  whenRemovingAnElementFromPipeManager();
   thenPipeManagerSizeIsNine();
 
-  printf("Testing non-existing removal\n");
+  printString("Testing non-existing removal\n",TB,TG,TR);
 
   givenAnInitializedPipeManager();
   given10AdditionsWithDifferentIndex();

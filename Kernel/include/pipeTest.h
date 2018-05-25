@@ -2,7 +2,7 @@
 #define PIPETEST_H
 
 
-#include "testlib.h"
+#include "testLib.h"
 #include "pipe.h"
 
 

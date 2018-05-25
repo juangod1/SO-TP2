@@ -1,6 +1,8 @@
 #ifndef PROCESSQUEUE_H
 #define PROCESSQUEUE_H
 
+#include "memorymanager.h"
+
 typedef struct queueEntryStruct * queueEntry;
 struct queueEntryStruct
 {

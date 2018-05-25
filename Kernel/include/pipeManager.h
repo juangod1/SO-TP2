@@ -2,8 +2,8 @@
 #define PIPEMANAGER_H
 
 #include "pipe.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "memorymanager.h"
+#include "lib.h"
 
 typedef struct pipeNode_CDT * pipeNode;
 struct pipeNode_CDT {

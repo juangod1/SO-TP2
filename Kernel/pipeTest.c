@@ -113,20 +113,20 @@ void thenCountIsOne()
 
 void pipeTestMain()
 {
-  printf("Entering pipe test\n");
-  printf("Testing initialization\n");
+  printString("Entering pipe test\n",TB,TG,TR);
+  printString("Testing initialization\n",TB,TG,TR);
   givenANonInitializedPipe();
   whenInitializingPipe();
   thenSuccess();
 
-  printf("Testing circularity of write\n");
+  printString("Testing circularity of write\n",TB,TG,TR);
   givenAnInitializedPipe();
   whenAdding101elements();
   thenReadIndexIsOne();
   thenWriteIndexIsOne();
   thenCountIsOneHundred();
 
-  printf("Testing circularity of read\n");
+  printString("Testing circularity of read\n",TB,TG,TR);
   givenAnInitializedPipe();
   given100Writes();
   given99Reads();

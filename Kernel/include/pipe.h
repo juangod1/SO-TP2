@@ -1,8 +1,8 @@
 #ifndef PIPE_H
 #define PIPE_H
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "lib.h"
+#include "memorymanager.h"
 
 #define PIPESIZE 100
 

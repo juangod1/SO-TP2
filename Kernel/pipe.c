@@ -1,6 +1,6 @@
 #include "pipe.h"
 
-int isEmpty(pipe * p)
+int isPipeEmpty(pipe * p)
 {
   if(p==NULL||(*p)==NULL || (*p)->count==0){
     return 1;
@@ -35,13 +35,13 @@ void read(pipe * p, char * c)
   {
     return;
   }
-  if(isEmpty(p))
+  if(isPipeEmpty(p))
   {
 
   }
   else
   {
-    *c=(*p)->buffer[(*p)->readIndex];
+    *c=(*p)->buffer[(int)(*p)->readIndex];
     (*p)->readIndex=((*p)->readIndex+1)%PIPESIZE;
     (*p)->count--;
   }
@@ -53,7 +53,7 @@ void write(pipe * p, char c)
   {
     return;
   }
-  (*p)->buffer[(*p)->writeIndex]=c;
+  (*p)->buffer[(int)(*p)->writeIndex]=c;
   (*p)->writeIndex= ((*p)->writeIndex+1)%PIPESIZE;
   if((*p)->count==PIPESIZE)
   {
