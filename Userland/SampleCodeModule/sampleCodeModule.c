@@ -16,8 +16,3 @@ int main()
 	sysExecute(startShell,"Shell");
 	return 1;
 }
-
-void shellWrapper()
-{
-	startShell();
-}
