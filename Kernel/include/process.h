@@ -33,6 +33,8 @@ struct process_t_CDT {
     pid_t pid;
     char sleeps;
     char * name;
+    int input;
+    int output;
     void* stackPointer;
 };
 

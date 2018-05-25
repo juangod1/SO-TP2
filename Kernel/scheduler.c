@@ -129,6 +129,8 @@ void execute(void* eip, char * nameBuffer, int * pid)
     }
     void* temp = initialize_stack_frame(eip, sp);
     newProcess->stackPointer = temp;
+    newProcess->input = 0;
+    newProcess->output = 0;
     queueProcess(newProcess);
     *pid = newProcess->pid;
 }

@@ -14,13 +14,29 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       getTimeRTC(rsi);
       break;
     case 2:
-      getChar((char *)rsi);
+      ;int input=getInput(getPid());
+      if(input==0)
+      {
+        getChar((char *)rsi);
+      }
+      else
+      {
+        readFromPipe(input, (char*)rsi);
+      }
       break;
     case 3:
       clearScreen();
       break;
     case 4:
-      writeChar((char)rsi,rdx,rcx,r8);
+      ;int output=getOutput(getPid());
+      if(output==0)
+      {
+        writeChar((char)rsi,rdx,rcx,r8);
+      }
+      else
+      {
+        writeToPipe(output, (char)rsi);
+      }
       break;
     case 5:
       paintPixel(rsi, rdx, (char)rcx, (char)r8, (char)r9);

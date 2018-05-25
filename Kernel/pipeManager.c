@@ -24,6 +24,44 @@ void recursiveFinalizePipeNode(pipeNode * pn)
   finalizePipeNode(pn);
 }
 
+pipeNode * findPipeNode(input)
+{
+  return recursiveFindPipeNode(&(pipeManager->first),input);
+}
+
+pipeNode * recursiveFindPipeNode(pipeNode * pn, int input)
+{
+  if(pn==NULL || (*pn)==NULL)
+  {
+    return NULL;
+  }
+  if((*pn)->index==input)
+  {
+    return pn;
+  }
+  return recursiveFindPipeNode(&((*pn)->next),input);
+}
+
+void readFromPipe(int input,char * c)
+{
+  pipeNode * pn=findPipeNode(input);
+  if(pn==NULL)
+  {
+    return;
+  }
+  read(&((*pn)->p), c);
+}
+
+void writeToPipe(int output, char c)
+{
+  pipeNode * pn=findPipeNode(output);
+  if(pn==NULL)
+  {
+    return;
+  }
+  write(&((*pn)->p), c);
+}
+
 
 void finalizePipeManager()
 {

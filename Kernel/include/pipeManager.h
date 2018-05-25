@@ -29,5 +29,9 @@ void removeRecursivePipeNode(pipeNode * pn, int index_P);
 void removePipeNode(int index);
 int recursivePipeManagerSize(pipeNode * pn);
 int pipeManagerSize();
+pipeNode * recursiveFindPipeNode(pipeNode * pn, int input);
+pipeNode * findPipeNode(input);
+void readFromPipe(int input,char * c);
+void writeToPipe();
 
 #endif

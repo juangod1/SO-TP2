@@ -163,6 +163,42 @@ void printQueue() { // FOR DEBUGGING
     }
 }
 
+int getInput(pid_t pid)
+{
+  if(queueSize==0)
+      return -1;
+
+  node tmp = first;
+
+  int count=queueSize;
+  while(count-- != 0 && tmp->process->pid != pid) {
+      if(tmp->tail==NULL)
+          return -1;
+
+      tmp = tmp->tail;
+  }
+
+  return tmp->process->input;
+}
+
+int getOutput(pid_t pid)
+{
+  if(queueSize==0)
+      return -1;
+
+  node tmp = first;
+
+  int count=queueSize;
+  while(count-- != 0 && tmp->process->pid != pid) {
+      if(tmp->tail==NULL)
+          return -1;
+
+      tmp = tmp->tail;
+  }
+
+  return tmp->process->output;
+}
+
 void destroyQueue(){
     if(queueSize==0)
         return;

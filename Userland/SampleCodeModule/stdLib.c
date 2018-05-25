@@ -148,8 +148,10 @@ int countDigits(int num){
 }
 
 void sysGetChar(char * ch){
+  pid_t pid=getPid();
+  //sysPrintInt(pid,255,255,255);
     if(checkIfForeground())
-  sysCall(2,(uint64_t)ch,0,0,0,0);
+  sysCall(2,(uint64_t)ch,pid,0,0,0);
 }
 
 void sysExit(){
