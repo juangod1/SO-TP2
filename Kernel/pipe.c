@@ -14,6 +14,7 @@ void initializePipe(pipe * p)
   (*p)->readIndex=0;
   (*p)->writeIndex=0;
   (*p)->count=0;
+  (*p)->blocked=-1;
   (*p)->buffer=malloc(PIPESIZE);
 }
 
@@ -37,7 +38,10 @@ void read(pipe * p, char * c)
   }
   if(isPipeEmpty(p))
   {
-
+    pid_t pid=getPid();
+    (*p)->blocked=pid;
+    sleepProcess(pid);
+    return;
   }
   else
   {
@@ -61,6 +65,11 @@ void write(pipe * p, char c)
   }
   else
   {
+    if((*p)->blocked!=-1)
+    {
+      wakeProcess((*p)->blocked);
+      (*p)->blocked=-1;
+    }
     (*p)->count++;
   }
 }

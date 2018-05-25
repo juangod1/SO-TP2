@@ -12,6 +12,7 @@ struct pipe_CDT {
     char writeIndex;
     char count;
     char * buffer;
+    pid_t blocked;
 };
 
 void initializePipe(pipe * p);
