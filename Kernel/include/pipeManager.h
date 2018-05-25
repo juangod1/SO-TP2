@@ -32,6 +32,6 @@ int pipeManagerSize();
 pipeNode * recursiveFindPipeNode(pipeNode * pn, int input);
 pipeNode * findPipeNode(input);
 void readFromPipe(int input,char * c);
-void writeToPipe();
+void writeToPipe(int output, char c);
 
 #endif
