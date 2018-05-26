@@ -69,15 +69,14 @@ messageBoxDemo              - Executes a demo of the Messing system.\n"
 
 void startShell();
 int callFunction(char * buffer, int backgroundflag, char *** input_P, int * words_P);
-int overflowGenerator(int n);
 pid_t getForegroundPID();
 void DEBUGPrintInt();
 void DEBUGPrintString();
-void wipeBuffer(char * buff, size_t size);
 void listProcesses();
 void setForeground(pid_t pid);
 void reinitializeProcessNameBuffer();
 void backgroundProcessRun();
+void finalizeFunctionCall(char ** input, int words);
 int callFunctionWrapper(char * string, int backgroundflag);
 
 #endif

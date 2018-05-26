@@ -15,5 +15,8 @@ int echo(char ** input, int words);
 int setFontColor(char * input, int * blue, int * green, int * red);
 int clear(int words);;
 int graph(char * input1, char* input2, char * input3);
+int setTimeZone(char * input1);
+int testModule(char * input1);
+void foreground(pid_t pid);
 
 #endif

@@ -78,6 +78,7 @@ int callFunctionWrapper(char * string, int backgroundflag)
 		free(pipedFunctions[i]);
 	}
 	free(pipedFunctions);
+	return 0;
 }
 
 int callFunction(char * buffer, int backgroundflag, char *** input_P, int * words_P)
@@ -246,26 +247,6 @@ void finalizeFunctionCall(char ** input, int words)
 	free(input);
 }
 
-int testModule(char * input1)
-{
-	if (strcmp(input1,"ipc") == 0)
-			sysTestSuite(2);
-	else if (strcmp(input1, "mm") == 0)
-			sysTestSuite(3);
-	else if (strcmp(input1,"all") == 0)
-			sysTestSuite(0);
-	else if (strcmp(input1,"md") == 0)
-			sysTestSuite(4);
-	else if (strcmp(input1,"pipe") == 0)
-			sysTestSuite(5);
-	else {
-		sysPrintString("Wrong parameters: ", CB, CG, CR);
-		sysPrintString(input1, B, G, R);
-		sysPrintString(" not recognized as an option.\n", CB, CG, CR);
-	}
-	return 0;
-}
-
 pid_t getForegroundPID(){
 	return foregroundPID;
 }
@@ -299,7 +280,7 @@ void setForeground(pid_t pid){
     foregroundPID = pid;
 }
 
-void foreground(pid_t pid){
-    //DEBUGPrintInt(pid,100,100,100);
+void foreground(pid_t pid)
+{
     foregroundPID = pid;
 }

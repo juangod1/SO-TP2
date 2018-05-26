@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <sys/types.h>
+#include "stdio.h"
 
 typedef struct mbd_t_Struct * mbd_t;
 struct mbd_t_Struct
@@ -67,7 +68,7 @@ void semWait(int key);
 void finalizeMessageBox(mbd_t descriptor);
 void recieveMessage(mbd_t descriptor, void * buffer);
 void sendMessage(mbd_t descriptor, void * messageContent);
-int split (const char *str, char c, char ***arr);
+int split (char *str, char c, char ***arr);
 void sysExit();
 int removeLineBreak(char * str);
 #endif

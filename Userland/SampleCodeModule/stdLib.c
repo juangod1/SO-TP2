@@ -137,7 +137,7 @@ int removeLineBreak(char * str)
   return 0;
 }
 
-int split (const char *str, char c, char ***arr)
+int split (char *str, char c, char ***arr)
 {
   int count = 1;
   int token_len = 1;
@@ -351,10 +351,6 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 void sysGetMyHeapBase(dataBlock * db)
 {
   sysCall(19,(uint64_t)db,0,0,0,0);
-}
-void wipeBuffer(char * buff, size_t size){
-    while(size--)
-        buff[size]=0;
 }
 
 void sysExpandHeap(dataBlock * db, size_t s)

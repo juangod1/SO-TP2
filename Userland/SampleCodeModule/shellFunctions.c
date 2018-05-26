@@ -184,6 +184,25 @@ int help(int words, char ** input)
 	return 0;
 }
 
+int testModule(char * input1)
+{
+	if (strcmp(input1,"ipc") == 0)
+			sysTestSuite(2);
+	else if (strcmp(input1, "mm") == 0)
+			sysTestSuite(3);
+	else if (strcmp(input1,"all") == 0)
+			sysTestSuite(0);
+	else if (strcmp(input1,"md") == 0)
+			sysTestSuite(4);
+	else if (strcmp(input1,"pipe") == 0)
+			sysTestSuite(5);
+	else {
+		sysPrintString("Wrong parameters: ", CB, CG, CR);
+		sysPrintString(input1, B, G, R);
+		sysPrintString(" not recognized as an option.\n", CB, CG, CR);
+	}
+	return 0;
+}
 
 int calculateWrapper(int words, char * input1, char * input2,char * input3)
 {
