@@ -38,10 +38,10 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 	* the compiler to be reasonably intelligent about optimizing
 	* the divides and modulos out. Fortunately, it is.
 	*/
-	//if((uint64_t)destination-(uint64_t)source<length && (uint64_t)destination>(uint64_t)source)
-	//{
-	//	return memcpyBackwards(destination, source, length);
-	//}
+	if((uint64_t)destination-(uint64_t)source<length && (uint64_t)destination>(uint64_t)source)
+	{
+		return memcpyBackwards(destination, source, length);
+	}
 	uint64_t i;
 
 	if ((uint64_t)destination % sizeof(uint32_t) == 0 &&

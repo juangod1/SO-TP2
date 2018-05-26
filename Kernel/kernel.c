@@ -46,12 +46,35 @@ void * initializeKernelBinary()
 
 int main() {
   load_idt();
+  initMemoryManager();
+	initializeScreenBuffer();
   paintBackGround();
 	resetScreenCoordinates();
-  initMemoryManager();
 
 	initializePostOffice();		//  Messaging system
 	initializeTrafficControl();// Semaphore system
+/*
+ char * ptr2 = (char *)0x15002;
+ char * ptr = (char *)0x15000;
+ for (int i=0; i<100; i++){
+	 switch(i%3)
+	 {
+		 case 0:
+		 *(ptr+i)='z';
+		 break;
+		 case 1:
+		 *(ptr+i)='y';
+		 break;
+		 case 2:
+		 *(ptr+i)='x';
+		 break;
+	 }
+ }
+ printString(ptr,255,0,0);
+ printString("\n",255,255,255);
+ memcpy(ptr2,ptr,100);
+ printString(ptr2,255,255,255);*/
+
 
 	void (*module)();
 

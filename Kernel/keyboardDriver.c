@@ -153,6 +153,12 @@ void keyboard_handler()
             case '=':
               c='+';
               break;
+            case 14: //DOWN ARROW
+                shiftVideo(5,0);
+              break;
+            case 15://UP ARROW
+                shiftVideo(5,1);
+              break;
             }
         }
       }

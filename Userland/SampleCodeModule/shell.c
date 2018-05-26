@@ -12,7 +12,7 @@ pid_t processesPID[MAX_PROCESSES];
 int processesAmount[1];
 
 void startShell(){
-	sysPrintString("Shell initialized\n", CB, CG, CR);
+	//sysPrintString("Shell initialized\n", CB, CG, CR);
 	char string[MAX_WORD_LENGTH] = {0};
 	char lastString[MAX_WORD_LENGTH] = {0};
 	int counter = 0;

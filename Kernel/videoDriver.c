@@ -9,6 +9,20 @@ static unsigned char ** video_start = (unsigned char**)0x0005C28;
 static unsigned int current_x = 0;
 static unsigned int current_y = 0;
 
+int h= HMAX/2;
+char * screenBuffer=NULL;
+
+void initializeScreenBuffer()
+{
+	finalizeScreenBuffer();
+	screenBuffer=malloc(HMAX*SCREEN_WIDTH*3);
+}
+void finalizeScreenBuffer()
+{
+	free(screenBuffer);
+	screenBuffer=NULL;
+}
+
 void swapScreenColors(int oB, int oG, int oR, int nB, int nG, int nR)
 {
 	for(int i=0; i<SCREEN_WIDTH; i+=1){
@@ -135,7 +149,7 @@ void checkLine(){
 		current_y+=PIXELS_PER_LINE;
 		if(current_y>=SCREEN_HEIGHT){
 			current_y-=PIXELS_PER_LINE;
-			shiftVideo(PIXELS_PER_LINE);
+			shiftVideo(PIXELS_PER_LINE, 0);
 		}
 	}
 }
@@ -214,14 +228,19 @@ void newLine(){
 	current_y+=PIXELS_PER_LINE;
 	if(current_y>=SCREEN_HEIGHT){
 		current_y-=PIXELS_PER_LINE;
-		shiftVideo(PIXELS_PER_LINE);
+		createNewLines(PIXELS_PER_LINE);
 	}
 }
 
-void shiftVideo(int lines)
+void createNewLines(int lines)
 {
 	char * video = (char *) getVideoPix();
+	char * aux =malloc(3*SCREEN_WIDTH*lines);
+	memcpy(aux,video, 3*SCREEN_WIDTH*lines);
 	memcpy(video, video+3*SCREEN_WIDTH*lines, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-lines));
+	memcpy(screenBuffer,screenBuffer+3*SCREEN_WIDTH*lines,3*SCREEN_WIDTH*(HMAX-lines));
+	memcpy(screenBuffer+3*SCREEN_WIDTH*(HMAX-lines),aux,3*SCREEN_WIDTH*lines);
+	free(aux);
 	for(int i=0; i<3*lines*SCREEN_WIDTH; i++)
 	{
 		switch(i%2)
@@ -239,4 +258,66 @@ void shiftVideo(int lines)
 			break;
 		}
 	}
+}
+
+void shiftVideo(int lines, int upwards)
+{
+	if(upwards)
+	{
+		shiftUpwards();
+	}
+	else
+	{
+		shiftDownards();
+	}
+}
+void shiftUpwards(int lines)
+{
+	for(int i=0; i<lines; i++)
+	{
+		shiftOneLineUpwards();
+	}
+}
+void shiftOneLineUpwards()
+{
+	if(h<=0)
+	{
+		printString("hmin",0,0,255);
+		return;
+ 	}
+	char * screen = getVideoPix();
+	char * aux =malloc(3*SCREEN_WIDTH);
+
+	memcpy(aux,screen+3*SCREEN_WIDTH*(SCREEN_HEIGHT-1), 3*SCREEN_WIDTH);
+	memcpy(screen+3*SCREEN_WIDTH,screen, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-1));
+	h--;
+	memcpy(screen, screenBuffer+3*SCREEN_WIDTH*h, 3*SCREEN_WIDTH);
+	memcpy(screenBuffer+3*SCREEN_WIDTH*h, aux, 3*SCREEN_WIDTH);
+
+	free(aux);
+
+}
+void shiftDownards(int lines)
+{
+	for(int i=0; i<lines; i++)
+	{
+		shiftOneLineDownwards();
+	}
+}
+void shiftOneLineDownwards()
+{
+	if(h<=0)
+	{
+		printString("hmax",0,0,255);
+		return;
+ 	}
+	char * screen=getVideoPix();
+	char * aux=malloc(3*SCREEN_WIDTH);
+
+	memcpy(aux,screen,3*SCREEN_WIDTH);
+	memcpy(screen, screen+3*SCREEN_WIDTH*h, 3*SCREEN_WIDTH*(SCREEN_HEIGHT-1));
+	memcpy(screen+3*SCREEN_WIDTH*(SCREEN_HEIGHT-1),screenBuffer+3*SCREEN_WIDTH*h,3*SCREEN_WIDTH);
+	memcpy(screenBuffer+3*SCREEN_WIDTH*h,aux,3*SCREEN_WIDTH);
+
+	free(aux);
 }

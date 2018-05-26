@@ -15,6 +15,7 @@
 #define color_blue 0
 #define PIXELS_PER_LINE 16
 #define PIXELS_PER_CHARSPACE 8
+#define HMAX 1600
 
 void clearScreen();
 void printString(const char* string, int R, int G, int B);
@@ -33,10 +34,12 @@ void writeChar(char c, int R, int G, int B);
 void paintCharSpace(int current_x, int current_y, char B, char G, char R);
 void checkLine();
 void backSpace();
-void shiftVideo(int lines);
+void shiftVideo(int lines, int upwards);
 void paintBackGround();
 void perror(const char * string);
 void resetScreenCoordinates();
+void finalizeScreenBuffer();
+void initializeScreenBuffer();
 
 
 #endif

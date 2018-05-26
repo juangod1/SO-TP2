@@ -12,7 +12,7 @@ char memoryManagerBlocksStatusArray[NUM_OF_BBLOCKS];
 
 //Inicializar mi heap y variables de entorno. Devuelve 1 cuando hay error, 0 cuando fue exitoso.
 int initMemoryManager(){
-	printString("Initializing memory manager... \n",TB,TG,TR);
+	//printString("Initializing memory manager... \n",TB,TG,TR);
 	initPageDirArray();
 	initMemoryManagerBlocksArray();
 
