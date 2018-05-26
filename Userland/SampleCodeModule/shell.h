@@ -61,9 +61,8 @@ messageBoxDemo              - Executes a demo of the Messing system.\n"
 #define MESSAGEBOXDEMO_INS "Shows an example of two processes communicating with message boxes.\n"
 
 void startShell();
-int graph(char input[][MAX_WORD_LENGTH], int words);
-int callFunction(char * buffer, int backgroundFlag);
-int echo(char input[][MAX_WORD_LENGTH], int words);
+int graph(char * input1, char* input2, char * input3);
+int callFunction(char * buffer, int backgroundflag, char *** input_P, int * words_P);
 int clear(int words);
 int overflowGenerator(int n);
 int calculateVerifications(int words, char* input1, char* input2, char* input3);
@@ -75,5 +74,7 @@ void wipeBuffer(char * buff, size_t size);
 void listProcesses();
 void setForeground(pid_t pid);
 void reinitializeProcessNameBuffer();
+void backgroundProcessRun();
+int echo(char ** input, int words);
 
 #endif

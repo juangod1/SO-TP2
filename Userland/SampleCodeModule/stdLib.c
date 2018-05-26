@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include "shell.h"
 #define MAX_DIGITS 20
+//http://source-code-share.blogspot.com.ar/2014/07/implementation-of-java-stringsplit.html
 
 extern int sysCall(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
@@ -123,6 +124,78 @@ void DEBUGPrintInt(int num, int B, int G, int R) {
     numbers[dig] = '\0';
 
     DEBUGPrintString(numbers, B, G, R);
+}
+
+int removeLineBreak(char * str)
+{
+  char * p=str;
+  while(*p!='\n' && *p!=0)
+  {
+    p++;
+  }
+  *p=0;
+  return 0;
+}
+
+int split (const char *str, char c, char ***arr)
+{
+  int count = 1;
+  int token_len = 1;
+  int i = 0;
+  char *p;
+  char *t;
+
+  p = str;
+  while (*p != '\0')
+    {
+      if (*p == c)
+        count++;
+      p++;
+    }
+
+  *arr = (char**) malloc(sizeof(char*) * count);
+  if (*arr == NULL)
+    return -1;
+
+  p = str;
+  while (*p != '\0')
+    {
+      if (*p == c)
+      {
+        (*arr)[i] = (char*) malloc( sizeof(char) * token_len );
+        if ((*arr)[i] == NULL)
+          return -1;;
+
+        token_len = 0;
+        i++;
+      }
+      p++;
+      token_len++;
+    }
+  (*arr)[i] = (char*) malloc( sizeof(char) * token_len );
+  if ((*arr)[i] == NULL)
+    return -1;
+
+  i = 0;
+  p = str;
+  t = ((*arr)[i]);
+  while (*p != '\0')
+    {
+      if (*p != c)
+      {
+        *t = *p;
+        t++;
+      }
+      else
+      {
+        *t = '\0';
+        i++;
+        t = ((*arr)[i]);
+      }
+      p++;
+    }
+  *t=*p;
+  return count;
 }
 
 void sysPrintFloat(float num, int B, int G, int R) {

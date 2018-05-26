@@ -15,6 +15,10 @@ int graphMain(float a, float b, float c){
 	char ch = 0;
 
 	while (!ready_to_exit) {
+		if(draw){
+			draw=0;
+			plotWrapper((x_l*factor)+x_offset,(x_r*factor)+x_offset,(y_d*factor)+y_offset,(y_u*factor)+y_offset,a, b, c);
+		}
 		sysGetChar(&ch);
 		if (ch == '\n') {
 			sysClear();
@@ -45,10 +49,6 @@ int graphMain(float a, float b, float c){
 		if (ch == 12) { //RIGHTARROW
 			x_offset+=(5*factor);
 			draw=1;
-		}
-		if(draw){
-			draw=0;
-			plotWrapper((x_l*factor)+x_offset,(x_r*factor)+x_offset,(y_d*factor)+y_offset,(y_u*factor)+y_offset,a, b, c);
 		}
 	}
 

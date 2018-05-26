@@ -22,38 +22,15 @@ int processesAmount[1];
 
 mbd_t mbdescriptor;
 
-void setForeground(pid_t pid){
-    foregroundPID = pid;
-}
-
-void backgroundProcessRun(){
-    int i,j,k;
-    char ch;
-    while(1) {
-        for (i=1;i<256;i=i+30) {
-            for (j=1;j<256;j=j+30) {
-                for (k=1;k<256;k=k+30) {
-                    sysGetChar(&ch);
-                    if(ch=='\n')
-						sysExit();
-                    sysPrintString("Hello, i am a background process. Press ENTER to leave. Enjoy the RGB magic.\n", i, j, k);
-                }
-            }
-        }
-    }
-}
-
-void foreground(pid_t pid){
-    //DEBUGPrintInt(pid,100,100,100);
-    foregroundPID = pid;
-}
-
 void startShell(){
 	sysPrintString("Shell initialized\n", CB, CG, CR);
 	char string[MAX_WORD_LENGTH] = {0};
 	char lastString[MAX_WORD_LENGTH] = {0};
 	int counter = 0;
 	char ch;
+
+	int words;
+	char ** input;
 
 	sysPrintString("$> ",CB,CG,CR);
 
@@ -71,7 +48,8 @@ void startShell(){
 			if (ch == '\n') {
 				reset(lastString,strleng(lastString));
 				copy(lastString,string,strleng(string)-1);
-				callFunction(string,1);
+				callFunction(string,1, &input, &words);
+				finalizeFunctionCall(input,words);
 				if(isRunning) sysPrintString("$> ",CB,CG,CR);
 				reset(string,strleng(string));
 				counter=0;
@@ -99,33 +77,25 @@ void startShell(){
   sysExit();
 }
 
-int callFunction(char * buffer, int backgroundflag) {
+int callFunction(char * buffer, int backgroundflag, char *** input_P, int * words_P)
+{
+
 	if (buffer == NULL){
 		return 1;
 	}
 
-	int wordLength = 0;
-	int words = 0;
-	char input[MAX_WORDS][MAX_WORD_LENGTH] = {{0}};
-	char * aux = buffer;
 
+	removeLineBreak(buffer);
 
-	while (*aux != '\0' && wordLength < MAX_WORD_LENGTH) {
-		if(*aux == ' ' || *aux == '\n') {
-			input[words][wordLength]='\0';
-			wordLength=0;
-			words++;
-		} else {
-			input[words][wordLength] = *aux;
-			wordLength++;
-		}
+  *words_P=split(buffer, ' ',input_P);
 
-		aux++;
-	}
+	int words=*words_P;
+	char ** input=*input_P;
 
 	if (strcmp(input[0], "echo") == 0) {
 		return echo(input, words);
-	} else if (strcmp(input[0], "setFontColor") == 0) {
+	}
+  else if (strcmp(input[0], "setFontColor") == 0) {
 		if (words != 2) {
 			sysPrintString("Wrong parameters for setFontColor\n", CB, CG, CR);
 			return 1;
@@ -162,7 +132,12 @@ int callFunction(char * buffer, int backgroundflag) {
 		sysPrintString("Set font color\n", B, G, R);
 
 		return 0;
-	} else if (strcmp(input[0], "clear") == 0) {
+	}
+  else if (strcmp(input[0], "clear") == 0) {
+    if(words > 2) {
+      sysPrintString("No extra parameters for clear\n", CB, CG, CR);
+      return 1;
+    }
 		return clear(words);
 	}
 	else if (strcmp(input[0], "calculate") == 0) {
@@ -182,10 +157,10 @@ int callFunction(char * buffer, int backgroundflag) {
 		}
 
 		return 0;
-	} else if (strcmp(input[0], "help") == 0) {
+	}
+  else if (strcmp(input[0], "help") == 0) {
 		if(words > 2) {
 			sysPrintString("No extra parameters for help\n", CB, CG, CR);
-
 			return 1;
 		}
 		if(words == 2){
@@ -240,7 +215,8 @@ int callFunction(char * buffer, int backgroundflag) {
 		}
 
 		return 0;
-	} else if (strcmp(input[0], "exit") == 0 ) {
+	}
+  else if (strcmp(input[0], "exit") == 0 ) {
 		if (words != 1) {
 			sysPrintString("No extra parameters for exit\n", CB, CG, CR);
 
@@ -252,9 +228,18 @@ int callFunction(char * buffer, int backgroundflag) {
 		isRunning = 0;
 
 		return 0;
-	} else if (strcmp(input[0], "plot") == 0) {
-		return graph(input, words);
-	}else if (strcmp(input[0], "mmDemo") == 0) {
+	}
+  else if (strcmp(input[0], "plot") == 0) {
+		if (words != (GRAPH_PARAMETERS + 1)) {
+			sysPrintString("Wrong amount of parameters for plot command\n\
+			Use command help for guidelines\n", CB, CG, CR);
+
+			return 2;
+		}
+
+		return graph(input[1], input[2], input[3]);
+	}
+  else if (strcmp(input[0], "mmDemo") == 0) {
     if(words!= 1)
     {
 			sysPrintString("No extra parameters for mmDemo\n", CB, CG, CR);
@@ -266,7 +251,8 @@ int callFunction(char * buffer, int backgroundflag) {
 		sysClear();
     //sysClear();
     return 0;
-	} else if (strcmp(input[0],"displayTime") == 0) {
+	}
+  else if (strcmp(input[0],"displayTime") == 0) {
 		if(words != 1) {
 			sysPrintString("Wrong parameters: displayTime\n", CB, CG, CR);
 
@@ -298,7 +284,8 @@ int callFunction(char * buffer, int backgroundflag) {
 		sysPrintString("\n", B, G, R);
 
 		return 0;
-	} else if(strcmp(input[0],"setTimeZone") == 0) {
+	}
+  else if(strcmp(input[0],"setTimeZone") == 0) {
 		if(words != 2) {
 			sysPrintString("Wrong parameters: setTimeZone timezone\n", CB, CG, CR);
 			return 1;
@@ -362,46 +349,50 @@ int callFunction(char * buffer, int backgroundflag) {
       return 0;
     }
   }
-    else if(strcmp(input[0],"ps") == 0) {
-        if(words!=1)
-        {
-            sysPrintString("Wrong parameters: ps receives no arguments.\n", CB, CG, CR);
-            return 1;
-        }
-        listProcesses();
-        return 0;
-
+  else if(strcmp(input[0],"ps") == 0) {
+    if(words!=1)
+    {
+      sysPrintString("Wrong parameters: ps receives no arguments.\n", CB, CG, CR);
+      return 1;
     }
-    else if(strcmp(input[0],"testBackgroundProcess") == 0) {
-        if(words>1)
-        {
-            sysPrintString("Wrong parameters: backgroundProcess receives no arguments.\n", CB, CG, CR);
-            return 1;
-        }
-        int pid = sysExecute(backgroundProcessRun,"bg process test");
-		if(!backgroundflag)
-			setForeground(pid);
-        return 0;
-
+    listProcesses();
+    return 0;
+  }
+  else if(strcmp(input[0],"testBackgroundProcess") == 0) {
+    if(words>1)
+    {
+        sysPrintString("Wrong parameters: backgroundProcess receives no arguments.\n", CB, CG, CR);
+        return 1;
     }
-    else if(strcmp(input[0],"runfg") == 0) {
-        if(words<2)
-        {
-            sysPrintString("Wrong parameters: runfg.\n", CB, CG, CR);
-            return 1;
-        }
-
-        callFunction(input[1],0);
-        return 0;
-
-    }
+    int pid = sysExecute(backgroundProcessRun,"bg process test");
+    if(!backgroundflag)
+    	setForeground(pid);
+      return 0;
+  }
+  else if(strcmp(input[0],"runfg") == 0) {
+      if(words<2)
+      {
+          sysPrintString("Wrong parameters: runfg.\n", CB, CG, CR);
+          return 1;
+      }
+			sysPrintString("DEPRECATED\n",CB,CG,CR);
+      //callFunction(input[1],0);
+      return 0;
+  }
 	else {
 		sysPrintString("Wrong input\n", CB, CG, CR);
 
 		return 1;
 	}
+}
 
-	return 1;
+void finalizeFunctionCall(char ** input, int words)
+{
+	for(int i=0; i<words; i++)
+	{
+		free(input[i]);
+	}
+	free(input);
 }
 
 int verifyOperation(char * op)
@@ -450,7 +441,8 @@ int calculateVerifications(int words, char* input1, char* input2, char* input3){
 	return 1;
 }
 
-int echo(char input[][MAX_WORD_LENGTH], int words) {
+int echo(char ** input, int words)
+{
 	for (int i = 1  ;i < (words + 1); i++) {
 		sysPrintString(input[i], B, G, R);
 		sysPrintString(" ", B, G, R);
@@ -473,58 +465,21 @@ int clear(int words) {
 	return 0;
 }
 
-int graph(char input[4][MAX_WORD_LENGTH], int words) {
-	if (words != (GRAPH_PARAMETERS + 1)) {
-		sysPrintString("Wrong amount of parameters for plot command\n\
+int graph(char * input1, char* input2, char * input3)
+{
+	if (!isNum(input1) ||!isNum(input1) ||!isNum(input1)) {
+		sysPrintString("Wrong parameters passed to plot command\n\
 		Use command help for guidelines\n", CB, CG, CR);
-
 		return 2;
 	}
 
-	for (int i = 1; i <= GRAPH_PARAMETERS; i++) {
-		if (!isNum(input[i])) {
-			sysPrintString("Wrong parameters passed to plot command\n\
-			Use command help for guidelines\n", CB, CG, CR);
-
-			return 2;
-		}
-	}
-
-	graphMain(toFloat(input[1]), toFloat(input[2]), toFloat(input[3]));
+	graphMain(toFloat(input1), toFloat(input2), toFloat(input3));
 	return 0;
 
 }
 
 pid_t getForegroundPID(){
 	return foregroundPID;
-}
-
-void sendToShellBox(char * message, pid_t pid){
-	//sendMessage();
-}
-
-void checkShellBox(){
-	char buff[MESSAGE_BOX_SIZE]={0};
-	recieveMessage(mbdescriptor,buff);
-	if(buff[0]!=0)
-		sysPrintString("Received background messages:\n",CB,CG,CR);
-
-	while(buff[0]!=0){
-		sysPrintString(buff,CB,CG,CR);
-		wipeBuffer(buff,MESSAGE_BOX_SIZE);
-		recieveMessage(mbdescriptor,buff);
-	}
-}
-
-void initializeShellBox(){
-	//sysMalloc(mbdescriptor, sizeof(struct mbd_t_Struct));
-	mbdescriptor->block = 0;
-	mbdescriptor->key = "shell";
-	mbdescriptor->size = MESSAGE_BOX_SIZE;
-}
-
-mbd_t getShellBoxDescriptor(){
-	return mbdescriptor;
 }
 
 void listProcesses(){
@@ -550,4 +505,31 @@ void reinitializeProcessNameBuffer()
   {
     *(auxPtr+i)=0;
   }
+}
+
+void setForeground(pid_t pid){
+    foregroundPID = pid;
+}
+
+void backgroundProcessRun()
+{
+    int i,j,k;
+    char ch;
+    while(1) {
+        for (i=1;i<256;i=i+30) {
+            for (j=1;j<256;j=j+30) {
+                for (k=1;k<256;k=k+30) {
+                    sysGetChar(&ch);
+                    if(ch=='\n')
+						sysExit();
+                    sysPrintString("Hello, i am a background process. Press ENTER to leave. Enjoy the RGB magic.\n", i, j, k);
+                }
+            }
+        }
+    }
+}
+
+void foreground(pid_t pid){
+    //DEBUGPrintInt(pid,100,100,100);
+    foregroundPID = pid;
 }
