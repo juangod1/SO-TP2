@@ -75,6 +75,7 @@ void listProcesses();
 void setForeground(pid_t pid);
 void reinitializeProcessNameBuffer();
 void backgroundProcessRun();
+int callFunctionWrapper(char * string, int backgroundflag);
 int echo(char ** input, int words);
 
 #endif

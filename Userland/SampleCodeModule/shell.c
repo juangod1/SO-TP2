@@ -20,17 +20,12 @@ int processesSleep[MAX_PROCESSES];
 pid_t processesPID[MAX_PROCESSES];
 int processesAmount[1];
 
-mbd_t mbdescriptor;
-
 void startShell(){
 	sysPrintString("Shell initialized\n", CB, CG, CR);
 	char string[MAX_WORD_LENGTH] = {0};
 	char lastString[MAX_WORD_LENGTH] = {0};
 	int counter = 0;
 	char ch;
-
-	int words;
-	char ** input;
 
 	sysPrintString("$> ",CB,CG,CR);
 
@@ -48,8 +43,7 @@ void startShell(){
 			if (ch == '\n') {
 				reset(lastString,strleng(lastString));
 				copy(lastString,string,strleng(string)-1);
-				callFunction(string,1, &input, &words);
-				finalizeFunctionCall(input,words);
+				callFunctionWrapper(string,1);
 				if(isRunning) sysPrintString("$> ",CB,CG,CR);
 				reset(string,strleng(string));
 				counter=0;
@@ -77,13 +71,31 @@ void startShell(){
   sysExit();
 }
 
+int callFunctionWrapper(char * string, int backgroundflag)
+{
+	char ** pipedFunctions;
+	int pipeAmount = split(string, '|', &pipedFunctions);
+	sysPrintInt(pipeAmount,255,255,255);
+	int words;
+	char ** input =NULL;
+	for(int i=0; i<pipeAmount; i++)
+	{
+		callFunction(pipedFunctions[i],backgroundflag, &input, &words);
+		finalizeFunctionCall(input,words);
+	}
+	for(int i=0; i<pipeAmount; i++)
+	{
+		free(pipedFunctions[i]);
+	}
+	free(pipedFunctions);
+}
+
 int callFunction(char * buffer, int backgroundflag, char *** input_P, int * words_P)
 {
 
 	if (buffer == NULL){
 		return 1;
 	}
-
 
 	removeLineBreak(buffer);
 
