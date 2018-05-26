@@ -2,6 +2,13 @@
 #define SHELL_H
 
 #include "stdLib.h"
+#include "shellFunctions.h"
+#include "plotLib.h"
+#include "mathLib.h"
+#include "contextSwitchDemo.h"
+#include "prodConsProblem.h"
+#include "mmDemo.h"
+#include "messageBoxDemo.h"
 
 #define MAX_PROCESSES 100
 #define MAX_PROCESS_NAME_LENGTH 20
@@ -61,12 +68,8 @@ messageBoxDemo              - Executes a demo of the Messing system.\n"
 #define MESSAGEBOXDEMO_INS "Shows an example of two processes communicating with message boxes.\n"
 
 void startShell();
-int graph(char * input1, char* input2, char * input3);
 int callFunction(char * buffer, int backgroundflag, char *** input_P, int * words_P);
-int clear(int words);
 int overflowGenerator(int n);
-int calculateVerifications(int words, char* input1, char* input2, char* input3);
-int calculate(char* func, int param1, int param2);
 pid_t getForegroundPID();
 void DEBUGPrintInt();
 void DEBUGPrintString();
@@ -76,6 +79,5 @@ void setForeground(pid_t pid);
 void reinitializeProcessNameBuffer();
 void backgroundProcessRun();
 int callFunctionWrapper(char * string, int backgroundflag);
-int echo(char ** input, int words);
 
 #endif

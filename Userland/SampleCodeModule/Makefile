@@ -1,7 +1,7 @@
 include Makefile.inc
 
 MODULE=../0000-sampleCodeModule.bin
-SOURCES=sampleCodeModule.c stdLib.c stdio.c shell.c mathLib.c plotLib.c contextSwitchDemo.c prodConsProblem.c mmDemo.c messageBoxDemo.c
+SOURCES=sampleCodeModule.c stdLib.c stdio.c shell.c shellFunctions.c mathLib.c plotLib.c contextSwitchDemo.c prodConsProblem.c mmDemo.c messageBoxDemo.c
 SOURCES_ASM=$(wildcard asm/*.asm)
 OBJECTS=$(SOURCES:.c=.o)
 OBJECTS_ASM=$(SOURCES_ASM:.asm=.o)
