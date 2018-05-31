@@ -6,9 +6,10 @@ uint64_t* get_eip();
 void clear_interrupts();
 void set_interrupts();
 void idleProgram();
+process_t executeIdle();
 
 process_t currentProcess = NULL;
-process_t idlePid = NULL;
+process_t idleProcess = NULL;
 pid_t lastPid=-1;
 
 int setupComplete = 0;
@@ -31,9 +32,11 @@ int sleepProcess(pid_t pid){
     if (find==NULL)
         return -1;
 
-    if(find->sleeps)
+    if(find->sleeps) {
         return 1;
+    }
 
+    printString("Slept",255,255,255);
     find->sleeps = 1;
     spoof_tick();
     return 0;
@@ -53,26 +56,38 @@ int wakeProcess(pid_t pid){
 }
 
 process_t getNextProcess(){
+    process_t nextPeek = peekByPosition(0);
+    if(nextPeek == NULL){
+        return NULL;
+    }
     process_t next = poll(1);
-    if(next != NULL){
-        setupComplete = 1;
-    }
-
-    if(setupComplete) {
-        if (next == NULL && idlePid == NULL) {
-            pid_t nextPid;
-            execute(idleProgram, "idle process", &nextPid);
-            queueProcess(currentProcess);
-            next = poll(1);
-            idlePid = nextPid;
+    if(next == NULL){
+        if(idleProcess == NULL){
+            idleProcess = executeIdle();
+            next = idleProcess;
         }
-        if (next != NULL && idlePid != NULL) {
-            kill(idlePid);
-            idlePid = NULL;
-        }
+        next = idleProcess;
     }
-    currentProcess = next;
-    return next;
+//
+//    if(next != NULL){
+//        setupComplete = 1;
+//
+//        if(idleProcess == NULL)
+//            idleProcess = executeIdle();
+//    }
+//
+//    if(setupComplete) {
+//        if (next == NULL && peekByPID(idleProcess->pid) == NULL && nextPeek->sleeps) {
+//            queueProcess(idleProcess);
+//            next = poll(1);
+//            queueProcess(idleProcess);
+//        }
+//        if (next != NULL && next->pid != idleProcess->pid) {
+//            removeByPid(idleProcess->pid);
+//        }
+//    }
+//    currentProcess = next;
+//    return next;
 }
 
 int getAmountOfProcesses(){
@@ -104,17 +119,15 @@ void destroyProcessQueue(){
 
 void * schedule(void* prevSP)
 {
+    printQueue();
     process_t prevProcess = getCurrentProcess();
     process_t nextProcess = getNextProcess();
 
-    if(nextProcess == NULL) // QUEUE IS EMPTY OR ALL SLEEPING
+    if(nextProcess == NULL) // QUEUE IS EMPTY
     {
-        if(prevProcess != NULL) {
-            currentProcess = prevProcess;
-            queueProcess(prevProcess);
-        }
         return prevSP;
     }
+
     queueProcess(nextProcess);
     if(prevProcess == NULL) // FIRST PROCESS CASE
     {
@@ -171,4 +184,29 @@ void exit()
  void idleProgram()
  {
      while(1);
+ }
+
+ process_t executeIdle()
+ {
+     process_t newProcess = malloc(sizeof(struct process_t_CDT));
+     if(newProcess == NULL){
+         printString("Not enough memory for process.\n", 0, 0, 255);
+     }
+     newProcess->pid = getNewPid();
+     newProcess->name = malloc(MAX_PROCESS_NAME_LENGTH);
+     if(newProcess->name == NULL){
+         printString("Not enough memory for process.\n", 0, 0, 255);
+         free(newProcess);
+     }
+     memcpy(newProcess->name, "idle",strleng("idle"));
+     void* sp = getStack(newProcess->pid);
+     if(sp == NULL){
+         printString("Not enough memory for process.\n", 0, 0, 255);
+         free(newProcess);
+     }
+     void* temp = initialize_stack_frame(idleProgram, sp);
+     newProcess->stackPointer = temp;
+     newProcess->input = 0;
+     newProcess->output = 0;
+     return newProcess;
  }

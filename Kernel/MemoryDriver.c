@@ -74,7 +74,6 @@ void mdTester(){
     f_mkdir("bin","/");
     f_mkdir("bash","/bin");
     printString("TEST MD\n",255,255,255);
-
     parseDirectory("/bin/bash");
 }
 

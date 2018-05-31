@@ -65,12 +65,15 @@ void sysCallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint
       break;
     case 7:
       execute((void *)rsi, (char*)rdx, (int*)rcx);
+      printString("Exec syscall",255,0,255);
+      printQueue();
       break;
     case 8:
         *((pid_t*)rsi) = getPid();
       break;
     case 9:
       listProcesses(rsi, rdx, rcx, r8);
+      printQueue();
       break;
     case 10:
       sendMessage((mbd_t)rsi, (void *)rdx);
